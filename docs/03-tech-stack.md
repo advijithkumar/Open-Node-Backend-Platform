@@ -18,16 +18,16 @@ A standardized technology stack ensures that every application built using ONBP 
 
 Every technology selected for ONBP must satisfy the following principles:
 
-* ✅ Free to use
-* ✅ Open Source
-* ✅ Production Ready
-* ✅ Well Documented
-* ✅ Actively Maintained
-* ✅ Large Community Support
-* ✅ Scalable
-* ✅ Easy to Learn
-* ✅ Cross Platform
-* ✅ No Vendor Lock-in
+- ✅ Free to use
+- ✅ Open Source
+- ✅ Production Ready
+- ✅ Well Documented
+- ✅ Actively Maintained
+- ✅ Large Community Support
+- ✅ Scalable
+- ✅ Easy to Learn
+- ✅ Cross Platform
+- ✅ No Vendor Lock-in
 
 Technologies that do not meet these principles should not become part of the ONBP Core Platform.
 
@@ -69,22 +69,22 @@ These technologies are mandatory for every ONBP project.
 
 PostgreSQL is selected because it provides:
 
-* Excellent SQL compliance
-* High performance
-* Strong ACID guarantees
-* Advanced indexing
-* JSON support
-* Full-text search
-* Spatial extensions (PostGIS)
-* Large community support
-* Proven enterprise reliability
+- Excellent SQL compliance
+- High performance
+- Strong ACID guarantees
+- Advanced indexing
+- JSON support
+- Full-text search
+- Spatial extensions (PostGIS)
+- Large community support
+- Proven enterprise reliability
 
 ### Alternatives Considered
 
-* MySQL
-* MariaDB
-* SQLite
-* MongoDB
+- MySQL
+- MariaDB
+- SQLite
+- MongoDB
 
 PostgreSQL was selected because it offers the best balance between enterprise capabilities and open-source flexibility.
 
@@ -96,13 +96,13 @@ ONBP officially adopts **BetterAuth**.
 
 Reasons:
 
-* Modern authentication system
-* Session management
-* OAuth support
-* Email authentication
-* Secure by default
-* TypeScript support
-* Open Source
+- Modern authentication system
+- Session management
+- OAuth support
+- Email authentication
+- Secure by default
+- TypeScript support
+- Open Source
 
 Authentication should never be implemented from scratch unless there is a specific project requirement.
 
@@ -131,12 +131,12 @@ Redis is the official caching solution.
 
 Use cases:
 
-* Session storage
-* API caching
-* Temporary data
-* Background jobs
-* Rate limiting
-* Pub/Sub messaging
+- Session storage
+- API caching
+- Temporary data
+- Background jobs
+- Rate limiting
+- Pub/Sub messaging
 
 Redis is optional for smaller projects but recommended for production deployments.
 
@@ -148,19 +148,19 @@ ONBP recommends **MinIO Community Edition**.
 
 Why?
 
-* S3 compatible
-* Self-hosted
-* Open Source
-* High performance
-* Easy Docker deployment
+- S3 compatible
+- Self-hosted
+- Open Source
+- High performance
+- Easy Docker deployment
 
 Typical use cases include:
 
-* File uploads
-* Images
-* Documents
-* Reports
-* Backup storage
+- File uploads
+- Images
+- Documents
+- Reports
+- Backup storage
 
 ---
 
@@ -246,9 +246,9 @@ Every production-ready module should include appropriate tests.
 
 Recommended tools:
 
-* GitHub Actions
-* Jenkins
-* Gitea Actions
+- GitHub Actions
+- Jenkins
+- Gitea Actions
 
 Typical workflow:
 
@@ -299,16 +299,16 @@ Deployment
 
 A technology can become part of ONBP only if it satisfies most of the following:
 
-* Free and Open Source
-* Stable
-* Production Ready
-* Actively Maintained
-* Well Documented
-* Large Community
-* Long-term Support
-* Cross Platform
-* Docker Compatible
-* Easy to Learn
+- Free and Open Source
+- Stable
+- Production Ready
+- Actively Maintained
+- Well Documented
+- Large Community
+- Long-term Support
+- Cross Platform
+- Docker Compatible
+- Easy to Learn
 
 ---
 
@@ -318,11 +318,11 @@ ONBP intentionally avoids technologies that introduce unnecessary complexity or 
 
 Examples include:
 
-* Proprietary cloud services as mandatory dependencies
-* Closed-source databases
-* Commercial authentication services
-* Proprietary storage solutions
-* Vendor-specific SDKs
+- Proprietary cloud services as mandatory dependencies
+- Closed-source databases
+- Commercial authentication services
+- Proprietary storage solutions
+- Vendor-specific SDKs
 
 Developers may integrate these when required by a project, but they are not part of the ONBP standard.
 

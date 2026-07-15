@@ -10,11 +10,11 @@ The ONBP Coding Standards establish a consistent approach to writing, organizing
 
 Consistency improves:
 
-* Readability
-* Maintainability
-* Collaboration
-* Code Reviews
-* Long-term Scalability
+- Readability
+- Maintainability
+- Collaboration
+- Code Reviews
+- Long-term Scalability
 
 Every contributor should follow these standards unless an Architecture Decision Record (ADR) documents an approved exception.
 
@@ -24,26 +24,26 @@ Every contributor should follow these standards unless an Architecture Decision 
 
 ONBP follows these principles:
 
-* Write code for humans first.
-* Prefer clarity over cleverness.
-* Keep functions small and focused.
-* Avoid duplicate code.
-* Design for reuse.
-* Make code easy to test.
-* Fail safely and predictably.
-* Keep business logic separate from infrastructure.
+- Write code for humans first.
+- Prefer clarity over cleverness.
+- Keep functions small and focused.
+- Avoid duplicate code.
+- Design for reuse.
+- Make code easy to test.
+- Fail safely and predictably.
+- Keep business logic separate from infrastructure.
 
 ---
 
 # 📏 General Rules
 
-* Use **TypeScript** for all production code.
-* Enable **strict mode**.
-* Avoid the `any` type whenever possible.
-* Every file should have a single responsibility.
-* Prefer composition over inheritance.
-* Avoid unnecessary abstractions.
-* Remove dead code before merging.
+- Use **TypeScript** for all production code.
+- Enable **strict mode**.
+- Avoid the `any` type whenever possible.
+- Every file should have a single responsibility.
+- Prefer composition over inheritance.
+- Avoid unnecessary abstractions.
+- Remove dead code before merging.
 
 ---
 
@@ -122,11 +122,11 @@ import type { User } from "../types/user";
 
 Functions should:
 
-* Perform one task.
-* Be easy to understand.
-* Have descriptive names.
-* Return predictable results.
-* Avoid hidden side effects.
+- Perform one task.
+- Be easy to understand.
+- Have descriptive names.
+- Return predictable results.
+- Avoid hidden side effects.
 
 Prefer:
 
@@ -174,10 +174,10 @@ Never ignore errors.
 
 Always:
 
-* Catch expected exceptions.
-* Return meaningful error messages.
-* Log unexpected failures.
-* Avoid exposing sensitive information.
+- Catch expected exceptions.
+- Return meaningful error messages.
+- Log unexpected failures.
+- Avoid exposing sensitive information.
 
 Do not use empty `catch` blocks.
 
@@ -189,18 +189,18 @@ Use structured logging with **Pino**.
 
 Log:
 
-* Application startup
-* API requests
-* Warnings
-* Errors
-* Security events
+- Application startup
+- API requests
+- Warnings
+- Errors
+- Security events
 
 Do not log:
 
-* Passwords
-* Tokens
-* API keys
-* Sensitive personal information
+- Passwords
+- Tokens
+- API keys
+- Sensitive personal information
 
 ---
 
@@ -259,9 +259,9 @@ Every feature should include appropriate tests.
 
 Recommended:
 
-* Unit Tests
-* Integration Tests
-* API Tests
+- Unit Tests
+- Integration Tests
+- API Tests
 
 Tests should be deterministic and independent.
 
@@ -271,11 +271,11 @@ Tests should be deterministic and independent.
 
 Always:
 
-* Validate input.
-* Sanitize user data.
-* Hash passwords.
-* Protect secrets with environment variables.
-* Follow the principle of least privilege.
+- Validate input.
+- Sanitize user data.
+- Hash passwords.
+- Protect secrets with environment variables.
+- Follow the principle of least privilege.
 
 Never hardcode secrets into source code.
 
@@ -291,39 +291,39 @@ Complex logic should explain **why** it exists, not simply describe what the cod
 
 # 🔄 Git Practices
 
-* One feature per branch.
-* Small, focused commits.
-* Meaningful commit messages.
-* Pull requests should be reviewed before merging.
+- One feature per branch.
+- Small, focused commits.
+- Meaningful commit messages.
+- Pull requests should be reviewed before merging.
 
 Refer to:
 
-* `docs/standards/git.md`
-* `docs/standards/commits.md`
-* `docs/standards/branching.md`
+- `docs/standards/git.md`
+- `docs/standards/commits.md`
+- `docs/standards/branching.md`
 
 ---
 
 # 🚫 Avoid
 
-* Long functions
-* Duplicate logic
-* Circular dependencies
-* Hardcoded configuration
-* Magic numbers
-* Unused code
-* Deep nesting
-* Direct database access from controllers
+- Long functions
+- Duplicate logic
+- Circular dependencies
+- Hardcoded configuration
+- Magic numbers
+- Unused code
+- Deep nesting
+- Direct database access from controllers
 
 ---
 
 # 📚 Related Documents
 
-* 02-architecture.md
-* 03-tech-stack.md
-* 04-folder-structure.md
-* 06-api-standards.md
-* 08-security.md
+- 02-architecture.md
+- 03-tech-stack.md
+- 04-folder-structure.md
+- 06-api-standards.md
+- 08-security.md
 
 ---
 
@@ -331,12 +331,12 @@ Refer to:
 
 Future versions may include:
 
-* ESLint rules
-* Prettier configuration
-* TypeScript style guide
-* Performance guidelines
-* Secure coding checklist
-* AI-assisted code review recommendations
+- ESLint rules
+- Prettier configuration
+- TypeScript style guide
+- Performance guidelines
+- Secure coding checklist
+- AI-assisted code review recommendations
 
 ---
 

@@ -18,14 +18,14 @@ This document serves as a high-level index of significant decisions. More detail
 
 All technical decisions in ONBP should follow these principles:
 
-* Prioritize simplicity.
-* Choose mature and well-maintained technologies.
-* Prefer open-source software.
-* Minimize vendor lock-in.
-* Design for long-term maintainability.
-* Optimize for developer productivity.
-* Consider security from the beginning.
-* Document every major architectural decision.
+- Prioritize simplicity.
+- Choose mature and well-maintained technologies.
+- Prefer open-source software.
+- Minimize vendor lock-in.
+- Design for long-term maintainability.
+- Optimize for developer productivity.
+- Consider security from the beginning.
+- Document every major architectural decision.
 
 ---
 
@@ -63,20 +63,20 @@ Use **Express.js** as the standard HTTP framework.
 
 ### Alternatives Considered
 
-* Fastify
-* NestJS
-* Koa
-* Hono
+- Fastify
+- NestJS
+- Koa
+- Hono
 
 ### Reason
 
 Express has:
 
-* Large ecosystem
-* Extensive documentation
-* High community adoption
-* Excellent middleware support
-* Minimal learning curve
+- Large ecosystem
+- Extensive documentation
+- High community adoption
+- Excellent middleware support
+- Minimal learning curve
 
 ### Consequences
 
@@ -94,11 +94,11 @@ Use TypeScript instead of plain JavaScript.
 
 ### Reason
 
-* Static type checking
-* Better tooling
-* Easier refactoring
-* Improved maintainability
-* Reduced runtime errors
+- Static type checking
+- Better tooling
+- Easier refactoring
+- Improved maintainability
+- Reduced runtime errors
 
 ---
 
@@ -112,17 +112,17 @@ PostgreSQL is the default relational database.
 
 ### Alternatives
 
-* MySQL
-* MariaDB
-* SQLite
+- MySQL
+- MariaDB
+- SQLite
 
 ### Reason
 
-* Open source
-* ACID compliant
-* Advanced SQL support
-* Strong community
-* Excellent performance
+- Open source
+- ACID compliant
+- Advanced SQL support
+- Strong community
+- Excellent performance
 
 ---
 
@@ -136,16 +136,16 @@ Use Prisma as the official ORM.
 
 ### Alternatives
 
-* TypeORM
-* Sequelize
-* Drizzle ORM
+- TypeORM
+- Sequelize
+- Drizzle ORM
 
 ### Reason
 
-* Type safety
-* Modern API
-* Excellent migrations
-* Strong TypeScript support
+- Type safety
+- Modern API
+- Excellent migrations
+- Strong TypeScript support
 
 ---
 
@@ -159,10 +159,10 @@ Every ONBP application should support Docker.
 
 ### Reason
 
-* Consistent environments
-* Easier deployment
-* Service isolation
-* Simplified onboarding
+- Consistent environments
+- Easier deployment
+- Service isolation
+- Simplified onboarding
 
 ---
 
@@ -176,15 +176,15 @@ REST is the default API architecture.
 
 ### Alternatives
 
-* GraphQL
-* gRPC
+- GraphQL
+- gRPC
 
 ### Reason
 
-* Simplicity
-* Broad adoption
-* Excellent tooling
-* Easy integration
+- Simplicity
+- Broad adoption
+- Excellent tooling
+- Easy integration
 
 GraphQL and gRPC may be supported in future releases.
 
@@ -200,10 +200,10 @@ Use BetterAuth as the authentication framework.
 
 ### Reason
 
-* Modern architecture
-* TypeScript support
-* Flexible authentication flows
-* Open-source licensing
+- Modern architecture
+- TypeScript support
+- Flexible authentication flows
+- Open-source licensing
 
 ---
 
@@ -217,9 +217,9 @@ Every API should expose interactive documentation using Swagger/OpenAPI.
 
 ### Reason
 
-* Improves developer experience
-* Simplifies testing
-* Encourages consistent API design
+- Improves developer experience
+- Simplifies testing
+- Encourages consistent API design
 
 ---
 
@@ -233,15 +233,15 @@ Start with a modular monolith.
 
 ### Alternatives
 
-* Microservices
-* Distributed architecture
+- Microservices
+- Distributed architecture
 
 ### Reason
 
-* Lower operational complexity
-* Easier debugging
-* Faster development
-* Suitable for most enterprise applications
+- Lower operational complexity
+- Easier debugging
+- Faster development
+- Suitable for most enterprise applications
 
 The architecture can evolve if future requirements justify it.
 
@@ -257,11 +257,11 @@ Prefer free and open-source technologies whenever practical.
 
 ### Reason
 
-* Lower costs
-* Transparency
-* Community support
-* Long-term sustainability
-* Educational value
+- Lower costs
+- Transparency
+- Community support
+- Long-term sustainability
+- Educational value
 
 ---
 
@@ -275,10 +275,10 @@ Complete architecture and standards documentation before writing production code
 
 ### Reason
 
-* Establishes a shared vision
-* Reduces inconsistent implementation
-* Makes onboarding easier
-* Encourages thoughtful design
+- Establishes a shared vision
+- Reduces inconsistent implementation
+- Makes onboarding easier
+- Encourages thoughtful design
 
 ---
 
@@ -292,10 +292,10 @@ Security requirements are defined during architecture rather than added later.
 
 ### Reason
 
-* Reduces security risks
-* Encourages secure defaults
-* Simplifies audits
-* Supports compliance
+- Reduces security risks
+- Encourages secure defaults
+- Simplifies audits
+- Supports compliance
 
 ---
 
@@ -303,16 +303,16 @@ Security requirements are defined during architecture rather than added later.
 
 The following topics may require formal decisions in future versions:
 
-* Kubernetes support
-* GraphQL adoption
-* Event-driven architecture
-* Plugin system
-* Multi-tenancy
-* AI integration
-* CQRS/Event Sourcing
-* Multi-database support
-* CLI architecture
-* Infrastructure as Code
+- Kubernetes support
+- GraphQL adoption
+- Event-driven architecture
+- Plugin system
+- Multi-tenancy
+- AI integration
+- CQRS/Event Sourcing
+- Multi-database support
+- CLI architecture
+- Infrastructure as Code
 
 Each future decision should be documented before implementation.
 
@@ -334,21 +334,21 @@ docs/
 
 Each ADR should describe:
 
-* Context
-* Decision
-* Alternatives
-* Consequences
-* References
+- Context
+- Decision
+- Alternatives
+- Consequences
+- References
 
 ---
 
 # 📚 Related Documents
 
-* 02-architecture.md
-* 03-tech-stack.md
-* 08-security.md
-* 12-roadmap.md
-* 14-glossary.md
+- 02-architecture.md
+- 03-tech-stack.md
+- 08-security.md
+- 12-roadmap.md
+- 14-glossary.md
 
 ---
 

@@ -10,12 +10,12 @@ The ONBP Database Standards define how databases should be designed, organized, 
 
 A standardized database design provides:
 
-* Consistency
-* Maintainability
-* Better performance
-* Easier collaboration
-* Reliable migrations
-* Scalable architecture
+- Consistency
+- Maintainability
+- Better performance
+- Easier collaboration
+- Reliable migrations
+- Scalable architecture
 
 Every ONBP application should follow these standards unless an Architecture Decision Record (ADR) documents an approved exception.
 
@@ -25,13 +25,13 @@ Every ONBP application should follow these standards unless an Architecture Deci
 
 ONBP adopts the following principles:
 
-* Design for long-term maintenance.
-* Normalize data where appropriate.
-* Use clear and meaningful names.
-* Prefer explicit relationships.
-* Protect data integrity.
-* Design with scalability in mind.
-* Avoid database-specific hacks whenever possible.
+- Design for long-term maintenance.
+- Normalize data where appropriate.
+- Use clear and meaningful names.
+- Prefer explicit relationships.
+- Protect data integrity.
+- Design with scalability in mind.
+- Avoid database-specific hacks whenever possible.
 
 The database is considered a core part of the platform architecture.
 
@@ -65,10 +65,10 @@ prisma/
 
 Purpose:
 
-* Schema definition
-* Database migrations
-* Seed scripts
-* Database documentation
+- Schema definition
+- Database migrations
+- Seed scripts
+- Database documentation
 
 ---
 
@@ -78,9 +78,9 @@ Purpose:
 
 Use:
 
-* lowercase
-* snake_case
-* plural nouns
+- lowercase
+- snake_case
+- plural nouns
 
 Examples:
 
@@ -107,8 +107,8 @@ tbl_users
 
 Use:
 
-* lowercase
-* snake_case
+- lowercase
+- snake_case
 
 Examples:
 
@@ -147,9 +147,9 @@ id UUID PRIMARY KEY
 
 Advantages:
 
-* Globally unique
-* Better for distributed systems
-* Avoids ID enumeration
+- Globally unique
+- Better for distributed systems
+- Avoids ID enumeration
 
 ---
 
@@ -194,10 +194,10 @@ updated_by
 
 Purpose:
 
-* Track creation
-* Track updates
-* Support auditing
-* Enable soft deletes
+- Track creation
+- Track updates
+- Support auditing
+- Enable soft deletes
 
 ---
 
@@ -219,10 +219,10 @@ deleted_at = CURRENT_TIMESTAMP
 
 Benefits:
 
-* Recovery
-* Auditing
-* Historical reporting
-* Compliance
+- Recovery
+- Auditing
+- Historical reporting
+- Compliance
 
 Reference data may still use hard deletes where appropriate.
 
@@ -234,9 +234,9 @@ Use explicit foreign keys.
 
 Relationship types:
 
-* One-to-One
-* One-to-Many
-* Many-to-Many
+- One-to-One
+- One-to-Many
+- Many-to-Many
 
 Many-to-many relationships should use junction tables.
 
@@ -260,11 +260,11 @@ Use database constraints whenever possible.
 
 Examples:
 
-* PRIMARY KEY
-* FOREIGN KEY
-* UNIQUE
-* CHECK
-* NOT NULL
+- PRIMARY KEY
+- FOREIGN KEY
+- UNIQUE
+- CHECK
+- NOT NULL
 
 Business rules should be enforced at both the application and database layers where appropriate.
 
@@ -274,10 +274,10 @@ Business rules should be enforced at both the application and database layers wh
 
 Create indexes for:
 
-* Foreign keys
-* Frequently searched columns
-* Frequently sorted columns
-* Frequently filtered columns
+- Foreign keys
+- Frequently searched columns
+- Frequently sorted columns
+- Frequently filtered columns
 
 Examples:
 
@@ -299,10 +299,10 @@ Avoid excessive indexing because it increases write overhead.
 
 Always:
 
-* Use transactions for multi-step operations.
-* Define foreign keys.
-* Validate input before writing to the database.
-* Prevent orphaned records.
+- Use transactions for multi-step operations.
+- Define foreign keys.
+- Validate input before writing to the database.
+- Prevent orphaned records.
 
 The database should protect itself against invalid data.
 
@@ -342,11 +342,11 @@ If one step fails, the transaction should roll back.
 
 Seed scripts should populate:
 
-* Roles
-* Permissions
-* Default administrator
-* Application settings
-* Sample development data (optional)
+- Roles
+- Permissions
+- Default administrator
+- Application settings
+- Sample development data (optional)
 
 Production data should never be included in seed files.
 
@@ -358,10 +358,10 @@ Every schema change must be created through migrations.
 
 Guidelines:
 
-* One logical change per migration.
-* Never modify an existing migration after it has been applied.
-* Test migrations before production deployment.
-* Keep migration names meaningful.
+- One logical change per migration.
+- Never modify an existing migration after it has been applied.
+- Test migrations before production deployment.
+- Keep migration names meaningful.
 
 Example:
 
@@ -379,12 +379,12 @@ Example:
 
 Recommendations:
 
-* Avoid unnecessary joins.
-* Select only required columns.
-* Use pagination for large datasets.
-* Monitor slow queries.
-* Add indexes based on actual usage.
-* Archive historical data when appropriate.
+- Avoid unnecessary joins.
+- Select only required columns.
+- Use pagination for large datasets.
+- Monitor slow queries.
+- Add indexes based on actual usage.
+- Archive historical data when appropriate.
 
 Performance optimization should be driven by measurement rather than assumptions.
 
@@ -394,10 +394,10 @@ Performance optimization should be driven by measurement rather than assumptions
 
 Database credentials should:
 
-* Be stored in environment variables.
-* Never be committed to Git.
-* Use least-privilege accounts.
-* Be rotated periodically in production.
+- Be stored in environment variables.
+- Never be committed to Git.
+- Use least-privilege accounts.
+- Be rotated periodically in production.
 
 Sensitive data should be encrypted or hashed where appropriate.
 
@@ -409,11 +409,11 @@ Passwords must never be stored in plain text.
 
 Every production deployment should include:
 
-* Automated backups
-* Backup verification
-* Restore testing
-* Retention policy
-* Disaster recovery plan
+- Automated backups
+- Backup verification
+- Restore testing
+- Retention policy
+- Disaster recovery plan
 
 A backup is only useful if it can be restored successfully.
 
@@ -423,12 +423,12 @@ A backup is only useful if it can be restored successfully.
 
 Database-related tests should verify:
 
-* Migrations
-* Constraints
-* Relationships
-* Transactions
-* Repository methods
-* Seed scripts
+- Migrations
+- Constraints
+- Relationships
+- Transactions
+- Repository methods
+- Seed scripts
 
 Testing should be part of the development workflow.
 
@@ -438,11 +438,11 @@ Testing should be part of the development workflow.
 
 Prisma models should:
 
-* Match table names clearly.
-* Define relationships explicitly.
-* Use meaningful model names.
-* Keep schema organized.
-* Avoid duplicated models.
+- Match table names clearly.
+- Define relationships explicitly.
+- Use meaningful model names.
+- Keep schema organized.
+- Avoid duplicated models.
 
 The Prisma schema should be treated as part of the source code.
 
@@ -450,23 +450,23 @@ The Prisma schema should be treated as part of the source code.
 
 # 🚫 Avoid
 
-* Hardcoded SQL scattered across the project.
-* Missing foreign keys.
-* Nullable columns without justification.
-* Duplicate data.
-* Inconsistent naming.
-* Direct schema edits in production.
-* Manual database changes outside the migration process.
+- Hardcoded SQL scattered across the project.
+- Missing foreign keys.
+- Nullable columns without justification.
+- Duplicate data.
+- Inconsistent naming.
+- Direct schema edits in production.
+- Manual database changes outside the migration process.
 
 ---
 
 # 📚 Related Documents
 
-* 02-architecture.md
-* 03-tech-stack.md
-* 05-coding-standards.md
-* 06-api-standards.md
-* 08-security.md
+- 02-architecture.md
+- 03-tech-stack.md
+- 05-coding-standards.md
+- 06-api-standards.md
+- 08-security.md
 
 ---
 
@@ -474,13 +474,13 @@ The Prisma schema should be treated as part of the source code.
 
 Future versions may include:
 
-* Multi-tenant database strategies
-* Read replicas
-* Database partitioning
-* Sharding guidelines
-* Event sourcing recommendations
-* Time-series database integration
-* Data archival policies
+- Multi-tenant database strategies
+- Read replicas
+- Database partitioning
+- Sharding guidelines
+- Event sourcing recommendations
+- Time-series database integration
+- Data archival policies
 
 ---
 

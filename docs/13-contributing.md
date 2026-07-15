@@ -18,12 +18,12 @@ Every contribution—whether code, documentation, bug reports, or feature ideas�
 
 ONBP is founded on the following principles:
 
-* Open collaboration
-* Respectful communication
-* High-quality code
-* Transparent decision-making
-* Continuous learning
-* Community-first development
+- Open collaboration
+- Respectful communication
+- High-quality code
+- Transparent decision-making
+- Continuous learning
+- Community-first development
 
 Every contributor should help make the project better for everyone.
 
@@ -35,14 +35,14 @@ Anyone is welcome to contribute.
 
 Examples include:
 
-* Students
-* Open-source contributors
-* Backend developers
-* DevOps engineers
-* Security researchers
-* Technical writers
-* QA engineers
-* Industry professionals
+- Students
+- Open-source contributors
+- Backend developers
+- DevOps engineers
+- Security researchers
+- Technical writers
+- QA engineers
+- Industry professionals
 
 No contribution is too small.
 
@@ -52,16 +52,16 @@ No contribution is too small.
 
 You can contribute by:
 
-* Reporting bugs
-* Fixing bugs
-* Improving documentation
-* Adding new features
-* Improving performance
-* Writing tests
-* Improving security
-* Refactoring code
-* Reviewing pull requests
-* Answering community questions
+- Reporting bugs
+- Fixing bugs
+- Improving documentation
+- Adding new features
+- Improving performance
+- Writing tests
+- Improving security
+- Refactoring code
+- Reviewing pull requests
+- Answering community questions
 
 ---
 
@@ -165,12 +165,12 @@ docs/standards/commits.md
 
 All code must follow:
 
-* TypeScript strict mode
-* ESLint rules
-* Prettier formatting
-* ONBP Coding Standards
-* ONBP API Standards
-* ONBP Database Standards
+- TypeScript strict mode
+- ESLint rules
+- Prettier formatting
+- ONBP Coding Standards
+- ONBP API Standards
+- ONBP Database Standards
 
 Consistency is more important than personal preference.
 
@@ -182,9 +182,9 @@ Every contribution should include appropriate tests where applicable.
 
 Before submitting a Pull Request:
 
-* All tests should pass.
-* New functionality should include tests.
-* Existing functionality should not regress.
+- All tests should pass.
+- New functionality should include tests.
+- Existing functionality should not regress.
 
 Do not merge code with failing tests.
 
@@ -196,12 +196,12 @@ Documentation is considered part of the project.
 
 Whenever a change affects:
 
-* APIs
-* Configuration
-* Security
-* Deployment
-* Architecture
-* User workflows
+- APIs
+- Configuration
+- Security
+- Deployment
+- Architecture
+- User workflows
 
 The relevant documentation should also be updated.
 
@@ -211,12 +211,12 @@ The relevant documentation should also be updated.
 
 Every Pull Request should:
 
-* Have a clear title.
-* Explain the purpose.
-* Reference related issues if applicable.
-* Include screenshots for UI changes (if any).
-* Pass automated checks.
-* Be focused on a single logical change.
+- Have a clear title.
+- Explain the purpose.
+- Reference related issues if applicable.
+- Include screenshots for UI changes (if any).
+- Pass automated checks.
+- Be focused on a single logical change.
 
 Large unrelated changes should be split into multiple Pull Requests.
 
@@ -226,13 +226,13 @@ Large unrelated changes should be split into multiple Pull Requests.
 
 Code reviews should focus on:
 
-* Correctness
-* Readability
-* Security
-* Performance
-* Maintainability
-* Test coverage
-* Documentation
+- Correctness
+- Readability
+- Security
+- Performance
+- Maintainability
+- Test coverage
+- Documentation
 
 Reviews should remain respectful and constructive.
 
@@ -244,13 +244,13 @@ The goal is to improve the project, not criticize contributors.
 
 A good bug report should include:
 
-* Environment
-* Steps to reproduce
-* Expected behavior
-* Actual behavior
-* Error messages
-* Logs (if relevant)
-* Screenshots (if applicable)
+- Environment
+- Steps to reproduce
+- Expected behavior
+- Actual behavior
+- Error messages
+- Logs (if relevant)
+- Screenshots (if applicable)
 
 Well-written bug reports are easier to investigate.
 
@@ -260,10 +260,10 @@ Well-written bug reports are easier to investigate.
 
 Feature requests should describe:
 
-* The problem
-* Proposed solution
-* Expected benefits
-* Possible alternatives
+- The problem
+- Proposed solution
+- Expected benefits
+- Possible alternatives
 
 Features should align with the long-term goals of ONBP.
 
@@ -275,9 +275,9 @@ Do not publish sensitive security vulnerabilities in public issue trackers.
 
 Instead:
 
-* Contact the maintainers privately.
-* Provide enough detail to reproduce the issue.
-* Allow time for investigation and fixes before public disclosure.
+- Contact the maintainers privately.
+- Provide enough detail to reproduce the issue.
+- Allow time for investigation and fixes before public disclosure.
 
 ---
 
@@ -285,11 +285,11 @@ Instead:
 
 When adding new dependencies:
 
-* Prefer open-source software.
-* Justify why the dependency is needed.
-* Evaluate maintenance activity.
-* Review licensing.
-* Minimize unnecessary packages.
+- Prefer open-source software.
+- Justify why the dependency is needed.
+- Evaluate maintenance activity.
+- Review licensing.
+- Minimize unnecessary packages.
 
 Every dependency increases long-term maintenance.
 
@@ -299,12 +299,12 @@ Every dependency increases long-term maintenance.
 
 All contributors should:
 
-* Be respectful.
-* Be welcoming.
-* Help newcomers.
-* Accept constructive feedback.
-* Respect different experience levels.
-* Communicate professionally.
+- Be respectful.
+- Be welcoming.
+- Help newcomers.
+- Accept constructive feedback.
+- Respect different experience levels.
+- Communicate professionally.
 
 Healthy communities build successful projects.
 
@@ -312,11 +312,11 @@ Healthy communities build successful projects.
 
 # 📚 Related Documents
 
-* 05-coding-standards.md
-* 06-api-standards.md
-* 08-security.md
-* 10-testing.md
-* 12-roadmap.md
+- 05-coding-standards.md
+- 06-api-standards.md
+- 08-security.md
+- 10-testing.md
+- 12-roadmap.md
 
 ---
 
@@ -324,12 +324,12 @@ Healthy communities build successful projects.
 
 Future versions may include:
 
-* Code of Conduct
-* Governance model
-* Maintainer responsibilities
-* Release management process
-* Mentorship program
-* Contributor recognition
+- Code of Conduct
+- Governance model
+- Maintainer responsibilities
+- Release management process
+- Mentorship program
+- Contributor recognition
 
 ---
 

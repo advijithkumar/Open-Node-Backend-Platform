@@ -12,12 +12,12 @@ Every feature developed in ONBP should be verified before it is merged into the 
 
 The goals of testing are to:
 
-* Improve software quality.
-* Prevent regressions.
-* Detect bugs early.
-* Increase developer confidence.
-* Support safe refactoring.
-* Ensure production reliability.
+- Improve software quality.
+- Prevent regressions.
+- Detect bugs early.
+- Increase developer confidence.
+- Support safe refactoring.
+- Ensure production reliability.
 
 Testing is not optional—it is part of the development process.
 
@@ -27,13 +27,13 @@ Testing is not optional—it is part of the development process.
 
 ONBP follows these principles:
 
-* Test early.
-* Test continuously.
-* Automate whenever possible.
-* Keep tests independent.
-* Tests should be fast.
-* Tests should be repeatable.
-* A failing test should clearly identify the problem.
+- Test early.
+- Test continuously.
+- Automate whenever possible.
+- Keep tests independent.
+- Tests should be fast.
+- Tests should be repeatable.
+- A failing test should clearly identify the problem.
 
 ---
 
@@ -105,18 +105,18 @@ Unit tests verify a single function, class, or module in isolation.
 
 Examples:
 
-* Utility functions
-* Services
-* Validators
-* Business rules
-* Helper functions
+- Utility functions
+- Services
+- Validators
+- Business rules
+- Helper functions
 
 Unit tests should:
 
-* Run quickly.
-* Not require a database.
-* Not require network access.
-* Be deterministic.
+- Run quickly.
+- Not require a database.
+- Not require network access.
+- Be deterministic.
 
 ---
 
@@ -126,10 +126,10 @@ Integration tests verify that multiple components work together.
 
 Examples:
 
-* API + Database
-* Service + Repository
-* Authentication Flow
-* File Storage
+- API + Database
+- Service + Repository
+- Authentication Flow
+- File Storage
 
 Integration tests should use a dedicated test database.
 
@@ -141,14 +141,14 @@ Every endpoint should be tested.
 
 Recommended checks:
 
-* Successful request
-* Validation failure
-* Authentication
-* Authorization
-* Error handling
-* Pagination
-* Filtering
-* Sorting
+- Successful request
+- Validation failure
+- Authentication
+- Authorization
+- Error handling
+- Pagination
+- Filtering
+- Sorting
 
 APIs should be tested automatically using Supertest.
 
@@ -180,13 +180,13 @@ Use E2E tests for critical business processes.
 
 Database tests should verify:
 
-* Migrations
-* Relationships
-* Constraints
-* Transactions
-* Repository methods
-* Soft deletes
-* Seed data
+- Migrations
+- Relationships
+- Constraints
+- Transactions
+- Repository methods
+- Soft deletes
+- Seed data
 
 Never run destructive tests against a production database.
 
@@ -196,11 +196,11 @@ Never run destructive tests against a production database.
 
 Mock external dependencies such as:
 
-* Email services
-* Payment gateways
-* External APIs
-* Cloud storage
-* Message queues
+- Email services
+- Payment gateways
+- External APIs
+- Cloud storage
+- Message queues
 
 Avoid mocking the code being tested.
 
@@ -210,10 +210,10 @@ Avoid mocking the code being tested.
 
 Test data should:
 
-* Be predictable.
-* Be isolated.
-* Be reusable.
-* Never contain production information.
+- Be predictable.
+- Be isolated.
+- Be reusable.
+- Never contain production information.
 
 Use fixtures and factories where appropriate.
 
@@ -240,9 +240,9 @@ Coverage is a guide, not a substitute for meaningful tests.
 
 Tests should run:
 
-* Before every pull request.
-* During Continuous Integration (CI).
-* Before production releases.
+- Before every pull request.
+- During Continuous Integration (CI).
+- Before production releases.
 
 A failing test should block the merge until it is resolved.
 
@@ -254,10 +254,10 @@ The test environment should be isolated from development and production.
 
 Requirements:
 
-* Separate database
-* Separate environment variables
-* Automatic cleanup
-* Deterministic configuration
+- Separate database
+- Separate environment variables
+- Automatic cleanup
+- Deterministic configuration
 
 ---
 
@@ -265,11 +265,11 @@ Requirements:
 
 Performance testing is recommended for:
 
-* Authentication
-* File uploads
-* Search endpoints
-* High-volume APIs
-* Reporting modules
+- Authentication
+- File uploads
+- Search endpoints
+- High-volume APIs
+- Reporting modules
 
 Optional tool:
 
@@ -283,12 +283,12 @@ k6
 
 Verify:
 
-* Authentication
-* Authorization
-* Input validation
-* Rate limiting
-* SQL injection prevention
-* XSS protection
+- Authentication
+- Authorization
+- Input validation
+- Rate limiting
+- SQL injection prevention
+- XSS protection
 
 Security tests should be included in regression testing.
 
@@ -322,23 +322,23 @@ example
 
 # 🚫 Avoid
 
-* Skipping tests for critical features.
-* Tests that depend on execution order.
-* Shared mutable test state.
-* Using production data.
-* Ignoring failing tests.
-* Excessive mocking.
-* Slow unit tests.
+- Skipping tests for critical features.
+- Tests that depend on execution order.
+- Shared mutable test state.
+- Using production data.
+- Ignoring failing tests.
+- Excessive mocking.
+- Slow unit tests.
 
 ---
 
 # 📚 Related Documents
 
-* 05-coding-standards.md
-* 06-api-standards.md
-* 07-database-standards.md
-* 08-security.md
-* 11-deployment.md
+- 05-coding-standards.md
+- 06-api-standards.md
+- 07-database-standards.md
+- 08-security.md
+- 11-deployment.md
 
 ---
 
@@ -346,13 +346,13 @@ example
 
 Future versions may include:
 
-* Visual regression testing
-* Contract testing
-* Chaos engineering
-* Mutation testing
-* Distributed load testing
-* Automated accessibility testing
-* Performance benchmarking
+- Visual regression testing
+- Contract testing
+- Chaos engineering
+- Mutation testing
+- Distributed load testing
+- Automated accessibility testing
+- Performance benchmarking
 
 ---
 

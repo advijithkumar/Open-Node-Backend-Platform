@@ -10,11 +10,11 @@ The FAQ helps developers quickly find answers to common questions without search
 
 It is intended for:
 
-* New contributors
-* Students
-* Developers
-* Maintainers
-* Open-source contributors
+- New contributors
+- Students
+- Developers
+- Maintainers
+- Open-source contributors
 
 This document should grow as the ONBP community expands.
 
@@ -28,11 +28,11 @@ ONBP (Open Node Backend Platform) is an open-source backend platform designed to
 
 It focuses on:
 
-* Scalability
-* Security
-* Maintainability
-* Developer Experience
-* Open-source technologies
+- Scalability
+- Security
+- Maintainability
+- Developer Experience
+- Open-source technologies
 
 ---
 
@@ -58,12 +58,12 @@ It combines architecture, standards, tooling, and reusable components rather tha
 
 ONBP is suitable for:
 
-* Students
-* Backend developers
-* Startups
-* Freelancers
-* Enterprise teams
-* Open-source contributors
+- Students
+- Backend developers
+- Startups
+- Freelancers
+- Enterprise teams
+- Open-source contributors
 
 ---
 
@@ -81,10 +81,10 @@ ONBP is designed around free and open-source software.
 
 Node.js provides:
 
-* High performance
-* Large ecosystem
-* Excellent TypeScript support
-* Strong community adoption
+- High performance
+- Large ecosystem
+- Excellent TypeScript support
+- Strong community adoption
 
 ---
 
@@ -92,11 +92,11 @@ Node.js provides:
 
 TypeScript offers:
 
-* Static type checking
-* Better IDE support
-* Easier refactoring
-* Fewer runtime errors
-* Improved maintainability
+- Static type checking
+- Better IDE support
+- Easier refactoring
+- Fewer runtime errors
+- Improved maintainability
 
 ---
 
@@ -104,11 +104,11 @@ TypeScript offers:
 
 PostgreSQL is:
 
-* Open source
-* Reliable
-* Feature-rich
-* Highly scalable
-* Widely used in production
+- Open source
+- Reliable
+- Feature-rich
+- Highly scalable
+- Widely used in production
 
 ---
 
@@ -116,10 +116,10 @@ PostgreSQL is:
 
 Prisma provides:
 
-* Type-safe database access
-* Simple migrations
-* Excellent developer experience
-* Strong TypeScript integration
+- Type-safe database access
+- Simple migrations
+- Excellent developer experience
+- Strong TypeScript integration
 
 ---
 
@@ -127,11 +127,11 @@ Prisma provides:
 
 Redis is used for:
 
-* Caching
-* Session storage
-* Rate limiting
-* Background jobs
-* Temporary data
+- Caching
+- Session storage
+- Rate limiting
+- Background jobs
+- Temporary data
 
 ---
 
@@ -141,10 +141,10 @@ MinIO provides open-source object storage compatible with the Amazon S3 API.
 
 It is ideal for storing:
 
-* Images
-* Documents
-* Backups
-* Attachments
+- Images
+- Documents
+- Backups
+- Attachments
 
 ---
 
@@ -152,10 +152,10 @@ It is ideal for storing:
 
 Docker ensures:
 
-* Consistent development environments
-* Simple deployment
-* Service isolation
-* Easy onboarding
+- Consistent development environments
+- Simple deployment
+- Service isolation
+- Easy onboarding
 
 ---
 
@@ -191,11 +191,11 @@ Yes.
 
 ONBP includes standards for:
 
-* Unit testing
-* Integration testing
-* API testing
-* Security testing
-* End-to-end testing
+- Unit testing
+- Integration testing
+- API testing
+- Security testing
+- End-to-end testing
 
 ---
 
@@ -231,14 +231,14 @@ Yes.
 
 ONBP is intended to support applications such as:
 
-* ERP
-* CRM
-* Inventory Management
-* Transport Management
-* HR Management
-* Manufacturing Systems
-* Hospital Management
-* School Management
+- ERP
+- CRM
+- Inventory Management
+- Transport Management
+- HR Management
+- Manufacturing Systems
+- Hospital Management
+- School Management
 
 ---
 
@@ -268,10 +268,10 @@ Yes.
 
 It can be deployed to:
 
-* Virtual Private Servers (VPS)
-* Cloud virtual machines
-* Self-hosted servers
-* Kubernetes clusters (future roadmap)
+- Virtual Private Servers (VPS)
+- Cloud virtual machines
+- Self-hosted servers
+- Kubernetes clusters (future roadmap)
 
 ---
 
@@ -287,12 +287,12 @@ Docker is the recommended standard because it ensures consistent environments, b
 
 You can contribute by:
 
-* Writing code
-* Improving documentation
-* Reporting bugs
-* Writing tests
-* Reviewing pull requests
-* Suggesting features
+- Writing code
+- Improving documentation
+- Reporting bugs
+- Writing tests
+- Reviewing pull requests
+- Suggesting features
 
 See `13-contributing.md` for details.
 
@@ -350,10 +350,10 @@ These features are not part of the initial release.
 
 If your question is not covered:
 
-* Check the project documentation.
-* Search existing issues and discussions.
-* Open a new issue or discussion.
-* Contact the maintainers through the project's official communication channels.
+- Check the project documentation.
+- Search existing issues and discussions.
+- Open a new issue or discussion.
+- Contact the maintainers through the project's official communication channels.
 
 Community feedback helps improve ONBP.
 
@@ -361,11 +361,11 @@ Community feedback helps improve ONBP.
 
 # 📚 Related Documents
 
-* README.md
-* 01-vision.md
-* 03-tech-stack.md
-* 13-contributing.md
-* 14-glossary.md
+- README.md
+- 01-vision.md
+- 03-tech-stack.md
+- 13-contributing.md
+- 14-glossary.md
 
 ---
 

@@ -12,11 +12,11 @@ This document establishes the security requirements that every ONBP application 
 
 The objectives are to:
 
-* Protect sensitive information.
-* Prevent common web application attacks.
-* Enforce secure development practices.
-* Reduce operational risks.
-* Support secure deployments.
+- Protect sensitive information.
+- Prevent common web application attacks.
+- Enforce secure development practices.
+- Reduce operational risks.
+- Support secure deployments.
 
 ---
 
@@ -24,14 +24,14 @@ The objectives are to:
 
 ONBP follows these principles:
 
-* Secure by default.
-* Least privilege.
-* Defense in depth.
-* Validate all input.
-* Encrypt sensitive data.
-* Never trust client input.
-* Keep dependencies updated.
-* Security is everyone's responsibility.
+- Secure by default.
+- Least privilege.
+- Defense in depth.
+- Validate all input.
+- Encrypt sensitive data.
+- Never trust client input.
+- Keep dependencies updated.
+- Security is everyone's responsibility.
 
 ---
 
@@ -50,10 +50,10 @@ ONBP standard:
 
 Requirements:
 
-* Never store plaintext passwords.
-* Require strong passwords.
-* Support secure password reset.
-* Expire inactive sessions.
+- Never store plaintext passwords.
+- Require strong passwords.
+- Support secure password reset.
+- Expire inactive sessions.
 
 ---
 
@@ -85,16 +85,16 @@ Permissions should be checked on every protected operation.
 
 Passwords should:
 
-* Be hashed before storage.
-* Never be logged.
-* Never be returned in API responses.
-* Be compared using secure library functions.
+- Be hashed before storage.
+- Never be logged.
+- Never be returned in API responses.
+- Be compared using secure library functions.
 
 Minimum recommendations:
 
-* At least 12 characters.
-* Encourage passphrases.
-* Prevent reuse where practical.
+- At least 12 characters.
+- Encourage passphrases.
+- Prevent reuse where practical.
 
 ---
 
@@ -102,11 +102,11 @@ Minimum recommendations:
 
 Session security guidelines:
 
-* Use secure cookies when applicable.
-* Use HttpOnly cookies.
-* Use Secure cookies in production.
-* Set appropriate expiration times.
-* Invalidate sessions after logout.
+- Use secure cookies when applicable.
+- Use HttpOnly cookies.
+- Use Secure cookies in production.
+- Set appropriate expiration times.
+- Invalidate sessions after logout.
 
 ---
 
@@ -114,10 +114,10 @@ Session security guidelines:
 
 If JWTs are used:
 
-* Use strong signing algorithms.
-* Keep expiration times reasonable.
-* Rotate signing keys when necessary.
-* Never store sensitive information inside tokens.
+- Use strong signing algorithms.
+- Keep expiration times reasonable.
+- Rotate signing keys when necessary.
+- Never store sensitive information inside tokens.
 
 ---
 
@@ -127,14 +127,14 @@ Every request must be validated before reaching business logic.
 
 Validate:
 
-* Required fields
-* Data types
-* String lengths
-* Number ranges
-* Email formats
-* UUIDs
-* Dates
-* Business rules
+- Required fields
+- Data types
+- String lengths
+- Number ranges
+- Email formats
+- UUIDs
+- Dates
+- Business rules
 
 ONBP recommends **Zod** for request validation.
 
@@ -146,8 +146,8 @@ Never build SQL queries using string concatenation.
 
 Prefer:
 
-* Prisma ORM
-* Parameterized queries
+- Prisma ORM
+- Parameterized queries
 
 Never trust user input directly in database operations.
 
@@ -157,10 +157,10 @@ Never trust user input directly in database operations.
 
 Prevent XSS by:
 
-* Escaping output where appropriate.
-* Sanitizing untrusted HTML.
-* Validating user input.
-* Setting Content Security Policy (CSP) headers when applicable.
+- Escaping output where appropriate.
+- Sanitizing untrusted HTML.
+- Validating user input.
+- Setting Content Security Policy (CSP) headers when applicable.
 
 ---
 
@@ -168,9 +168,9 @@ Prevent XSS by:
 
 For cookie-based authentication:
 
-* Enable CSRF protection.
-* Use anti-CSRF tokens.
-* Validate request origins.
+- Enable CSRF protection.
+- Use anti-CSRF tokens.
+- Validate request origins.
 
 For token-based APIs, ensure secure token handling and origin validation where appropriate.
 
@@ -182,10 +182,10 @@ Configure Cross-Origin Resource Sharing (CORS) explicitly.
 
 Production recommendations:
 
-* Allow only trusted origins.
-* Restrict HTTP methods.
-* Restrict custom headers.
-* Disable wildcard origins in production.
+- Allow only trusted origins.
+- Restrict HTTP methods.
+- Restrict custom headers.
+- Disable wildcard origins in production.
 
 ---
 
@@ -193,12 +193,12 @@ Production recommendations:
 
 Use security headers such as:
 
-* Content-Security-Policy
-* X-Content-Type-Options
-* Referrer-Policy
-* Permissions-Policy
-* Strict-Transport-Security (HTTPS)
-* X-Frame-Options
+- Content-Security-Policy
+- X-Content-Type-Options
+- Referrer-Policy
+- Permissions-Policy
+- Strict-Transport-Security (HTTPS)
+- X-Frame-Options
 
 ONBP recommends using **Helmet** for Express applications.
 
@@ -210,10 +210,10 @@ Protect APIs against abuse.
 
 Recommendations:
 
-* Rate limit authentication endpoints.
-* Rate limit public APIs.
-* Block repeated abusive requests.
-* Use Redis-backed rate limiting for distributed deployments.
+- Rate limit authentication endpoints.
+- Rate limit public APIs.
+- Block repeated abusive requests.
+- Use Redis-backed rate limiting for distributed deployments.
 
 ---
 
@@ -221,11 +221,11 @@ Recommendations:
 
 Before accepting uploaded files:
 
-* Validate file type.
-* Validate file size.
-* Generate safe filenames.
-* Scan files for malware if required.
-* Store uploads outside the application source directory.
+- Validate file type.
+- Validate file size.
+- Generate safe filenames.
+- Scan files for malware if required.
+- Store uploads outside the application source directory.
 
 Never trust the client-provided filename or MIME type alone.
 
@@ -235,18 +235,18 @@ Never trust the client-provided filename or MIME type alone.
 
 Secrets include:
 
-* Database passwords
-* API keys
-* JWT secrets
-* SMTP credentials
-* Cloud storage credentials
+- Database passwords
+- API keys
+- JWT secrets
+- SMTP credentials
+- Cloud storage credentials
 
 Rules:
 
-* Never commit secrets to Git.
-* Store secrets in environment variables.
-* Rotate secrets periodically in production.
-* Restrict access to authorized personnel.
+- Never commit secrets to Git.
+- Store secrets in environment variables.
+- Rotate secrets periodically in production.
+- Restrict access to authorized personnel.
 
 ---
 
@@ -272,18 +272,18 @@ Provide a `.env.example` file without real credentials.
 
 Log important events such as:
 
-* User login
-* Failed login attempts
-* Permission changes
-* Password resets
-* Critical system errors
+- User login
+- Failed login attempts
+- Permission changes
+- Password resets
+- Critical system errors
 
 Do not log:
 
-* Passwords
-* Authentication tokens
-* API keys
-* Personal secrets
+- Passwords
+- Authentication tokens
+- API keys
+- Personal secrets
 
 ---
 
@@ -293,9 +293,9 @@ Use modern encryption algorithms.
 
 Recommendations:
 
-* TLS/HTTPS for data in transit.
-* Strong hashing for passwords.
-* Encrypt highly sensitive stored data where required by business needs.
+- TLS/HTTPS for data in transit.
+- Strong hashing for passwords.
+- Encrypt highly sensitive stored data where required by business needs.
 
 ---
 
@@ -303,10 +303,10 @@ Recommendations:
 
 Third-party packages should:
 
-* Come from trusted sources.
-* Be updated regularly.
-* Be scanned for known vulnerabilities.
-* Be reviewed before adoption.
+- Come from trusted sources.
+- Be updated regularly.
+- Be scanned for known vulnerabilities.
+- Be reviewed before adoption.
 
 Remove unused dependencies.
 
@@ -316,12 +316,12 @@ Remove unused dependencies.
 
 Security testing should include:
 
-* Authentication tests
-* Authorization tests
-* Input validation tests
-* Rate limiting tests
-* File upload tests
-* Dependency vulnerability scans
+- Authentication tests
+- Authorization tests
+- Input validation tests
+- Rate limiting tests
+- File upload tests
+- Dependency vulnerability scans
 
 Security testing should be part of the development lifecycle.
 
@@ -331,12 +331,12 @@ Security testing should be part of the development lifecycle.
 
 Prepare procedures for:
 
-* Detecting security incidents.
-* Containing affected systems.
-* Recovering services.
-* Investigating root causes.
-* Communicating with stakeholders.
-* Preventing recurrence.
+- Detecting security incidents.
+- Containing affected systems.
+- Recovering services.
+- Investigating root causes.
+- Communicating with stakeholders.
+- Preventing recurrence.
 
 ---
 
@@ -346,33 +346,33 @@ Security includes reliable recovery.
 
 Recommendations:
 
-* Automated backups.
-* Encrypted backup storage.
-* Regular restore testing.
-* Disaster recovery documentation.
+- Automated backups.
+- Encrypted backup storage.
+- Regular restore testing.
+- Disaster recovery documentation.
 
 ---
 
 # 🚫 Avoid
 
-* Hardcoded secrets.
-* Plaintext passwords.
-* Disabled authentication.
-* Unvalidated input.
-* Exposed stack traces.
-* Overly permissive CORS.
-* Excessive user privileges.
-* Ignoring security updates.
+- Hardcoded secrets.
+- Plaintext passwords.
+- Disabled authentication.
+- Unvalidated input.
+- Exposed stack traces.
+- Overly permissive CORS.
+- Excessive user privileges.
+- Ignoring security updates.
 
 ---
 
 # 📚 Related Documents
 
-* 03-tech-stack.md
-* 05-coding-standards.md
-* 06-api-standards.md
-* 07-database-standards.md
-* 09-docker.md
+- 03-tech-stack.md
+- 05-coding-standards.md
+- 06-api-standards.md
+- 07-database-standards.md
+- 09-docker.md
 
 ---
 
@@ -380,13 +380,13 @@ Recommendations:
 
 Future versions may include:
 
-* OAuth 2.0 integration guidelines
-* OpenID Connect recommendations
-* Multi-factor authentication standards
-* Secrets management with Vault
-* Security monitoring and alerting
-* Zero Trust architecture guidance
-* Security compliance checklists
+- OAuth 2.0 integration guidelines
+- OpenID Connect recommendations
+- Multi-factor authentication standards
+- Secrets management with Vault
+- Security monitoring and alerting
+- Zero Trust architecture guidance
+- Security compliance checklists
 
 ---
 

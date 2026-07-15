@@ -10,12 +10,12 @@ The ONBP API Standards define how REST APIs should be designed, implemented, doc
 
 A consistent API design provides:
 
-* Predictable behavior
-* Easier frontend integration
-* Better developer experience
-* Simplified testing
-* Improved maintainability
-* Long-term scalability
+- Predictable behavior
+- Easier frontend integration
+- Better developer experience
+- Simplified testing
+- Improved maintainability
+- Long-term scalability
 
 Every API developed within ONBP should follow these standards unless an Architecture Decision Record (ADR) documents an approved exception.
 
@@ -25,14 +25,14 @@ Every API developed within ONBP should follow these standards unless an Architec
 
 ONBP APIs should be:
 
-* Simple
-* Consistent
-* Predictable
-* Stateless
-* Secure
-* Versioned
-* Well documented
-* Easy to consume
+- Simple
+- Consistent
+- Predictable
+- Stateless
+- Secure
+- Versioned
+- Well documented
+- Easy to consume
 
 The API should be understandable without requiring knowledge of the internal implementation.
 
@@ -114,9 +114,9 @@ Use each method according to its intended purpose.
 
 Use:
 
-* lowercase
-* plural resource names
-* hyphens when necessary
+- lowercase
+- plural resource names
+- hyphens when necessary
 
 Examples:
 
@@ -304,11 +304,11 @@ Every request must be validated before reaching business logic.
 
 Validation should include:
 
-* Required fields
-* Data types
-* Length constraints
-* Format checks
-* Business rules where appropriate
+- Required fields
+- Data types
+- Length constraints
+- Format checks
+- Business rules where appropriate
 
 ONBP recommends using **Zod** for validation.
 
@@ -320,13 +320,13 @@ Every API should be documented using OpenAPI (Swagger).
 
 Documentation should include:
 
-* Endpoint description
-* Request schema
-* Response schema
-* Authentication requirements
-* Status codes
-* Example requests
-* Example responses
+- Endpoint description
+- Request schema
+- Response schema
+- Authentication requirements
+- Status codes
+- Example requests
+- Example responses
 
 Undocumented APIs should not be considered production-ready.
 
@@ -357,11 +357,11 @@ Avoid deeply nested URLs unless they clearly represent a hierarchical relationsh
 
 Every endpoint should include:
 
-* Success test
-* Validation test
-* Authentication test
-* Authorization test
-* Error handling test
+- Success test
+- Validation test
+- Authentication test
+- Authorization test
+- Error handling test
 
 Testing should be automated where possible.
 
@@ -371,12 +371,12 @@ Testing should be automated where possible.
 
 APIs should:
 
-* Validate input
-* Sanitize user data
-* Use HTTPS in production
-* Limit request rates
-* Return safe error messages
-* Protect sensitive resources
+- Validate input
+- Sanitize user data
+- Use HTTPS in production
+- Limit request rates
+- Return safe error messages
+- Protect sensitive resources
 
 Never trust client input.
 
@@ -384,23 +384,23 @@ Never trust client input.
 
 # 🚫 Avoid
 
-* Verbs in URLs
-* Inconsistent response formats
-* Mixed naming conventions
-* Returning raw database errors
-* Skipping validation
-* Ignoring HTTP status codes
-* Exposing internal implementation details
+- Verbs in URLs
+- Inconsistent response formats
+- Mixed naming conventions
+- Returning raw database errors
+- Skipping validation
+- Ignoring HTTP status codes
+- Exposing internal implementation details
 
 ---
 
 # 📚 Related Documents
 
-* 02-architecture.md
-* 03-tech-stack.md
-* 05-coding-standards.md
-* 07-database-standards.md
-* 08-security.md
+- 02-architecture.md
+- 03-tech-stack.md
+- 05-coding-standards.md
+- 07-database-standards.md
+- 08-security.md
 
 ---
 
@@ -408,12 +408,12 @@ Never trust client input.
 
 Future versions may include:
 
-* GraphQL guidelines
-* WebSocket API standards
-* API deprecation policy
-* Rate limiting strategy
-* Idempotency guidelines
-* API performance recommendations
+- GraphQL guidelines
+- WebSocket API standards
+- API deprecation policy
+- Rate limiting strategy
+- Idempotency guidelines
+- API performance recommendations
 
 ---
 

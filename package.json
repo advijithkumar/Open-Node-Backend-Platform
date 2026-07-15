@@ -1,0 +1,52 @@
+{
+  "name": "open-node-backend-platform",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A production-ready, open-source backend platform built with Node.js, TypeScript, Express, PostgreSQL, and Docker.",
+  "keywords": [
+    "nodejs",
+    "typescript",
+    "express",
+    "backend",
+    "platform",
+    "postgresql",
+    "docker",
+    "open-source",
+    "onbp"
+  ],
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": "https://github.com/Open-Node-Backend-Platform/issues"
+  },
+  "license": "MIT",
+  "author": "",
+  "packageManager": "pnpm@10.13.0",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "test": "turbo test",
+    "lint": "turbo lint",
+    "format": "prettier --write .",
+    "clean": "turbo clean"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.1.1",
+    "eslint": "^10.7.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.5",
+    "turbo": "^2.10.5",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.64.0"
+  }
+}

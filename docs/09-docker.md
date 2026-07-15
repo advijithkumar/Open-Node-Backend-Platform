@@ -12,11 +12,11 @@ Every ONBP project should be able to run with minimal setup regardless of the de
 
 Goals:
 
-* Eliminate "works on my machine" problems.
-* Standardize local development.
-* Simplify deployment.
-* Isolate services.
-* Support scalable production environments.
+- Eliminate "works on my machine" problems.
+- Standardize local development.
+- Simplify deployment.
+- Isolate services.
+- Support scalable production environments.
 
 ---
 
@@ -24,12 +24,12 @@ Goals:
 
 ONBP follows these principles:
 
-* Containerize every service.
-* One responsibility per container.
-* Keep images lightweight.
-* Prefer official Docker images.
-* Separate development and production configurations.
-* Automate setup wherever possible.
+- Containerize every service.
+- One responsibility per container.
+- Keep images lightweight.
+- Prefer official Docker images.
+- Separate development and production configurations.
+- Automate setup wherever possible.
 
 Docker is considered the standard runtime environment for ONBP.
 
@@ -147,9 +147,9 @@ onbp-network
 
 Benefits:
 
-* Secure service communication.
-* DNS-based service discovery.
-* Isolation from other containers.
+- Secure service communication.
+- DNS-based service discovery.
+- Isolation from other containers.
 
 ---
 
@@ -235,10 +235,10 @@ The API should not start until required services are healthy.
 
 Container logs should:
 
-* Use structured JSON where possible.
-* Include timestamps.
-* Include log levels.
-* Be easy to aggregate.
+- Use structured JSON where possible.
+- Include timestamps.
+- Include log levels.
+- Be easy to aggregate.
 
 Do not log sensitive information such as passwords, tokens, or secrets.
 
@@ -248,11 +248,11 @@ Do not log sensitive information such as passwords, tokens, or secrets.
 
 Recommendations:
 
-* Run containers as non-root users where practical.
-* Keep base images updated.
-* Remove unnecessary packages.
-* Expose only required ports.
-* Restrict inter-service communication where possible.
+- Run containers as non-root users where practical.
+- Keep base images updated.
+- Remove unnecessary packages.
+- Expose only required ports.
+- Restrict inter-service communication where possible.
 
 Never embed secrets directly into Docker images.
 
@@ -284,13 +284,13 @@ This workflow should be documented for every ONBP application.
 
 Production deployments should:
 
-* Use production-specific Dockerfiles.
-* Use production environment variables.
-* Enable HTTPS.
-* Configure automated backups.
-* Enable monitoring and alerting.
-* Rotate secrets regularly.
-* Restart containers automatically when appropriate.
+- Use production-specific Dockerfiles.
+- Use production environment variables.
+- Enable HTTPS.
+- Configure automated backups.
+- Enable monitoring and alerting.
+- Rotate secrets regularly.
+- Restart containers automatically when appropriate.
 
 ---
 
@@ -298,15 +298,15 @@ Production deployments should:
 
 Back up:
 
-* PostgreSQL database
-* MinIO object storage
-* Configuration (where applicable)
+- PostgreSQL database
+- MinIO object storage
+- Configuration (where applicable)
 
 Backups should:
 
-* Run automatically.
-* Be stored securely.
-* Be tested through periodic restore exercises.
+- Run automatically.
+- Be stored securely.
+- Be tested through periodic restore exercises.
 
 ---
 
@@ -324,13 +324,13 @@ ONBP Services
 
 Monitor:
 
-* CPU usage
-* Memory usage
-* Disk usage
-* API latency
-* Database health
-* Redis health
-* Container status
+- CPU usage
+- Memory usage
+- Disk usage
+- API latency
+- Database health
+- Redis health
+- Container status
 
 ---
 
@@ -338,11 +338,11 @@ Monitor:
 
 Recommendations:
 
-* Use official images where available.
-* Pin image versions.
-* Avoid using the `latest` tag in production.
-* Minimize image size.
-* Remove build-time dependencies from runtime images.
+- Use official images where available.
+- Pin image versions.
+- Avoid using the `latest` tag in production.
+- Minimize image size.
+- Remove build-time dependencies from runtime images.
 
 ---
 
@@ -366,33 +366,33 @@ docker compose up -d
 
 Verify:
 
-* Container health
-* Network connectivity
-* Environment variables
-* Mounted volumes
-* Database availability
+- Container health
+- Network connectivity
+- Environment variables
+- Mounted volumes
+- Database availability
 
 ---
 
 # 🚫 Avoid
 
-* Running everything in one container.
-* Storing persistent data inside containers.
-* Using production credentials in development.
-* Ignoring health checks.
-* Exposing unnecessary ports.
-* Using mutable Docker images in production.
-* Depending on startup timing instead of health checks.
+- Running everything in one container.
+- Storing persistent data inside containers.
+- Using production credentials in development.
+- Ignoring health checks.
+- Exposing unnecessary ports.
+- Using mutable Docker images in production.
+- Depending on startup timing instead of health checks.
 
 ---
 
 # 📚 Related Documents
 
-* 03-tech-stack.md
-* 07-database-standards.md
-* 08-security.md
-* 10-testing.md
-* 11-deployment.md
+- 03-tech-stack.md
+- 07-database-standards.md
+- 08-security.md
+- 10-testing.md
+- 11-deployment.md
 
 ---
 
@@ -400,13 +400,13 @@ Verify:
 
 Future versions may include:
 
-* Kubernetes deployment guidelines
-* Docker Swarm support
-* Multi-stage build optimization
-* Container vulnerability scanning
-* Service mesh integration
-* Multi-architecture image builds
-* Automated image publishing
+- Kubernetes deployment guidelines
+- Docker Swarm support
+- Multi-stage build optimization
+- Container vulnerability scanning
+- Service mesh integration
+- Multi-architecture image builds
+- Automated image publishing
 
 ---
 

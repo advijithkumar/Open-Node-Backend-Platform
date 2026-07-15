@@ -10,10 +10,10 @@ The ONBP Glossary serves as a central reference for technical terminology used a
 
 Its goals are to:
 
-* Help new contributors understand documentation.
-* Standardize terminology.
-* Reduce ambiguity.
-* Support learning and knowledge sharing.
+- Help new contributors understand documentation.
+- Standardize terminology.
+- Reduce ambiguity.
+- Support learning and knowledge sharing.
 
 Terms are listed alphabetically for quick reference.
 
@@ -39,9 +39,9 @@ The process of verifying the identity of a user or system.
 
 Example:
 
-* Username and password
-* OAuth login
-* BetterAuth session
+- Username and password
+- OAuth login
+- BetterAuth session
 
 ---
 
@@ -124,10 +124,10 @@ A browser security mechanism that controls which websites can access an API.
 
 The four basic database operations:
 
-* Create
-* Read
-* Update
-* Delete
+- Create
+- Read
+- Update
+- Delete
 
 ---
 
@@ -241,8 +241,8 @@ Managing servers and infrastructure using code instead of manual configuration.
 
 Examples:
 
-* Terraform
-* OpenTofu
+- Terraform
+- OpenTofu
 
 ---
 
@@ -294,9 +294,9 @@ Software that executes between an incoming request and the application logic.
 
 Examples:
 
-* Authentication
-* Logging
-* Validation
+- Authentication
+- Logging
+- Validation
 
 ---
 
@@ -508,11 +508,11 @@ A TypeScript-first schema validation library used in ONBP for validating request
 
 # 📚 Related Documents
 
-* 03-tech-stack.md
-* 05-coding-standards.md
-* 06-api-standards.md
-* 08-security.md
-* 10-testing.md
+- 03-tech-stack.md
+- 05-coding-standards.md
+- 06-api-standards.md
+- 08-security.md
+- 10-testing.md
 
 ---
 

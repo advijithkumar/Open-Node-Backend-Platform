@@ -28,14 +28,14 @@ Applications should focus on business requirements while ONBP provides the under
 
 Every ONBP project should follow these principles:
 
-* **Modular Design** – Features are developed as independent modules.
-* **Separation of Concerns** – Each layer has a single responsibility.
-* **Reusable Components** – Build once, reuse everywhere.
-* **Security by Default** – Secure configuration should be the default.
-* **Documentation First** – Architecture decisions are documented before implementation.
-* **Scalability** – Support growth from small projects to enterprise systems.
-* **Maintainability** – Prefer clear and simple designs over clever complexity.
-* **Consistency** – Every ONBP project follows the same architecture.
+- **Modular Design** – Features are developed as independent modules.
+- **Separation of Concerns** – Each layer has a single responsibility.
+- **Reusable Components** – Build once, reuse everywhere.
+- **Security by Default** – Secure configuration should be the default.
+- **Documentation First** – Architecture decisions are documented before implementation.
+- **Scalability** – Support growth from small projects to enterprise systems.
+- **Maintainability** – Prefer clear and simple designs over clever complexity.
+- **Consistency** – Every ONBP project follows the same architecture.
 
 ---
 
@@ -75,14 +75,14 @@ Applications are built **using** ONBP.
 
 Examples include:
 
-* ERP
-* CRM
-* Hospital Management
-* School Management
-* Transport Management
-* Manufacturing Systems
-* AI Platforms
-* IoT Platforms
+- ERP
+- CRM
+- Hospital Management
+- School Management
+- Transport Management
+- Manufacturing Systems
+- AI Platforms
+- IoT Platforms
 
 Applications contain business-specific requirements and should avoid modifying the ONBP core.
 
@@ -96,28 +96,28 @@ Examples:
 
 ### ERP
 
-* Inventory
-* Production
-* Purchasing
-* Sales
-* Finance
-* Human Resources
+- Inventory
+- Production
+- Purchasing
+- Sales
+- Finance
+- Human Resources
 
 ### Hospital
 
-* Patients
-* Doctors
-* Pharmacy
-* Laboratory
-* Billing
+- Patients
+- Doctors
+- Pharmacy
+- Laboratory
+- Billing
 
 ### Transport
 
-* Vehicles
-* Trips
-* Drivers
-* Routes
-* Fuel Management
+- Vehicles
+- Trips
+- Drivers
+- Routes
+- Fuel Management
 
 These modules contain business rules and workflows.
 
@@ -129,17 +129,17 @@ Platform modules provide reusable services shared by all applications.
 
 Examples include:
 
-* Authentication
-* Authorization
-* User Management
-* Roles
-* Permissions
-* Notifications
-* File Storage
-* Audit Logs
-* Settings
-* Health Checks
-* Background Jobs
+- Authentication
+- Authorization
+- User Management
+- Roles
+- Permissions
+- Notifications
+- File Storage
+- Audit Logs
+- Settings
+- Health Checks
+- Background Jobs
 
 These modules are independent of any specific business domain.
 
@@ -151,15 +151,15 @@ Shared packages contain reusable utilities used throughout the platform.
 
 Examples:
 
-* Logger
-* Configuration
-* Validation
-* Database
-* Cache
-* Email
-* Queue
-* Utilities
-* Constants
+- Logger
+- Configuration
+- Validation
+- Database
+- Cache
+- Email
+- Queue
+- Utilities
+- Constants
 
 Business modules should reuse these packages instead of duplicating functionality.
 
@@ -171,15 +171,15 @@ Infrastructure consists of external services that support the platform.
 
 Examples:
 
-* Docker
-* Nginx
-* PostgreSQL
-* Redis
-* MinIO
-* RabbitMQ
-* MQTT
-* Prometheus
-* Grafana
+- Docker
+- Nginx
+- PostgreSQL
+- Redis
+- MinIO
+- RabbitMQ
+- MQTT
+- Prometheus
+- Grafana
 
 These services provide storage, networking, messaging, monitoring, and deployment capabilities.
 
@@ -296,14 +296,14 @@ Security is integrated throughout the platform.
 
 The architecture includes:
 
-* Authentication
-* Authorization
-* Request Validation
-* Rate Limiting
-* Secure HTTP Headers
-* Input Sanitization
-* Audit Logging
-* Environment Variable Management
+- Authentication
+- Authorization
+- Request Validation
+- Rate Limiting
+- Secure HTTP Headers
+- Input Sanitization
+- Audit Logging
+- Environment Variable Management
 
 Security should never be treated as an optional feature.
 
@@ -315,10 +315,10 @@ ONBP adopts a **Modular Monolith** architecture initially.
 
 Benefits:
 
-* Easier development
-* Simpler deployment
-* Faster debugging
-* Lower operational complexity
+- Easier development
+- Simpler deployment
+- Faster debugging
+- Lower operational complexity
 
 As requirements evolve, individual modules can be extracted into independent microservices without changing business logic.
 
@@ -330,10 +330,10 @@ Each architectural layer should be independently testable.
 
 Recommended testing levels:
 
-* Unit Tests
-* Integration Tests
-* API Tests
-* End-to-End Tests
+- Unit Tests
+- Integration Tests
+- API Tests
+- End-to-End Tests
 
 Testing is considered part of the architecture, not an afterthought.
 
@@ -345,13 +345,13 @@ The architecture is designed to evolve over time.
 
 Future enhancements may include:
 
-* Plugin System
-* CLI Project Generator
-* Module Marketplace
-* Event-Driven Architecture
-* Microservice Support
-* Multi-Tenant Support
-* Cloud-Native Deployments
+- Plugin System
+- CLI Project Generator
+- Module Marketplace
+- Event-Driven Architecture
+- Microservice Support
+- Multi-Tenant Support
+- Cloud-Native Deployments
 
 The architecture should remain flexible while preserving backward compatibility where practical.
 

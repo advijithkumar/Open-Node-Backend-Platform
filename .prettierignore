@@ -1,0 +1,38 @@
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# Turbo cache
+.turbo/
+
+# Package manager
+pnpm-lock.yaml
+
+# Environment files
+.env
+.env.*
+
+# Logs
+*.log
+
+# Generated files
+*.min.js
+
+# Documentation images
+docs/images/
+
+# Git
+.git/
+
+# IDE
+.vscode/
+.idea/
+
+# Operating System
+.DS_Store
+Thumbs.db

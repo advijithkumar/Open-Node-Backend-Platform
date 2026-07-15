@@ -18,18 +18,18 @@ Instead of rebuilding the same backend infrastructure for every application, dev
 
 Modern backend development often begins with the same repetitive tasks:
 
-* Creating the project structure
-* Configuring TypeScript
-* Setting up Express
-* Connecting PostgreSQL
-* Configuring Prisma ORM
-* Implementing authentication
-* Writing Docker configuration
-* Setting up logging
-* Creating API documentation
-* Adding request validation
-* Configuring security middleware
-* Preparing testing infrastructure
+- Creating the project structure
+- Configuring TypeScript
+- Setting up Express
+- Connecting PostgreSQL
+- Configuring Prisma ORM
+- Implementing authentication
+- Writing Docker configuration
+- Setting up logging
+- Creating API documentation
+- Adding request validation
+- Configuring security middleware
+- Preparing testing infrastructure
 
 Although these tasks are necessary, they are not unique to a specific application.
 
@@ -45,13 +45,13 @@ Our mission is to provide an open-source backend platform that enables developer
 
 ONBP focuses on:
 
-* Reusability
-* Maintainability
-* Security
-* Scalability
-* Performance
-* Simplicity
-* Clean Architecture
+- Reusability
+- Maintainability
+- Security
+- Scalability
+- Performance
+- Simplicity
+- Clean Architecture
 
 ---
 
@@ -59,16 +59,16 @@ ONBP focuses on:
 
 The primary goals of ONBP are:
 
-* Build a reusable backend platform for multiple projects.
-* Reduce development time by eliminating repetitive setup.
-* Follow modern software engineering principles.
-* Use only free and open-source technologies.
-* Provide production-ready infrastructure from the beginning.
-* Maintain consistent project architecture.
-* Encourage clean and maintainable code.
-* Provide comprehensive documentation.
-* Support long-term scalability.
-* Make backend development easier for students, developers, startups, and enterprises.
+- Build a reusable backend platform for multiple projects.
+- Reduce development time by eliminating repetitive setup.
+- Follow modern software engineering principles.
+- Use only free and open-source technologies.
+- Provide production-ready infrastructure from the beginning.
+- Maintain consistent project architecture.
+- Encourage clean and maintainable code.
+- Provide comprehensive documentation.
+- Support long-term scalability.
+- Make backend development easier for students, developers, startups, and enterprises.
 
 ---
 
@@ -76,14 +76,14 @@ The primary goals of ONBP are:
 
 ONBP is designed for:
 
-* Students learning backend development.
-* Individual developers.
-* Open-source contributors.
-* Freelancers.
-* Startup teams.
-* Enterprise development teams.
-* Educational institutions.
-* Organizations building internal software.
+- Students learning backend development.
+- Individual developers.
+- Open-source contributors.
+- Freelancers.
+- Startup teams.
+- Enterprise development teams.
+- Educational institutions.
+- Organizations building internal software.
 
 ---
 
@@ -91,27 +91,27 @@ ONBP is designed for:
 
 ONBP provides a standardized backend platform for applications such as:
 
-* Enterprise Resource Planning (ERP)
-* Customer Relationship Management (CRM)
-* Inventory Management
-* Manufacturing Systems
-* Hospital Management Systems
-* School Management Systems
-* Transport Management Systems
-* AI Backend Services
-* IoT Platforms
-* E-Commerce Backends
-* Government Applications
-* REST APIs
-* Internal Business Applications
+- Enterprise Resource Planning (ERP)
+- Customer Relationship Management (CRM)
+- Inventory Management
+- Manufacturing Systems
+- Hospital Management Systems
+- School Management Systems
+- Transport Management Systems
+- AI Backend Services
+- IoT Platforms
+- E-Commerce Backends
+- Government Applications
+- REST APIs
+- Internal Business Applications
 
 ONBP does **not** provide:
 
-* Frontend frameworks
-* Android application development
-* iOS application development
-* Desktop application frameworks
-* Game engines
+- Frontend frameworks
+- Android application development
+- iOS application development
+- Desktop application frameworks
+- Game engines
 
 The platform focuses exclusively on backend application development.
 
@@ -197,16 +197,16 @@ The long-term vision of ONBP is to become a complete open-source backend platfor
 
 Future goals include:
 
-* A reusable project generator.
-* A command-line interface (CLI).
-* Reusable enterprise modules.
-* Built-in monitoring and observability.
-* Modular plugin system.
-* Multiple deployment options.
-* Cloud-native architecture.
-* Comprehensive documentation.
-* Community contributions.
-* Educational resources for backend developers.
+- A reusable project generator.
+- A command-line interface (CLI).
+- Reusable enterprise modules.
+- Built-in monitoring and observability.
+- Modular plugin system.
+- Multiple deployment options.
+- Cloud-native architecture.
+- Comprehensive documentation.
+- Community contributions.
+- Educational resources for backend developers.
 
 ---
 
@@ -214,18 +214,18 @@ Future goals include:
 
 Applications built using ONBP may include:
 
-* ERP Systems
-* CRM Systems
-* Manufacturing Platforms
-* Hospital Management Systems
-* School Management Systems
-* Hotel Management Systems
-* Warehouse Management Systems
-* AI Platforms
-* IoT Platforms
-* Financial Systems
-* Government Services
-* Custom Enterprise Applications
+- ERP Systems
+- CRM Systems
+- Manufacturing Platforms
+- Hospital Management Systems
+- School Management Systems
+- Hotel Management Systems
+- Warehouse Management Systems
+- AI Platforms
+- IoT Platforms
+- Financial Systems
+- Government Services
+- Custom Enterprise Applications
 
 ---
 

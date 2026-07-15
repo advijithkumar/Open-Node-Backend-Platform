@@ -71,15 +71,15 @@ Contains detailed documentation for individual technologies used by ONBP.
 
 Examples include:
 
-* Backend technologies
-* Database technologies
-* Docker
-* Security
-* Artificial Intelligence
-* GIS and Mapping
-* Messaging Systems
-* Monitoring
-* Testing
+- Backend technologies
+- Database technologies
+- Docker
+- Security
+- Artificial Intelligence
+- GIS and Mapping
+- Messaging Systems
+- Monitoring
+- Testing
 
 ---
 
@@ -89,11 +89,11 @@ Architecture Decision Records (ADR).
 
 Each ADR documents:
 
-* The problem
-* The available options
-* The selected solution
-* The reasons behind the decision
-* The consequences of the decision
+- The problem
+- The available options
+- The selected solution
+- The reasons behind the decision
+- The consequences of the decision
 
 These records preserve the engineering history of the platform.
 
@@ -105,13 +105,13 @@ Contains practical examples for developers.
 
 Examples may include:
 
-* Docker configurations
-* Express modules
-* API implementations
-* Prisma schemas
-* Authentication examples
-* Redis integration
-* Swagger documentation
+- Docker configurations
+- Express modules
+- API implementations
+- Prisma schemas
+- Authentication examples
+- Redis integration
+- Swagger documentation
 
 ---
 
@@ -121,13 +121,13 @@ Stores all diagrams and illustrations used throughout the documentation.
 
 Examples include:
 
-* System architecture
-* Database diagrams
-* Request flow
-* Deployment diagrams
-* Docker architecture
-* Authentication flow
-* Sequence diagrams
+- System architecture
+- Database diagrams
+- Request flow
+- Deployment diagrams
+- Docker architecture
+- Authentication flow
+- Sequence diagrams
 
 ---
 
@@ -135,12 +135,12 @@ Examples include:
 
 Every document in ONBP should follow these principles:
 
-* Clear and concise.
-* Easy to understand.
-* Technically accurate.
-* Version controlled.
-* Consistently formatted.
-* Updated alongside code changes.
+- Clear and concise.
+- Easy to understand.
+- Technically accurate.
+- Version controlled.
+- Consistently formatted.
+- Updated alongside code changes.
 
 Documentation is considered part of the software and should receive the same level of care as the source code.
 
@@ -150,13 +150,13 @@ Documentation is considered part of the software and should receive the same lev
 
 The documentation aims to:
 
-* Explain the architecture.
-* Standardize engineering practices.
-* Help new contributors get started.
-* Improve long-term maintainability.
-* Record important engineering decisions.
-* Support students learning backend engineering.
-* Serve as a reference for enterprise application development.
+- Explain the architecture.
+- Standardize engineering practices.
+- Help new contributors get started.
+- Improve long-term maintainability.
+- Record important engineering decisions.
+- Support students learning backend engineering.
+- Serve as a reference for enterprise application development.
 
 ---
 

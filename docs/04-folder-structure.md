@@ -10,11 +10,11 @@ The folder structure defines how source code, configuration, documentation, infr
 
 A consistent project structure improves:
 
-* Readability
-* Maintainability
-* Scalability
-* Team collaboration
-* Developer onboarding
+- Readability
+- Maintainability
+- Scalability
+- Team collaboration
+- Developer onboarding
 
 Every ONBP project should follow this structure unless there is a documented architectural reason to do otherwise.
 
@@ -24,12 +24,12 @@ Every ONBP project should follow this structure unless there is a documented arc
 
 The ONBP folder structure follows these principles:
 
-* Consistent across all projects
-* Easy to understand
-* Modular by design
-* Clear separation of responsibilities
-* Scalable for enterprise applications
-* Reusable across multiple products
+- Consistent across all projects
+- Easy to understand
+- Modular by design
+- Clear separation of responsibilities
+- Scalable for enterprise applications
+- Reusable across multiple products
 
 ---
 
@@ -101,9 +101,9 @@ packages/
 
 Packages should:
 
-* Contain reusable code.
-* Have minimal dependencies.
-* Be independently testable.
+- Contain reusable code.
+- Have minimal dependencies.
+- Be independently testable.
 
 Packages should **not** contain business logic.
 
@@ -147,10 +147,10 @@ docker/
 
 Purpose:
 
-* Local development
-* Production deployment
-* Container configuration
-* Service orchestration
+- Local development
+- Production deployment
+- Container configuration
+- Service orchestration
 
 ---
 
@@ -376,12 +376,12 @@ These components should remain business-independent.
 
 Avoid:
 
-* Mixing business logic with shared packages.
-* Creating random folders without documentation.
-* Duplicating utility functions.
-* Accessing the database directly from controllers.
-* Storing secrets in the repository.
-* Placing unrelated files in the project root.
+- Mixing business logic with shared packages.
+- Creating random folders without documentation.
+- Duplicating utility functions.
+- Accessing the database directly from controllers.
+- Storing secrets in the repository.
+- Placing unrelated files in the project root.
 
 A clean structure is easier to maintain than fixing a disorganized project later.
 
@@ -391,11 +391,11 @@ A clean structure is easier to maintain than fixing a disorganized project later
 
 The folder structure is designed to support growth from:
 
-* Small APIs
-* Enterprise ERP systems
-* Multi-tenant applications
-* Microservices
-* Plugin-based architectures
+- Small APIs
+- Enterprise ERP systems
+- Multi-tenant applications
+- Microservices
+- Plugin-based architectures
 
 New modules should integrate naturally without restructuring the repository.
 
@@ -403,10 +403,10 @@ New modules should integrate naturally without restructuring the repository.
 
 # 🔗 Related Documents
 
-* 02-architecture.md
-* 03-tech-stack.md
-* 05-coding-standards.md
-* 06-api-standards.md
+- 02-architecture.md
+- 03-tech-stack.md
+- 05-coding-standards.md
+- 06-api-standards.md
 
 ---
 
@@ -414,9 +414,9 @@ New modules should integrate naturally without restructuring the repository.
 
 Related ADRs:
 
-* ADR-0001 Repository Structure
-* ADR-0002 Modular Architecture
-* ADR-0003 Shared Packages
+- ADR-0001 Repository Structure
+- ADR-0002 Modular Architecture
+- ADR-0003 Shared Packages
 
 (These ADRs will be created as the project evolves.)
 
@@ -426,11 +426,11 @@ Related ADRs:
 
 Potential enhancements include:
 
-* ONBP CLI-generated folder structures.
-* Plugin discovery conventions.
-* Monorepo automation.
-* Workspace package templates.
-* Multi-language project templates.
+- ONBP CLI-generated folder structures.
+- Plugin discovery conventions.
+- Monorepo automation.
+- Workspace package templates.
+- Multi-language project templates.
 
 ---
 

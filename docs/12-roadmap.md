@@ -20,17 +20,17 @@ The long-term vision of ONBP is to become a modern, open-source backend platform
 
 The platform should support projects such as:
 
-* Enterprise Resource Planning (ERP)
-* Customer Relationship Management (CRM)
-* Inventory Management
-* Manufacturing Systems
-* Transport Management
-* Human Resource Management
-* Hospital Management
-* School & College Management
-* E-Commerce Platforms
-* Government Applications
-* Custom Enterprise Solutions
+- Enterprise Resource Planning (ERP)
+- Customer Relationship Management (CRM)
+- Inventory Management
+- Manufacturing Systems
+- Transport Management
+- Human Resource Management
+- Hospital Management
+- School & College Management
+- E-Commerce Platforms
+- Government Applications
+- Custom Enterprise Solutions
 
 ---
 
@@ -38,13 +38,13 @@ The platform should support projects such as:
 
 The roadmap follows these principles:
 
-* Build a strong foundation first.
-* Deliver working software in every milestone.
-* Keep the platform modular.
-* Prioritize quality over speed.
-* Remain open source.
-* Prefer free technologies.
-* Maintain backward compatibility where practical.
+- Build a strong foundation first.
+- Deliver working software in every milestone.
+- Keep the platform modular.
+- Prioritize quality over speed.
+- Remain open source.
+- Prefer free technologies.
+- Maintain backward compatibility where practical.
 
 ---
 
@@ -54,17 +54,17 @@ The roadmap follows these principles:
 
 Objectives:
 
-* Project vision
-* Architecture
-* Technology stack
-* Folder structure
-* Coding standards
-* API standards
-* Database standards
-* Security standards
-* Docker standards
-* Testing standards
-* Deployment standards
+- Project vision
+- Architecture
+- Technology stack
+- Folder structure
+- Coding standards
+- API standards
+- Database standards
+- Security standards
+- Docker standards
+- Testing standards
+- Deployment standards
 
 Deliverable:
 
@@ -78,17 +78,17 @@ A complete engineering blueprint for ONBP.
 
 Objectives:
 
-* Initialize repository
-* Configure TypeScript
-* Configure Express
-* Configure ESLint
-* Configure Prettier
-* Docker development environment
-* Environment management
-* Logging
-* Health checks
-* Error handling
-* Project templates
+- Initialize repository
+- Configure TypeScript
+- Configure Express
+- Configure ESLint
+- Configure Prettier
+- Docker development environment
+- Environment management
+- Logging
+- Health checks
+- Error handling
+- Project templates
 
 Deliverable:
 
@@ -100,13 +100,13 @@ A reusable backend platform ready for application development.
 
 Objectives:
 
-* PostgreSQL integration
-* Prisma ORM
-* Database migrations
-* Seed scripts
-* Repository pattern
-* Transaction utilities
-* Database health monitoring
+- PostgreSQL integration
+- Prisma ORM
+- Database migrations
+- Seed scripts
+- Repository pattern
+- Transaction utilities
+- Database health monitoring
 
 Deliverable:
 
@@ -118,13 +118,13 @@ A standardized and production-ready data layer.
 
 Objectives:
 
-* BetterAuth integration
-* RBAC
-* Session management
-* Password recovery
-* Email verification
-* Audit logging
-* Security middleware
+- BetterAuth integration
+- RBAC
+- Session management
+- Password recovery
+- Email verification
+- Audit logging
+- Security middleware
 
 Deliverable:
 
@@ -136,13 +136,13 @@ A secure authentication and authorization system.
 
 Objectives:
 
-* Swagger / OpenAPI
-* CLI utilities
-* Code generators
-* Configuration validation
-* API versioning
-* Development scripts
-* Improved documentation
+- Swagger / OpenAPI
+- CLI utilities
+- Code generators
+- Configuration validation
+- API versioning
+- Development scripts
+- Improved documentation
 
 Deliverable:
 
@@ -154,13 +154,13 @@ An excellent developer experience with minimal setup.
 
 Objectives:
 
-* Redis integration
-* MinIO integration
-* Background jobs
-* Scheduled tasks
-* File storage
-* Email services
-* Caching strategies
+- Redis integration
+- MinIO integration
+- Background jobs
+- Scheduled tasks
+- File storage
+- Email services
+- Caching strategies
 
 Deliverable:
 
@@ -172,13 +172,13 @@ A complete infrastructure layer for enterprise applications.
 
 Objectives:
 
-* Structured logging
-* Metrics collection
-* Prometheus integration
-* Grafana dashboards
-* Request tracing
-* Performance monitoring
-* Alerting
+- Structured logging
+- Metrics collection
+- Prometheus integration
+- Grafana dashboards
+- Request tracing
+- Performance monitoring
+- Alerting
 
 Deliverable:
 
@@ -190,12 +190,12 @@ Production-ready observability.
 
 Objectives:
 
-* GitHub Actions
-* Automated testing
-* Automated Docker builds
-* Security scanning
-* Release automation
-* Version management
+- GitHub Actions
+- Automated testing
+- Automated Docker builds
+- Security scanning
+- Release automation
+- Version management
 
 Deliverable:
 
@@ -211,12 +211,12 @@ Develop reference implementations using ONBP.
 
 Examples:
 
-* ERP
-* CRM
-* Inventory Management
-* Transport Management
-* HR Management
-* Warehouse Management
+- ERP
+- CRM
+- Inventory Management
+- Transport Management
+- HR Management
+- Warehouse Management
 
 Deliverable:
 
@@ -228,12 +228,12 @@ Production-quality example applications demonstrating ONBP best practices.
 
 Objectives:
 
-* Contributor guides
-* Templates
-* Issue templates
-* Discussion forums
-* Documentation improvements
-* Community feedback
+- Contributor guides
+- Templates
+- Issue templates
+- Discussion forums
+- Documentation improvements
+- Community feedback
 
 Deliverable:
 
@@ -245,25 +245,25 @@ A healthy open-source ecosystem.
 
 Possible future enhancements include:
 
-* Kubernetes support
-* Multi-tenant architecture
-* GraphQL support
-* Event-driven architecture
-* Microservices toolkit
-* AI-powered developer tools
-* Plugin ecosystem
-* Internationalization (i18n)
-* Multi-database support
-* Mobile backend templates
+- Kubernetes support
+- Multi-tenant architecture
+- GraphQL support
+- Event-driven architecture
+- Microservices toolkit
+- AI-powered developer tools
+- Plugin ecosystem
+- Internationalization (i18n)
+- Multi-database support
+- Mobile backend templates
 
 ---
 
 # 📊 Milestone Overview
 
-| Phase   | Focus                      | Status      |
-| ------- | -------------------------- | ----------- |
+| Phase   | Focus                      | Status       |
+| ------- | -------------------------- | ------------ |
 | Phase 0 | Documentation & Standards  | ✅ Completed |
-| Phase 1 | Core Platform              | 🔄 Planned  |
+| Phase 1 | Core Platform              | 🔄 Planned   |
 | Phase 2 | Data Layer                 | ⏳ Planned   |
 | Phase 3 | Authentication & Security  | ⏳ Planned   |
 | Phase 4 | Developer Experience       | ⏳ Planned   |
@@ -277,11 +277,11 @@ Possible future enhancements include:
 
 # 📚 Related Documents
 
-* 02-architecture.md
-* 03-tech-stack.md
-* 09-docker.md
-* 10-testing.md
-* 11-deployment.md
+- 02-architecture.md
+- 03-tech-stack.md
+- 09-docker.md
+- 10-testing.md
+- 11-deployment.md
 
 ---
 
