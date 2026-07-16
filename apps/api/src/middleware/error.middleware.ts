@@ -1,8 +1,9 @@
-
+import { ZodError } from "zod";
 import type { ErrorRequestHandler } from "express";
 
 import { AppError } from "../errors/app-error.js";
 import { logger } from "../logger/logger.js";
+import { errorResponse } from "../responses/error-response.js";
 
 /**
  * =====================================================
@@ -23,6 +24,27 @@ export const errorMiddleware: ErrorRequestHandler = (
   // Log every error
   logger.error(err);
 
+  // Handles known ZodError
+  if (err instanceof ZodError) {
+    const details = err.issues.map((issue) => ({
+      field: issue.path.join("."),
+      message: issue.message,
+    }));
+
+    logger.warn(
+      {
+        validationErrors: details,
+      },
+      "Request validation failed"
+    );
+
+    return errorResponse(res, {
+      statusCode: 400,
+      code: "VALIDATION_ERROR",
+      message: "Request validation failed",
+      details,
+    });
+  }
   // Handle known application errors
   if (err instanceof AppError) {
     res.status(err.statusCode).json({

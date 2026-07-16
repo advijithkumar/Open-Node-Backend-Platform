@@ -1,22 +1,41 @@
-
 import dotenv from "dotenv";
+import { z } from "zod";
+import { logger } from "../logger/logger.js";
 
 dotenv.config();
 
-export const env = {
-  NODE_ENV: process.env.NODE_ENV ?? "development",
+const envSchema = z.object({
+  NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 
-  APP_NAME: process.env.APP_NAME ?? "ONBP API",
+  APP_NAME: z.string().default("ONBP API"),
 
-  APP_VERSION: process.env.APP_VERSION ?? "0.1.0",
+  APP_VERSION: z.string().default("0.1.0"),
 
-  HOST: process.env.HOST ?? "0.0.0.0",
+  HOST: z.string().default("0.0.0.0"),
 
-  PORT: Number(process.env.PORT ?? 3000),
+  PORT: z.coerce.number().int().positive().default(3000),
 
-  LOG_LEVEL: process.env.LOG_LEVEL ?? "info",
+  LOG_LEVEL: z.enum([
+    "fatal",
+    "error",
+    "warn",
+    "info",
+    "debug",
+    "trace",
+    "silent",
+  ]).default("info"),
 
-  DATABASE_URL: process.env.DATABASE_URL ?? "",
+  DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
 
-  REDIS_URL: process.env.REDIS_URL ?? ""
-};
+  REDIS_URL: z.string().optional().default(""),
+});
+
+const parsed = envSchema.safeParse(process.env);
+
+if (!parsed.success) {
+  logger.error("❌ Invalid environment variables");
+  logger.error(parsed.error.format());
+  process.exit(1);
+}
+
+export const env = parsed.data;
