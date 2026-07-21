@@ -1,10 +1,10 @@
 
 import { Router } from "express";
 
-import { env } from "../config/env.js";
-import { successResponse } from "../responses/success-response.js";
-import { validate } from "../validation/validate.js";
-import { healthSchema } from "../validation/schemas/health.schema.js";
+import { env } from "../core/config/env.js";
+import { successResponse } from "../core/responses/success-response.js";
+import { validate } from "../core/validation/validate.js";
+import { healthSchema } from "../core/validation/schemas/health.schema.js";
 
 const router:Router = Router();
 

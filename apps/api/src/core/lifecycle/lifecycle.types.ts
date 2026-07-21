@@ -1,0 +1,10 @@
+export type LifecycleState =
+  | "CREATED"
+  | "BOOTSTRAPPING"
+  | "CORE_INITIALIZED"
+  | "PLUGINS_REGISTERED"
+  | "MODULES_REGISTERED"
+  | "ROUTES_REGISTERED"
+  | "READY"
+  | "STOPPING"
+  | "STOPPED";
