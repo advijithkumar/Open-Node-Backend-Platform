@@ -1,5 +1,5 @@
-import type { Router } from "express";
 import type { Kernel } from "../kernel/index.js";
+import type { Router } from "express";
 
 export interface IModule {
   readonly name: string;
@@ -7,9 +7,12 @@ export interface IModule {
   readonly description?: string;
   readonly dependencies?: string[];
   
-  routes?: Router;
-
   register?(kernel: Kernel): Promise<void> | void;
+  /**
+   * Optional Express router exported by the module. The framework will mount it
+   * automatically under the `/api/v1/<module.name>` namespace.
+   */
+  routes?: Router;
   boot?(kernel: Kernel): Promise<void> | void;
   shutdown?(kernel: Kernel): Promise<void> | void;
 }

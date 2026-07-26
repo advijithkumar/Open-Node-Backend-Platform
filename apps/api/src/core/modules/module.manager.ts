@@ -25,6 +25,7 @@ export class ModuleManager {
     await module.register?.(kernel);
     await module.boot?.(kernel);
   }
+  
 
   async loadAll(kernel: Kernel): Promise<void> {
     const sortedModules = this.getTopologicallySortedModules();

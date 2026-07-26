@@ -9,6 +9,7 @@ import { MODULE_SERVICES } from "../core/modules/module.constants.js";
 import { ModuleManager } from "../core/modules/module.manager.js";
 import { PLUGIN_SERVICES } from "../core/plugins/plugin.constants.js";
 import { PluginManager } from "../core/plugins/plugin.manager.js";
+import app from "../app.js";
 
 // Import Phase 2 Platform Services
 import { StorageService } from "../core/storage/index.js";
@@ -16,6 +17,11 @@ import { CacheService } from "../core/cache/index.js";
 import { MemoryQueueService } from "../core/queue/index.js";
 import { SchedulerService } from "../core/scheduler/index.js";
 import { AIService } from "../core/ai/index.js";
+import { RouterManager } from "../core/router/index.js";
+import { HealthManager } from "../core/health/index.js";
+import { DiscoveryService } from "../core/discovery/index.js";
+import { ConfigManager, env } from "../core/config/index.js";
+import { ProviderManager } from "../core/provider/index.js";
 
 export async function registerCore(): Promise<void> {
   logger.info("Initializing ONBP Core Framework & Enterprise Platform Services...");
@@ -33,13 +39,25 @@ export async function registerCore(): Promise<void> {
   container.register(CORE_SERVICES.LIFECYCLE, lifecycleManager);
 
   // Register Platform Services
-  container.registerSingleton("storage", () => new StorageService());
-  container.registerSingleton("cache", () => new CacheService());
-  container.registerSingleton("queue", () => new MemoryQueueService());
-  container.registerSingleton("scheduler", () => new SchedulerService());
-  container.registerSingleton("ai", () => new AIService());
+  // Register Router Manager (core routing infrastructure)
+  container.registerSingleton(CORE_SERVICES.ROUTER,   () => new RouterManager());
+  container.registerSingleton(CORE_SERVICES.STORAGE,   () => new StorageService());
+  container.registerSingleton(CORE_SERVICES.CACHE,    () => new CacheService());
+  container.registerSingleton(CORE_SERVICES.QUEUE,    () => new MemoryQueueService());
+  container.registerSingleton(CORE_SERVICES.SCHEDULER, () => new SchedulerService());
+  container.registerSingleton(CORE_SERVICES.AI,        () => new AIService());
+  container.registerSingleton(CORE_SERVICES.HEALTH, () => new HealthManager());
+  const configManager = new ConfigManager();
+  configManager.load(env);
+  configManager.freeze();
+  container.register(CORE_SERVICES.CONFIG, configManager);
+  container.registerSingleton(CORE_SERVICES.DISCOVERY, () => new DiscoveryService());
+  container.registerSingleton(CORE_SERVICES.PROVIDER_MANAGER, () => new ProviderManager());
+
+
 
   const kernel = new Kernel(
+    app,
     container,
     eventBus,
     hookManager,
@@ -61,5 +79,6 @@ export async function registerCore(): Promise<void> {
   logger.info("✓ Queue System Registered");
   logger.info("✓ Scheduler Service Registered");
   logger.info("✓ AI Integration Service Registered");
+  logger.info("✓ Health Manager Registered");
   logger.info("✓ Kernel Registered");
 }

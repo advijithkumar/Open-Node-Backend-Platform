@@ -21,7 +21,7 @@ export class PermissionService {
         "PERMISSION_CONFLICT"
       );
     }
-    return this.permissionRepository.create(data as Record<string, unknown>);
+    return this.permissionRepository.create(data as unknown as Record<string, unknown>);
   }
 
   async getPermissionById(id: string) {
@@ -38,7 +38,7 @@ export class PermissionService {
 
   async updatePermission(id: string, data: Partial<CreatePermissionData>) {
     await this.getPermissionById(id);
-    return this.permissionRepository.update(id, data as Record<string, unknown>);
+    return this.permissionRepository.update(id, data as unknown as Record<string, unknown>);
   }
 
   async deletePermission(id: string) {

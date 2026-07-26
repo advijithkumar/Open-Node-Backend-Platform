@@ -1,3 +1,4 @@
+import type { Express } from "express";
 import type { Container } from "../container/index.js";
 import type { EventBus } from "../events/index.js";
 import type { HookManager } from "../hooks/index.js";
@@ -15,6 +16,7 @@ export interface KernelDiagnostics {
 }
 
 export interface IKernel {
+  readonly app: Express;
   readonly container: Container;
   readonly events: EventBus;
   readonly hooks: HookManager;

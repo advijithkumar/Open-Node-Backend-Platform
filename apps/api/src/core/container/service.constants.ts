@@ -1,4 +1,9 @@
 export const CORE_SERVICES = {
+  CONFIG: "config",
+  HEALTH: "health",
+  PROVIDER_MANAGER: "providerManager",
+  DISCOVERY: "discovery",
+  ROUTER: "router",
   LOGGER: "logger",
   EVENT_BUS: "eventBus",
   HOOKS: "hooks",
@@ -7,5 +12,10 @@ export const CORE_SERVICES = {
   PLUGINS: "plugins",
   DATABASE: "database",
   AUTH: "auth",
-  CONFIG: "config",
+	STORAGE: "storage",
+	CACHE: "cache",
+	QUEUE: "queue",
+	SCHEDULER: "scheduler",
+	AI: "ai",
+	PROVIDER: "provider",
 } as const;

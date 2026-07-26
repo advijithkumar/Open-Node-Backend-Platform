@@ -33,7 +33,7 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
-    "test": "turbo test",
+    "test": "vitest run",
     "lint": "turbo lint",
     "format": "prettier --write .",
     "clean": "turbo clean"
@@ -45,6 +45,7 @@
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.7.0",
     "prettier": "^3.9.5",
+    "ts-node": "^10.9.2",
     "turbo": "^2.10.5",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.64.0",

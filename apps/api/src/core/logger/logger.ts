@@ -1,4 +1,4 @@
-
+//src/core/logger/logger.ts
 import pino from "pino";
 
 import { env } from "../config/env.js";

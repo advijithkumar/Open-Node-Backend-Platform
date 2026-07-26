@@ -15,7 +15,7 @@ export class RoleService {
     if (existing) {
       throw new AppError(`Role with slug "${data.slug}" already exists`, 409, "ROLE_CONFLICT");
     }
-    return this.roleRepository.create(data as Record<string, unknown>);
+    return this.roleRepository.create(data as unknown as Record<string, unknown>);
   }
 
   async getRoleById(id: string) {
@@ -32,7 +32,7 @@ export class RoleService {
 
   async updateRole(id: string, data: Partial<CreateRoleData>) {
     await this.getRoleById(id);
-    return this.roleRepository.update(id, data as Record<string, unknown>);
+    return this.roleRepository.update(id, data as unknown as Record<string, unknown>);
   }
 
   async deleteRole(id: string) {
