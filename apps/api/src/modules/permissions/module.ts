@@ -4,6 +4,7 @@ import type { IModule } from "../../core/modules/index.js";
 import { PermissionRepository } from "./permissions.repository.js";
 import { PermissionService } from "./permissions.service.js";
 import { createPermissionsRouter } from "./permissions.router.js";
+import { PERMISSION_EVENTS } from "./permissions.events.js";
 
 export class PermissionModule implements IModule {
   readonly name = "permissions";
@@ -19,11 +20,16 @@ export class PermissionModule implements IModule {
     kernel.container.registerSingleton("permissionRepository", () => new PermissionRepository());
     kernel.container.registerSingleton(
       "permissionService",
-      (c) => new PermissionService(c.resolve("permissionRepository"))
+      (c) => new PermissionService(c.resolve("permissionRepository"), kernel.events)
     );
 
     const permissionService = kernel.container.resolve<PermissionService>("permissionService");
     this.routes = createPermissionsRouter(permissionService);
+
+    // Register sample listeners
+    kernel.events.on<any>(PERMISSION_EVENTS.CREATED, (data) => {
+      kernel.logger.info(`Event [permission.created] received for permission ${data.id}`);
+    });
   }
 
   async boot(kernel: Kernel): Promise<void> {
@@ -34,6 +40,4 @@ export class PermissionModule implements IModule {
     kernel.logger.info("Permissions Module shutdown successfully");
   }
 }
-
-export { PermissionService } from "./permissions.service.js";
-export { PermissionRepository } from "./permissions.repository.js";
+export default PermissionModule;

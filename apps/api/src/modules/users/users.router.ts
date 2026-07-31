@@ -1,30 +1,11 @@
 import { Router, type Request, type Response } from "express";
-import { z } from "zod";
 import type { UserService } from "./users.service.js";
 import { successResponse } from "../../core/responses/success-response.js";
 import { createdResponse } from "../../core/responses/created-response.js";
 import { noContentResponse } from "../../core/responses/no-content-response.js";
 import { validate } from "../../core/validation/validate.js";
 import { asyncHandler } from "../../core/utils/async-handler.js";
-
-const createUserSchema = z.object({
-  body: z.object({
-    firstName: z.string().min(1),
-    lastName: z.string().min(1),
-    username: z.string().min(3),
-    email: z.string().email(),
-    authUserId: z.string().min(1),
-  }),
-});
-
-const updateUserSchema = z.object({
-  body: z.object({
-    firstName: z.string().optional(),
-    lastName: z.string().optional(),
-    username: z.string().optional(),
-    email: z.string().email().optional(),
-  }),
-});
+import { createUserSchema, updateUserSchema } from "./users.validation.js";
 
 export function createUsersRouter(userService: UserService): Router {
   const router = Router();
@@ -76,5 +57,15 @@ export function createUsersRouter(userService: UserService): Router {
     })
   );
 
+  router.patch(
+    "/:id/restore",
+    asyncHandler(async (req: Request, res: Response) => {
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const restored = await userService.restoreUser(id);
+      successResponse(res, { data: restored, message: "User restored successfully" });
+    })
+  );
+
   return router;
 }
+export default createUsersRouter;

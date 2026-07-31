@@ -1,28 +1,12 @@
 import { Router, type Request, type Response } from "express";
-import { z } from "zod";
 import type { PermissionService } from "./permissions.service.js";
 import { successResponse } from "../../core/responses/success-response.js";
 import { createdResponse } from "../../core/responses/created-response.js";
 import { noContentResponse } from "../../core/responses/no-content-response.js";
 import { validate } from "../../core/validation/validate.js";
 import { asyncHandler } from "../../core/utils/async-handler.js";
-
-const createPermissionSchema = z.object({
-  body: z.object({
-    name: z.string().min(1).max(150),
-    slug: z.string().min(1).max(150),
-    resource: z.string().min(1).max(100),
-    action: z.enum(["create", "read", "update", "delete", "manage"]),
-    description: z.string().optional(),
-  }),
-});
-
-const updatePermissionSchema = z.object({
-  body: z.object({
-    name: z.string().min(1).max(150).optional(),
-    description: z.string().optional(),
-  }),
-});
+import { createPermissionSchema, updatePermissionSchema } from "./permissions.validation.js";
+import { container } from "../../core/container/container.js";
 
 export function createPermissionsRouter(permissionService: PermissionService): Router {
   const router = Router();
@@ -40,7 +24,8 @@ export function createPermissionsRouter(permissionService: PermissionService): R
   router.get(
     "/:id",
     asyncHandler(async (req: Request, res: Response) => {
-      const permission = await permissionService.getPermissionById(req.params.id as string);
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const permission = await permissionService.getPermissionById(id);
       successResponse(res, { data: permission });
     })
   );
@@ -58,7 +43,8 @@ export function createPermissionsRouter(permissionService: PermissionService): R
     "/:id",
     validate(updatePermissionSchema),
     asyncHandler(async (req: Request, res: Response) => {
-      const permission = await permissionService.updatePermission(req.params.id as string, req.body);
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const permission = await permissionService.updatePermission(id, req.body);
       successResponse(res, { data: permission, message: "Permission updated successfully" });
     })
   );
@@ -66,10 +52,32 @@ export function createPermissionsRouter(permissionService: PermissionService): R
   router.delete(
     "/:id",
     asyncHandler(async (req: Request, res: Response) => {
-      await permissionService.deletePermission(req.params.id as string);
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      await permissionService.deletePermission(id);
       noContentResponse(res);
+    })
+  );
+
+  router.patch(
+    "/:id/restore",
+    asyncHandler(async (req: Request, res: Response) => {
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const restored = await permissionService.restorePermission(id);
+      successResponse(res, { data: restored, message: "Permission restored successfully" });
+    })
+  );
+
+  // Junction relationship REST endpoint
+  router.get(
+    "/:permissionId/roles",
+    asyncHandler(async (req: Request, res: Response) => {
+      const permissionId = Array.isArray(req.params.permissionId) ? req.params.permissionId[0] : req.params.permissionId;
+      const roleService = container.resolve<any>("roleService");
+      const rolesList = await roleService.getPermissionRoles(permissionId);
+      successResponse(res, { data: rolesList, message: "Permission roles retrieved successfully" });
     })
   );
 
   return router;
 }
+export default createPermissionsRouter;

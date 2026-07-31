@@ -115,7 +115,7 @@ program
     .action(async () => {
       await bootstrapFramework();
       const kernel = container.resolve<Kernel>(KERNEL_SERVICES.KERNEL);
-      const modules = kernel.discovery?.modules?.map((m: any) => m.name) ?? [];
+      const modules = kernel.discovery.getModules().map((m: any) => m.name);
       console.table(modules);
     });
   
@@ -125,9 +125,8 @@ program
     .description("List all registered providers")
     .action(async () => {
       await bootstrapFramework();
-      const kernel = container.resolve<Kernel>(KERNEL_SERVICES.KERNEL);
-      // providerManager exposes a names getter (see below)
-      const providers = kernel.provider?.names ?? [];
+      const discovery = container.resolve<any>(CORE_SERVICES.DISCOVERY);
+      const providers = (await discovery.getProviders()).map((p: any) => p.name);
       console.table(providers);
     });
 

@@ -1,6 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
 import { auth } from "./better-auth.js";
 import { AppError } from "../errors/app-error.js";
+import { container } from "../container/container.js";
+import type { AuthorizationService } from "./authorization.service.js";
 
 export interface AuthenticatedRequest extends Request {
   user?: typeof auth.$Infer.Session.user;
@@ -27,17 +29,50 @@ export function requireAuth() {
   };
 }
 
-export function requireRole(...allowedRoles: string[]) {
-  return (req: AuthenticatedRequest, _res: Response, next: NextFunction): void => {
-    if (!req.user) {
-      return next(new AppError("Authentication required", 401, "UNAUTHORIZED"));
-    }
+export function requireRole(role: string) {
+  return async (req: AuthenticatedRequest, _res: Response, next: NextFunction): Promise<void> => {
+    try {
+      if (!req.user) {
+        throw new AppError("Authentication required", 401, "UNAUTHORIZED");
+      }
 
-    const userRole = (req.user as Record<string, unknown>).role as string || "user";
-    if (!allowedRoles.includes(userRole)) {
-      return next(new AppError("Insufficient permissions", 403, "FORBIDDEN"));
-    }
+      const authService = container.resolve<AuthorizationService>("authorizationService");
+      authService.registerGuard(`requireRole:${role}`);
+      authService.incrementProtectedRouteCount();
 
-    next();
+      const userRole = (req.user as Record<string, any>).role || "guest";
+      const hasAccess = await authService.hasRole(userRole, role);
+      if (!hasAccess) {
+        throw new AppError("Access forbidden: insufficient role permissions", 403, "FORBIDDEN");
+      }
+
+      next();
+    } catch (err) {
+      next(err);
+    }
+  };
+}
+
+export function requirePermission(permission: string) {
+  return async (req: AuthenticatedRequest, _res: Response, next: NextFunction): Promise<void> => {
+    try {
+      if (!req.user) {
+        throw new AppError("Authentication required", 401, "UNAUTHORIZED");
+      }
+
+      const authService = container.resolve<AuthorizationService>("authorizationService");
+      authService.registerGuard(`requirePermission:${permission}`);
+      authService.incrementProtectedRouteCount();
+
+      const userRole = (req.user as Record<string, any>).role || "guest";
+      const hasAccess = await authService.hasPermission(req.user.id, userRole, permission);
+      if (!hasAccess) {
+        throw new AppError("Access forbidden: missing required permission", 403, "FORBIDDEN");
+      }
+
+      next();
+    } catch (err) {
+      next(err);
+    }
   };
 }

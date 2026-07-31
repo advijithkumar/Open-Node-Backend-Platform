@@ -1,5 +1,6 @@
 import type { IEventBus } from "./event.interface.js";
-import type { EventHandler, EventName } from "./event.types.js";
+import type { EventHandler, EventName, ONBPEvent } from "./event.types.js";
+import { logger } from "../logger/logger.js";
 
 export interface EventRegistration<T = unknown> {
   handler: EventHandler<T>;
@@ -18,6 +19,11 @@ export class EventBus implements IEventBus {
   private readonly history: EventRecord[] = [];
   private readonly maxHistorySize = 100;
 
+  // Diagnostics counters
+  private publishedCount = 0;
+  private asyncPublishedCount = 0;
+  private failureCount = 0;
+
   on<T>(event: EventName, handler: EventHandler<T>, priority = 0): void {
     this.addListener(event, handler as EventHandler<unknown>, priority, false);
   }
@@ -33,6 +39,29 @@ export class EventBus implements IEventBus {
       event,
       regs.filter((r) => r.handler !== handler)
     );
+  }
+
+  // Enhanced Platform Event System
+  subscribe<T>(event: EventName, handler: EventHandler<T>): void {
+    this.on(event, handler);
+  }
+
+  unsubscribe<T>(event: EventName, handler: EventHandler<T>): void {
+    this.off(event, handler);
+  }
+
+  async publish<T>(event: ONBPEvent<T>): Promise<void> {
+    this.publishedCount++;
+    await this.emit(event.name, event);
+  }
+
+  publishAsync<T>(event: ONBPEvent<T>): void {
+    this.asyncPublishedCount++;
+    // Execute in the background without awaiting
+    Promise.resolve(this.emit(event.name, event)).catch((err) => {
+      this.failureCount++;
+      logger.error(err, `[EventBus] Background emit failed for async event "${event.name}"`);
+    });
   }
 
   private addListener(
@@ -69,7 +98,15 @@ export class EventBus implements IEventBus {
     handlersToExecute.sort((a, b) => b.reg.priority - a.reg.priority);
 
     for (const { reg, pattern } of handlersToExecute) {
-      await reg.handler(payload);
+      try {
+        const res = reg.handler(payload);
+        if (res instanceof Promise) {
+          await res;
+        }
+      } catch (err) {
+        this.failureCount++;
+        logger.error(err, `[EventBus] Handler failure for event "${event}"`);
+      }
       if (reg.once) {
         this.off(pattern, reg.handler);
       }
@@ -103,4 +140,21 @@ export class EventBus implements IEventBus {
       this.history.shift();
     }
   }
+
+  // Diagnostics reports
+  getDiagnostics() {
+    let subscriberCount = 0;
+    for (const regs of this.listeners.values()) {
+      subscriberCount += regs.length;
+    }
+
+    return {
+      totalEventsRegistered: this.listeners.size,
+      totalSubscribers: subscriberCount,
+      publishedCount: this.publishedCount,
+      asyncPublishedCount: this.asyncPublishedCount,
+      failureCount: this.failureCount,
+    };
+  }
 }
+export default EventBus;

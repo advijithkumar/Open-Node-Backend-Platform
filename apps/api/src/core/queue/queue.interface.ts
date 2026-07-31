@@ -9,10 +9,20 @@ export interface Job<T = unknown> {
   createdAt: Date;
 }
 
-export type JobHandler<T = unknown> = (job: Job<T>) => Promise<void>;
+export type JobHandler<T = unknown> = (job: Job<T>) => void | Promise<void>;
 
-export interface IQueueService {
-  enqueue<T>(name: string, data: T, maxRetries?: number): Promise<Job<T>>;
-  process<T>(name: string, handler: JobHandler<T>): void;
-  getJob(id: string): Promise<Job | undefined>;
+export interface IQueueProvider {
+  createQueue(name: string): Promise<void>;
+  deleteQueue(name: string): Promise<boolean>;
+  enqueue<T>(queue: string, data: T, maxRetries?: number): Promise<Job<T>>;
+  dequeue(queue: string): Promise<Job | undefined>;
+  process<T>(queue: string, handler: JobHandler<T>): void;
+  pause(queue: string): Promise<void>;
+  resume(queue: string): Promise<void>;
+  retry(jobId: string): Promise<boolean>;
+  remove(jobId: string): Promise<boolean>;
+  getJob(jobId: string): Promise<Job | undefined>;
+  getQueueStats(queue: string): Promise<{ pending: number; processing: number; completed: number; failed: number }>;
 }
+
+export type IQueueService = IQueueProvider;

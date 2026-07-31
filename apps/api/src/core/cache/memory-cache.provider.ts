@@ -37,4 +37,47 @@ export class MemoryCacheProvider implements ICacheProvider {
     const val = await this.get(key);
     return val !== undefined;
   }
+
+  async increment(key: string, value = 1): Promise<number> {
+    const raw = await this.get<unknown>(key);
+    const num = typeof raw === "number" ? raw : 0;
+    const next = num + value;
+    await this.set(key, next);
+    return next;
+  }
+
+  async decrement(key: string, value = 1): Promise<number> {
+    const raw = await this.get<unknown>(key);
+    const num = typeof raw === "number" ? raw : 0;
+    const next = num - value;
+    await this.set(key, next);
+    return next;
+  }
+
+  async expire(key: string, ttlSeconds: number): Promise<boolean> {
+    const entry = this.store.get(key);
+    if (!entry) return false;
+
+    // Check if already expired
+    if (entry.expiresAt && Date.now() > entry.expiresAt) {
+      this.store.delete(key);
+      return false;
+    }
+
+    entry.expiresAt = Date.now() + ttlSeconds * 1000;
+    return true;
+  }
+
+  async keys(pattern = "*"): Promise<string[]> {
+    // Clear expired items first
+    for (const key of this.store.keys()) {
+      await this.get(key);
+    }
+
+    const regexPattern = "^" + pattern.replace(/\*/g, ".*").replace(/\?/g, ".") + "$";
+    const regex = new RegExp(regexPattern);
+
+    return Array.from(this.store.keys()).filter((k) => regex.test(k));
+  }
 }
+export default MemoryCacheProvider;

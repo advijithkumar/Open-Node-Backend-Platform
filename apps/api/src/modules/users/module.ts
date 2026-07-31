@@ -4,6 +4,7 @@ import type { IModule } from "../../core/modules/index.js";
 import { UserRepository } from "./users.repository.js";
 import { UserService } from "./users.service.js";
 import { createUsersRouter } from "./users.router.js";
+import { USER_EVENTS } from "./users.events.js";
 
 export class UserModule implements IModule {
   readonly name = "users";
@@ -20,20 +21,16 @@ export class UserModule implements IModule {
     kernel.container.registerSingleton("userRepository", () => new UserRepository());
     kernel.container.registerSingleton(
       "userService",
-      (c) => new UserService(c.resolve("userRepository"), kernel.events, kernel.hooks)
+      (c) => new UserService(c.resolve("userRepository"), kernel.events)
     );
 
     // Register module routes
     const userService = kernel.container.resolve<UserService>("userService");
     this.routes = createUsersRouter(userService);
 
-    // Register sample listeners and hooks
-    kernel.events.on<{ userId: string }>("user.created", (data) => {
-      kernel.logger.info(`Event [user.created] received for user ${data.userId}`);
-    });
-
-    kernel.hooks.registerBefore("user:beforeCreate", (_ctx) => {
-      kernel.logger.info("Hook [user:beforeCreate] executing...");
+    // Register sample listeners
+    kernel.events.on<any>(USER_EVENTS.CREATED, (data) => {
+      kernel.logger.info(`Event [user.created] received for user ${data.id}`);
     });
   }
 
@@ -45,3 +42,4 @@ export class UserModule implements IModule {
     kernel.logger.info("Users Module Shutdown successfully");
   }
 }
+export default UserModule;

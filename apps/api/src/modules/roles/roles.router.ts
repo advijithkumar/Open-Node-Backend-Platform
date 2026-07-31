@@ -1,26 +1,11 @@
 import { Router, type Request, type Response } from "express";
-import { z } from "zod";
 import type { RoleService } from "./roles.service.js";
 import { successResponse } from "../../core/responses/success-response.js";
 import { createdResponse } from "../../core/responses/created-response.js";
 import { noContentResponse } from "../../core/responses/no-content-response.js";
 import { validate } from "../../core/validation/validate.js";
 import { asyncHandler } from "../../core/utils/async-handler.js";
-
-const createRoleSchema = z.object({
-  body: z.object({
-    name: z.string().min(1).max(100),
-    slug: z.string().min(1).max(100).regex(/^[a-z0-9-]+$/, "slug must be lowercase kebab-case"),
-    description: z.string().optional(),
-  }),
-});
-
-const updateRoleSchema = z.object({
-  body: z.object({
-    name: z.string().min(1).max(100).optional(),
-    description: z.string().optional(),
-  }),
-});
+import { createRoleSchema, updateRoleSchema, assignPermissionSchema, replacePermissionsSchema } from "./roles.validation.js";
 
 export function createRolesRouter(roleService: RoleService): Router {
   const router = Router();
@@ -38,7 +23,8 @@ export function createRolesRouter(roleService: RoleService): Router {
   router.get(
     "/:id",
     asyncHandler(async (req: Request, res: Response) => {
-      const role = await roleService.getRoleById(req.params.id as string);
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const role = await roleService.getRoleById(id);
       successResponse(res, { data: role });
     })
   );
@@ -56,7 +42,8 @@ export function createRolesRouter(roleService: RoleService): Router {
     "/:id",
     validate(updateRoleSchema),
     asyncHandler(async (req: Request, res: Response) => {
-      const role = await roleService.updateRole(req.params.id as string, req.body);
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const role = await roleService.updateRole(id, req.body);
       successResponse(res, { data: role, message: "Role updated successfully" });
     })
   );
@@ -64,10 +51,63 @@ export function createRolesRouter(roleService: RoleService): Router {
   router.delete(
     "/:id",
     asyncHandler(async (req: Request, res: Response) => {
-      await roleService.deleteRole(req.params.id as string);
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      await roleService.deleteRole(id);
+      noContentResponse(res);
+    })
+  );
+
+  router.patch(
+    "/:id/restore",
+    asyncHandler(async (req: Request, res: Response) => {
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const restored = await roleService.restoreRole(id);
+      successResponse(res, { data: restored, message: "Role restored successfully" });
+    })
+  );
+
+  // Junction relationship REST endpoints
+  router.get(
+    "/:roleId/permissions",
+    asyncHandler(async (req: Request, res: Response) => {
+      const roleId = Array.isArray(req.params.roleId) ? req.params.roleId[0] : req.params.roleId;
+      const permissions = await roleService.getRolePermissions(roleId);
+      successResponse(res, { data: permissions, message: "Role permissions retrieved successfully" });
+    })
+  );
+
+  router.post(
+    "/:roleId/permissions",
+    validate(assignPermissionSchema),
+    asyncHandler(async (req: Request, res: Response) => {
+      const roleId = Array.isArray(req.params.roleId) ? req.params.roleId[0] : req.params.roleId;
+      const { permissionId } = req.body;
+      await roleService.assignPermissionToRole(roleId, permissionId);
+      successResponse(res, { message: "Permission assigned to role successfully" });
+    })
+  );
+
+  router.put(
+    "/:roleId/permissions",
+    validate(replacePermissionsSchema),
+    asyncHandler(async (req: Request, res: Response) => {
+      const roleId = Array.isArray(req.params.roleId) ? req.params.roleId[0] : req.params.roleId;
+      const { permissionIds } = req.body;
+      await roleService.replaceRolePermissions(roleId, permissionIds);
+      successResponse(res, { message: "Role permissions replaced successfully" });
+    })
+  );
+
+  router.delete(
+    "/:roleId/permissions/:permissionId",
+    asyncHandler(async (req: Request, res: Response) => {
+      const roleId = Array.isArray(req.params.roleId) ? req.params.roleId[0] : req.params.roleId;
+      const permissionId = Array.isArray(req.params.permissionId) ? req.params.permissionId[0] : req.params.permissionId;
+      await roleService.removePermissionFromRole(roleId, permissionId);
       noContentResponse(res);
     })
   );
 
   return router;
 }
+export default createRolesRouter;

@@ -19,13 +19,16 @@ import { ModuleLoader } from "../modules/module.loader.js";
  */
 export class DiscoveryService implements IDiscoveryService {
   constructor() {
-    // No‑op – the service starts empty.
+    // No-op – the service starts empty.
   }
 
   /** Return metadata for all registered modules */
   discoverModules(): ModuleMetadata[] {
     // Resolve the ModuleManager from the global container.
-        const moduleManager = container.resolve<any>(MODULE_SERVICES.REGISTRY);
+    if (!container.has(MODULE_SERVICES.REGISTRY)) {
+      return [];
+    }
+    const moduleManager = container.resolve<any>(MODULE_SERVICES.REGISTRY);
     if (!moduleManager || typeof moduleManager.getAll !== "function") {
       return [];
     }
@@ -49,6 +52,9 @@ export class DiscoveryService implements IDiscoveryService {
 
   /** Return disabled module metadata */
   discoverDisabledModules(): ModuleMetadata[] {
+    if (!container.has(MODULE_SERVICES.REGISTRY)) {
+      return [];
+    }
     const moduleManager = container.resolve<any>(MODULE_SERVICES.REGISTRY);
     if (!moduleManager || typeof moduleManager.getAll !== "function") {
       return [];
@@ -68,6 +74,9 @@ export class DiscoveryService implements IDiscoveryService {
 
   /** Return module dependency graph */
   getModuleDependencyGraph(): Record<string, string[]> {
+    if (!container.has(MODULE_SERVICES.REGISTRY)) {
+      return {};
+    }
     const moduleManager = container.resolve<any>(MODULE_SERVICES.REGISTRY);
     if (!moduleManager || typeof moduleManager.getAll !== "function") {
       return {};
@@ -81,6 +90,9 @@ export class DiscoveryService implements IDiscoveryService {
 
   /** Return module boot order */
   getModuleBootOrder(): string[] {
+    if (!container.has(MODULE_SERVICES.REGISTRY)) {
+      return [];
+    }
     const moduleManager = container.resolve<any>(MODULE_SERVICES.REGISTRY);
     if (!moduleManager || typeof moduleManager.getTopologicallySortedModules !== "function") {
       return [];
@@ -94,6 +106,9 @@ export class DiscoveryService implements IDiscoveryService {
 
   /** Return metadata for all registered plugins */
   discoverPlugins(): PluginMetadata[] {
+    if (!container.has(PLUGIN_SERVICES.REGISTRY)) {
+      return [];
+    }
     const pluginManager = container.resolve<any>(PLUGIN_SERVICES.REGISTRY);
     if (!pluginManager || typeof pluginManager.getPlugins !== "function") {
       return [];
@@ -118,6 +133,9 @@ export class DiscoveryService implements IDiscoveryService {
 
   /** Return disabled plugin metadata */
   discoverDisabledPlugins(): PluginMetadata[] {
+    if (!container.has(PLUGIN_SERVICES.REGISTRY)) {
+      return [];
+    }
     const pluginManager = container.resolve<any>(PLUGIN_SERVICES.REGISTRY);
     if (!pluginManager || typeof pluginManager.getPlugins !== "function") {
       return [];
@@ -137,6 +155,9 @@ export class DiscoveryService implements IDiscoveryService {
 
   /** Return metadata for all registered providers */
   async discoverProviders(): Promise<ProviderMetadata[]> {
+    if (!container.has(CORE_SERVICES.PROVIDER_MANAGER)) {
+      return [];
+    }
     const providerMgr = container.resolve<any>(CORE_SERVICES.PROVIDER_MANAGER);
     if (!providerMgr || typeof providerMgr.getDiagnostics !== "function") {
       return [];
@@ -185,6 +206,9 @@ export class DiscoveryService implements IDiscoveryService {
 
   /** Return metadata for all registered routes */
   discoverRoutes(): RouteMetadata[] {
+    if (!container.has(CORE_SERVICES.ROUTER)) {
+      return [];
+    }
     const routerMgr = container.resolve<any>(CORE_SERVICES.ROUTER);
     const anyRouterMgr: any = routerMgr as any;
     const registry: Map<string, any> = anyRouterMgr.registry ?? new Map();
@@ -252,6 +276,93 @@ export class DiscoveryService implements IDiscoveryService {
     return this.discoverRoutes();
   }
   
+  public getAuthorizationDiagnostics() {
+    try {
+      if (container.has("authorizationService")) {
+        const authService = container.resolve<any>("authorizationService");
+        return authService.getDiagnostics();
+      }
+    } catch {
+      // Fallback
+    }
+    return {
+      service: "AuthorizationService",
+      status: "inactive",
+      registeredGuards: [],
+      protectedRouteCount: 0,
+      cacheStatus: { hits: 0, misses: 0, ratio: "0.00" }
+    };
+  }
+
+  public getEventDiagnostics() {
+    try {
+      if (container.has(CORE_SERVICES.EVENT_BUS)) {
+        const eventBus = container.resolve<any>(CORE_SERVICES.EVENT_BUS);
+        return eventBus.getDiagnostics();
+      }
+    } catch {
+      // Fallback
+    }
+    return {
+      totalEventsRegistered: 0,
+      totalSubscribers: 0,
+      publishedCount: 0,
+      asyncPublishedCount: 0,
+      failureCount: 0,
+    };
+  }
+
+  public async getCacheDiagnostics() {
+    try {
+      if (container.has(CORE_SERVICES.CACHE)) {
+        const cacheService = container.resolve<any>(CORE_SERVICES.CACHE);
+        const manager = cacheService.getManager();
+        const health = await manager.getHealth();
+        const diags = manager.getDiagnostics();
+        return {
+          activeProvider: diags.activeProvider,
+          registeredProviders: diags.registeredProviders,
+          health: health.status,
+          statistics: diags.statistics,
+        };
+      }
+    } catch {
+      // Fallback
+    }
+    return {
+      activeProvider: "none",
+      registeredProviders: [],
+      health: "unhealthy",
+      statistics: { hits: 0, misses: 0, sets: 0, deletes: 0, clears: 0 }
+    };
+  }
+
+  public async getQueueDiagnostics() {
+    try {
+      if (container.has(CORE_SERVICES.QUEUE)) {
+        const queueService = container.resolve<any>(CORE_SERVICES.QUEUE);
+        const health = await queueService.getHealth();
+        const diags = queueService.getDiagnostics();
+        return {
+          activeProvider: diags.activeProvider,
+          registeredProviders: diags.registeredProviders,
+          registeredQueues: diags.registeredQueues,
+          health: health.status,
+          statistics: diags.statistics,
+        };
+      }
+    } catch {
+      // Fallback
+    }
+    return {
+      activeProvider: "none",
+      registeredProviders: [],
+      registeredQueues: [],
+      health: "unhealthy",
+      statistics: { enqueued: 0, completed: 0, failed: 0 }
+    };
+  }
+
   /**
    * Returns a compact summary of what the framework has discovered.
    */
@@ -265,7 +376,11 @@ export class DiscoveryService implements IDiscoveryService {
     const services = this.discoverServices();
     const routes = this.discoverRoutes();
     const providers = await this.discoverProviders();
-  
+    const authDiags = this.getAuthorizationDiagnostics();
+    const eventDiags = this.getEventDiagnostics();
+    const cacheDiags = await this.getCacheDiagnostics();
+    const queueDiags = await this.getQueueDiagnostics();
+    
     return {
       modules: modules.length,
       failedModules: failedModules.length,
@@ -276,7 +391,10 @@ export class DiscoveryService implements IDiscoveryService {
       providers: providers.length,
       services: services.length,
       routes: routes.length,
+      authorization: authDiags,
+      events: eventDiags,
+      cache: cacheDiags,
+      queue: queueDiags,
     };
   }
-
 }

@@ -53,5 +53,19 @@
   // ==========================
   "files.exclude": {
     "**/.turbo": true
-  }
+  },
+  "cSpell.words": [
+    "hdel",
+    "hget",
+    "hset",
+    "hvals",
+    "lpop",
+    "lrange",
+    "lrem",
+    "onbp",
+    "rpush",
+    "sadd",
+    "srem",
+    "uuidv"
+  ]
 }

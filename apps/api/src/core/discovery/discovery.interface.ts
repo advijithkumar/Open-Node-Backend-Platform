@@ -70,7 +70,6 @@ export interface FailedModuleMetadata {
  * will be provided at runtime.  Keeping it separate makes it easy to
  * mock in tests.
  */
-/* eslint-disable-next-line @typescript-eslint/no-empty-interface */
 export interface IDiscoveryService {
   /** Return module metadata */
   discoverModules(): ModuleMetadata[];

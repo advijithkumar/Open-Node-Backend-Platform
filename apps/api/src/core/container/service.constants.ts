@@ -18,4 +18,5 @@ export const CORE_SERVICES = {
 	SCHEDULER: "scheduler",
 	AI: "ai",
 	PROVIDER: "provider",
+  AUTHORIZATION: "authorizationService",
 } as const;

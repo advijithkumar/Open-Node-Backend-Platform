@@ -1,83 +1,149 @@
 import type { UserRepository } from "./users.repository.js";
-import type { EventBus } from "../../core/events/index.js";
-import type { HookManager } from "../../core/hooks/index.js";
+import { USER_EVENTS } from "./users.events.js";
+import type { CreateUserDto, UpdateUserDto, UserRecord } from "./users.types.js";
+import { container } from "../../core/container/container.js";
+import { CORE_SERVICES } from "../../core/container/service.constants.js";
+import type { IEventBus } from "../../core/events/event.interface.js";
+import type { ICacheService } from "../../core/cache/cache.interface.js";
 import { AppError } from "../../core/errors/app-error.js";
-
-export interface CreateUserData {
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  authUserId: string;
-}
-
-export interface UserRecord {
-  id: string;
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  authUserId: string;
-  isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date | null;
-}
 
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly eventBus?: EventBus,
-    private readonly hookManager?: HookManager
+    private readonly eventBus?: IEventBus
   ) {}
 
-  async createUser(data: CreateUserData): Promise<UserRecord> {
-    if (this.hookManager) {
-      await this.hookManager.execute("user:beforeCreate", { data });
+  private getCache(): ICacheService | undefined {
+    try {
+      if (container.has(CORE_SERVICES.CACHE)) {
+        return container.resolve<ICacheService>(CORE_SERVICES.CACHE);
+      }
+    } catch {
+      // Fallback
+    }
+    return undefined;
+  }
+
+  async createUser(data: CreateUserDto): Promise<UserRecord> {
+    const existing = await this.userRepository.findByEmail(data.email);
+    if (existing) {
+      throw new AppError(`User with email "${data.email}" already exists`, 400, "DUPLICATE_EMAIL");
     }
 
-    const payload: Record<string, unknown> = { ...data };
-    const user = (await this.userRepository.create(payload)) as unknown as UserRecord;
+    const user = await this.userRepository.createUser(data);
 
     if (this.eventBus) {
-      await this.eventBus.emit("user.created", { userId: user.id, email: user.email });
-    }
-
-    if (this.hookManager) {
-      await this.hookManager.execute("user:afterCreate", { user });
+      await this.eventBus.emit(USER_EVENTS.CREATED, user);
     }
 
     return user;
   }
 
   async getUserById(id: string): Promise<UserRecord> {
-    const user = (await this.userRepository.findById(id)) as unknown as UserRecord | undefined;
+    const cache = this.getCache();
+    const cacheKey = `user:${id}`;
+
+    if (cache) {
+      try {
+        const cached = await cache.get<UserRecord>(cacheKey);
+        if (cached) return cached;
+      } catch {
+        // Fallback
+      }
+    }
+
+    const user = await this.userRepository.findUserById(id);
     if (!user) {
       throw new AppError(`User with ID ${id} not found`, 404, "USER_NOT_FOUND");
     }
+
+    if (cache) {
+      try {
+        await cache.set(cacheKey, user, 3600);
+      } catch {
+        // Fallback
+      }
+    }
+
     return user;
   }
 
   async getUsers(limit = 20, offset = 0): Promise<UserRecord[]> {
-    return (await this.userRepository.findAll(limit, offset)) as unknown as UserRecord[];
+    return this.userRepository.findAllUsers(limit, offset);
   }
 
-  async updateUser(id: string, data: Partial<CreateUserData>): Promise<UserRecord> {
+  async updateUser(id: string, data: UpdateUserDto): Promise<UserRecord> {
     await this.getUserById(id);
-    const payload: Record<string, unknown> = { ...data };
-    const updated = (await this.userRepository.update(id, payload)) as unknown as UserRecord;
-    if (this.eventBus) {
-      await this.eventBus.emit("user.updated", { userId: id });
+
+    if (data.email) {
+      const existing = await this.userRepository.findByEmail(data.email);
+      if (existing && existing.id !== id) {
+        throw new AppError(`Email "${data.email}" is already taken`, 400, "DUPLICATE_EMAIL");
+      }
     }
+
+    const updated = await this.userRepository.updateUser(id, data);
+
+    const cache = this.getCache();
+    if (cache) {
+      try {
+        await cache.delete(`user:${id}`);
+      } catch {
+        // Fallback
+      }
+    }
+
+    if (this.eventBus) {
+      await this.eventBus.emit(USER_EVENTS.UPDATED, updated);
+    }
+
     return updated;
   }
 
   async deleteUser(id: string): Promise<boolean> {
-    await this.getUserById(id);
-    const deleted = await this.userRepository.softDelete(id);
-    if (this.eventBus) {
-      await this.eventBus.emit("user.deleted", { userId: id });
+    const user = await this.getUserById(id);
+    const deleted = await this.userRepository.deleteUser(id);
+
+    const cache = this.getCache();
+    if (cache) {
+      try {
+        await cache.delete(`user:${id}`);
+      } catch {
+        // Fallback
+      }
     }
+
+    if (deleted && this.eventBus) {
+      await this.eventBus.emit(USER_EVENTS.DELETED, user);
+    }
+
     return deleted;
   }
+
+  async restoreUser(id: string): Promise<UserRecord> {
+    // We bypass getUserById checking because it checks soft deleted records (isNull(deletedAt))
+    // Let's resolve the user record to check existence
+    const user = await this.userRepository.findById(id);
+    if (!user) {
+      throw new AppError(`User with ID ${id} not found`, 404, "USER_NOT_FOUND");
+    }
+
+    const restored = await this.userRepository.restore(id);
+
+    const cache = this.getCache();
+    if (cache) {
+      try {
+        await cache.delete(`user:${id}`);
+      } catch {
+        // Fallback
+      }
+    }
+
+    if (this.eventBus) {
+      await this.eventBus.emit(USER_EVENTS.RESTORED, restored);
+    }
+
+    return restored;
+  }
 }
+export default UserService;

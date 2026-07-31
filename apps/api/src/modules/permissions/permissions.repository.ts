@@ -1,58 +1,66 @@
 import { eq, and, isNull } from "drizzle-orm";
+import { BaseRepository } from "../../core/database/base.repository.js";
+import { permissions } from "./permissions.schema.js";
 import { db } from "../../core/database/db.js";
-import { permissions } from "../../core/database/schema/onbp/permission.schema.js";
+import type { PermissionRecord } from "./permissions.types.js";
 
-export class PermissionRepository {
-  async findById(id: string) {
-    const result = await db
+export class PermissionRepository extends BaseRepository<typeof permissions> {
+  constructor() {
+    super(permissions);
+  }
+
+  async findByName(nameVal: string): Promise<PermissionRecord | undefined> {
+    const results = await db
       .select()
-      .from(permissions)
-      .where(and(eq(permissions.id, id), isNull(permissions.deletedAt)))
+      .from(this.table)
+      .where(and(eq(permissions.name, nameVal), isNull(permissions.deletedAt)))
       .limit(1);
-    return result[0];
+
+    return results[0] as unknown as PermissionRecord | undefined;
   }
 
-  async findBySlug(slug: string) {
-    const result = await db
+  async findBySlug(slugVal: string): Promise<PermissionRecord | undefined> {
+    const results = await db
       .select()
-      .from(permissions)
-      .where(and(eq(permissions.slug, slug), isNull(permissions.deletedAt)))
+      .from(this.table)
+      .where(and(eq(permissions.slug, slugVal), isNull(permissions.deletedAt)))
       .limit(1);
-    return result[0];
+
+    return results[0] as unknown as PermissionRecord | undefined;
   }
 
-  async findAll(limit = 100, offset = 0) {
-    return db
-      .select()
-      .from(permissions)
-      .where(isNull(permissions.deletedAt))
-      .limit(limit)
-      .offset(offset);
+  async findPermissionById(idVal: string): Promise<PermissionRecord | undefined> {
+    const record = await this.findById(idVal);
+    return record as unknown as PermissionRecord;
   }
 
-  async create(data: Record<string, unknown>) {
-    const result = await db
-      .insert(permissions)
-      .values(data as typeof permissions.$inferInsert)
+  async findAllPermissions(limit = 100, offset = 0): Promise<PermissionRecord[]> {
+    const results = await this.findAll(limit, offset);
+    return results as unknown as PermissionRecord[];
+  }
+
+  async createPermission(data: { name: string; slug: string; resource: string; action: string; description?: string; isSystem?: boolean }): Promise<PermissionRecord> {
+    const record = await this.create(data as Record<string, unknown>);
+    return record as unknown as PermissionRecord;
+  }
+
+  async updatePermission(idVal: string, data: { name?: string; slug?: string; description?: string }): Promise<PermissionRecord> {
+    const record = await this.update(idVal, data as Record<string, unknown>);
+    return record as unknown as PermissionRecord;
+  }
+
+  async deletePermission(idVal: string): Promise<boolean> {
+    return this.softDelete(idVal);
+  }
+
+  async restore(idVal: string): Promise<PermissionRecord> {
+    const results = await db
+      .update(this.table)
+      .set({ deletedAt: null, isActive: true, updatedAt: new Date() })
+      .where(eq(permissions.id, idVal))
       .returning();
-    return result[0];
-  }
 
-  async update(id: string, data: Record<string, unknown>) {
-    const result = await db
-      .update(permissions)
-      .set({ ...data, updatedAt: new Date() } as Partial<typeof permissions.$inferInsert>)
-      .where(and(eq(permissions.id, id), isNull(permissions.deletedAt)))
-      .returning();
-    return result[0];
-  }
-
-  async softDelete(id: string) {
-    const result = await db
-      .update(permissions)
-      .set({ deletedAt: new Date(), isActive: false })
-      .where(and(eq(permissions.id, id), isNull(permissions.deletedAt)))
-      .returning();
-    return result.length > 0;
+    return results[0] as unknown as PermissionRecord;
   }
 }
+export default PermissionRepository;

@@ -120,6 +120,14 @@ export class Container {
   clearScope(): void {
     this.scopedInstances.clear();
   }
+
+  /** Reset the entire container - clears definitions, singletons, aliases, and scoped instances. */
+  reset(): void {
+    this.definitions.clear();
+    this.singletons.clear();
+    this.aliases.clear();
+    this.scopedInstances.clear();
+  }
 }
 
 export const container = new Container();
