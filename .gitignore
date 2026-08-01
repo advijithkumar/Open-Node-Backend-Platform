@@ -1,4 +1,4 @@
-/home/ad/open-source/Open-Node-Backend-Platform/token.txt
+
 
 # ==========================
 # Dependencies
@@ -24,7 +24,7 @@ coverage/
 .env
 .env.*
 !.env.example
-
+token.txt
 # ==========================
 # Logs
 # ==========================

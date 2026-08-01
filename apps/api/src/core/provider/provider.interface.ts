@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IProvider {
   readonly name: string;
   readonly type: string;

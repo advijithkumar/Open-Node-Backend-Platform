@@ -1,4 +1,5 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { describe, it, expect, beforeEach, } from "vitest";
 import { DiscoveryService } from "./discovery.service.js";
 import { container } from "../container/container.js";
 import { MODULE_SERVICES } from "../modules/module.constants.js";

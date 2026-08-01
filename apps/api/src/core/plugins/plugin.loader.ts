@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { promises as fs } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";

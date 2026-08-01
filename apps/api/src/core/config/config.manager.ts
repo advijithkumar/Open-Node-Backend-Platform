@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { IConfigManager } from "./config.interface.js";
 import type { ConfigDiagnostics } from "./config.types.js";
 

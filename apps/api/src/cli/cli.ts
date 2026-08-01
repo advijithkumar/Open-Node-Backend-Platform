@@ -1,5 +1,6 @@
-
-  import { program } from "commander";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
+import { program } from "commander";
 import { registerCore } from "../bootstrap/register-core.js";
 import { registerModules } from "../bootstrap/register-modules.js";
 import { registerRoutes } from "../bootstrap/register-routes.js";
@@ -108,6 +109,7 @@ program
       const kernel = container.resolve<Kernel>(KERNEL_SERVICES.KERNEL);
       console.log(JSON.stringify(kernel.getDiagnostics(), null, 2));
     });
+
   // ──────  Modules command  ──────
   program
     .command("modules")
@@ -128,6 +130,18 @@ program
       const discovery = container.resolve<any>(CORE_SERVICES.DISCOVERY);
       const providers = (await discovery.getProviders()).map((p: any) => p.name);
       console.table(providers);
+    });
+
+  // ────── Storage command ──────
+  program
+    .command("storage")
+    .description("Show storage diagnostics")
+    .action(async () => {
+      await bootstrapFramework();
+      const storage = container.resolve<any>(CORE_SERVICES.STORAGE);
+      const diagnostics = storage.getDiagnostics();
+      console.log("Storage Diagnostics:");
+      console.table(diagnostics);
     });
 
   // ────── Discovery command ──────

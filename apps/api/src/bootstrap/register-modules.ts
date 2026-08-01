@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { container } from "../core/container/index.js";
 import { CORE_SERVICES } from "../core/container/service.constants.js";
 import { KERNEL_SERVICES, type Kernel } from "../core/kernel/index.js";

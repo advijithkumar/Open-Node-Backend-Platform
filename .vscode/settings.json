@@ -55,6 +55,7 @@
     "**/.turbo": true
   },
   "cSpell.words": [
+    "eslintcache",
     "hdel",
     "hget",
     "hset",

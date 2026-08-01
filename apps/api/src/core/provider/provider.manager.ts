@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { IProvider } from "./provider.interface.js";
 import type { ProviderDiagnostics } from "./provider.types.js";
 

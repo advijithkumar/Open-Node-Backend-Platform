@@ -1,25 +1,57 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Discovery Service – singleton used by the Kernel.
- * Currently a stub – discovery logic will be added later.
+ * Provides metadata about modules, plugins, providers, services, storage, and routes.
  */
 
 import { container } from "../container/index.js";
 import { CORE_SERVICES } from "../container/service.constants.js";
 import { PLUGIN_SERVICES } from "../plugins/plugin.constants.js";
 import { MODULE_SERVICES } from "../modules/module.constants.js";
-import type { IDiscoveryService, ModuleMetadata, FailedModuleMetadata, PluginMetadata, FailedPluginMetadata, ProviderMetadata, ServiceMetadata, RouteMetadata } from "./discovery.interface.js";
+import type { 
+  IDiscoveryService, 
+  ModuleMetadata, 
+  FailedModuleMetadata, 
+  PluginMetadata, 
+  FailedPluginMetadata, 
+  ProviderMetadata, 
+  ServiceMetadata, 
+  RouteMetadata,
+  StorageMetadata
+} from "./discovery.interface.js";
 import type { IModule } from "../modules/module.interface.js";
 import { PluginLoader } from "../plugins/plugin.loader.js";
 import { ModuleLoader } from "../modules/module.loader.js";
 
 /**
  * Central discovery service – a singleton registered in the kernel.
- * For now it only provides a thin wrapper around `ModuleManager.getAll()`
- * and maps the modules to the generic `ModuleMetadata` shape.
+ * Provides metadata for all discovered framework components.
  */
 export class DiscoveryService implements IDiscoveryService {
   constructor() {
     // No-op – the service starts empty.
+  }
+
+  /** Return storage metadata */
+  discoverStorage(): StorageMetadata | undefined {
+    if (!container.has(CORE_SERVICES.STORAGE)) {
+      return undefined;
+    }
+    try {
+      const storageService = container.resolve<any>(CORE_SERVICES.STORAGE);
+      const diagnostics = storageService.getDiagnostics();
+      const activeProvider = diagnostics.activeProvider || "local";
+      return {
+        name: "storage",
+        version: "1.0.0",
+        description: "Storage service for file operations",
+        enabled: true,
+        activeProvider,
+        registeredProviders: diagnostics.registeredProviders || [],
+      };
+    } catch {
+      return undefined;
+    }
   }
 
   /** Return metadata for all registered modules */
@@ -42,6 +74,7 @@ export class DiscoveryService implements IDiscoveryService {
         description: mod.description,
         enabled: true,
         source: undefined,
+        dependencies: mod.dependencies,
       }));
   }
 
@@ -190,6 +223,10 @@ export class DiscoveryService implements IDiscoveryService {
     const singletons: Map<string, unknown> = anyContainer.singletons ?? new Map();
     const services: ServiceMetadata[] = [];
     for (const [key, def] of definitions.entries()) {
+      // For singleton services: resolved if already in singletons map or has instance
+      // For transient services: resolved only if has pre-defined instance
+      const isSingleton = def.scope === "singleton";
+      const resolved = isSingleton ? (singletons.has(key) || !!def.instance) : !!def.instance;
       services.push({
         name: key,
         version: "",
@@ -198,7 +235,7 @@ export class DiscoveryService implements IDiscoveryService {
         source: undefined,
         key,
         scope: def.scope as any,
-        resolved: singletons.has(key) || !!def.instance,
+        resolved,
       });
     }
     return services;
@@ -237,45 +274,61 @@ export class DiscoveryService implements IDiscoveryService {
     }
     return routes;
   }
+
   /* ------------------------------------------------------------
      DIAGNOSTIC HELPERS
      ------------------------------------------------------------ */
-  public getModules(): ModuleMetadata[] {
+  /** Get modules */
+  getModules(): ModuleMetadata[] {
     return this.discoverModules();
   }
 
-  public getFailedModules(): FailedModuleMetadata[] {
+  /** Get failed modules */
+  getFailedModules(): FailedModuleMetadata[] {
     return this.discoverFailedModules();
   }
 
-  public getDisabledModules(): ModuleMetadata[] {
+  /** Get disabled modules */
+  getDisabledModules(): ModuleMetadata[] {
     return this.discoverDisabledModules();
   }
-  
-  public getPlugins(): PluginMetadata[] {
+
+  /** Get plugins */
+  getPlugins(): PluginMetadata[] {
     return this.discoverPlugins();
   }
 
-  public getFailedPlugins(): FailedPluginMetadata[] {
+  /** Get failed plugins */
+  getFailedPlugins(): FailedPluginMetadata[] {
     return this.discoverFailedPlugins();
   }
 
-  public getDisabledPlugins(): PluginMetadata[] {
+  /** Get disabled plugins */
+  getDisabledPlugins(): PluginMetadata[] {
     return this.discoverDisabledPlugins();
   }
 
-  public async getProviders(): Promise<ProviderMetadata[]> {
+  /** Get providers */
+  async getProviders(): Promise<ProviderMetadata[]> {
     return this.discoverProviders();
   }
-  
-  public getServices(): ServiceMetadata[] {
+
+  /** Get services */
+  getServices(): ServiceMetadata[] {
     return this.discoverServices();
   }
-  
-  public getRoutes(): RouteMetadata[] {
+
+  /** Get routes */
+  getRoutes(): RouteMetadata[] {
     return this.discoverRoutes();
   }
-  
+
+  /** Get storage metadata */
+  getStorage(): StorageMetadata | undefined {
+    return this.discoverStorage();
+  }
+
+  /** Get authorization diagnostics */
   public getAuthorizationDiagnostics() {
     try {
       if (container.has("authorizationService")) {
@@ -294,6 +347,7 @@ export class DiscoveryService implements IDiscoveryService {
     };
   }
 
+  /** Get event diagnostics */
   public getEventDiagnostics() {
     try {
       if (container.has(CORE_SERVICES.EVENT_BUS)) {
@@ -312,6 +366,7 @@ export class DiscoveryService implements IDiscoveryService {
     };
   }
 
+  /** Get cache diagnostics */
   public async getCacheDiagnostics() {
     try {
       if (container.has(CORE_SERVICES.CACHE)) {
@@ -337,6 +392,7 @@ export class DiscoveryService implements IDiscoveryService {
     };
   }
 
+  /** Get queue diagnostics */
   public async getQueueDiagnostics() {
     try {
       if (container.has(CORE_SERVICES.QUEUE)) {
@@ -363,6 +419,31 @@ export class DiscoveryService implements IDiscoveryService {
     };
   }
 
+  /** Get storage diagnostics */
+  public async getStorageDiagnostics() {
+    try {
+      if (container.has(CORE_SERVICES.STORAGE)) {
+        const storageService = container.resolve<any>(CORE_SERVICES.STORAGE);
+        const health = await storageService.getHealth();
+        const diagnostics = storageService.getDiagnostics();
+        return {
+          activeProvider: diagnostics.activeProvider,
+          registeredProviders: diagnostics.registeredProviders,
+          health: health.status,
+          statistics: diagnostics.statistics,
+        };
+      }
+    } catch {
+      // Fallback
+    }
+    return {
+      activeProvider: "none",
+      registeredProviders: [],
+      health: "unhealthy",
+      statistics: { totalBytes: 0, totalFiles: 0 }
+    };
+  }
+
   /**
    * Returns a compact summary of what the framework has discovered.
    */
@@ -376,11 +457,14 @@ export class DiscoveryService implements IDiscoveryService {
     const services = this.discoverServices();
     const routes = this.discoverRoutes();
     const providers = await this.discoverProviders();
+    const storage = this.discoverStorage();
     const authDiags = this.getAuthorizationDiagnostics();
     const eventDiags = this.getEventDiagnostics();
     const cacheDiags = await this.getCacheDiagnostics();
     const queueDiags = await this.getQueueDiagnostics();
+    const storageDiags = await this.getStorageDiagnostics();
     
+    const totalComponents = modules.length + plugins.length + services.length + routes.length;
     return {
       modules: modules.length,
       failedModules: failedModules.length,
@@ -391,10 +475,19 @@ export class DiscoveryService implements IDiscoveryService {
       providers: providers.length,
       services: services.length,
       routes: routes.length,
+      storage: storage ? 1 : 0,
       authorization: authDiags,
       events: eventDiags,
       cache: cacheDiags,
       queue: queueDiags,
+      storageDiagnostics: storageDiags,
+      summary: {
+        totalComponents,
+        totalModules: modules.length,
+        totalPlugins: plugins.length,
+        totalServices: services.length,
+        totalRoutes: routes.length
+      }
     };
   }
 }

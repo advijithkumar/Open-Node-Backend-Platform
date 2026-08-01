@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 //src/core/config/env.ts
 import dotenv from "dotenv";
 import { z } from "zod";

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Container } from "../container/index.js";
 import type { Express } from "express";
 import type { EventBus } from "../events/index.js";
