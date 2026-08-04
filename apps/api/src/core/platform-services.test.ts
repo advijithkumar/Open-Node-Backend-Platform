@@ -3,7 +3,7 @@ import { StorageService, LocalStorageProvider } from "./storage/index.js";
 import { CacheService, CacheManager, MemoryCacheProvider } from "./cache/index.js";
 import { MemoryQueueService } from "./queue/index.js";
 import { SchedulerService } from "./scheduler/index.js";
-import { AIService } from "./ai/index.js";
+import { AIService, MockAIProvider } from "./ai/index.js";
 import { container } from "./container/container.js";
 
 describe("Phase 2 Enterprise Platform Services", () => {
@@ -136,11 +136,12 @@ describe("Phase 2 Enterprise Platform Services", () => {
   describe("AI Service", () => {
     it("should return completions and embeddings", async () => {
       const ai = new AIService();
+      ai.registerProvider(new MockAIProvider());
       const completion = await ai.complete("Hello world");
       const embeddings = await ai.embed("Hello world");
 
-      expect(completion).toContain("AI Response");
-      expect(embeddings.length).toBeGreaterThan(0);
+      expect(completion.text).toContain("Mock Completion Response");
+      expect(embeddings.embedding.length).toBeGreaterThan(0);
     });
   });
 });

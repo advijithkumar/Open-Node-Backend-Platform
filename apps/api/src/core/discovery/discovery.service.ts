@@ -444,6 +444,105 @@ export class DiscoveryService implements IDiscoveryService {
     };
   }
 
+  public async getNotificationDiagnostics() {
+    try {
+      if (container.has(CORE_SERVICES.NOTIFICATION)) {
+        const ns = container.resolve<any>(CORE_SERVICES.NOTIFICATION);
+        const health = await ns.getHealth();
+        const diagnostics = ns.getDiagnostics();
+        return {
+          registeredProviders: diagnostics.registeredProviders,
+          supportedChannels: diagnostics.supportedChannels,
+          health: health.status,
+          statistics: diagnostics.statistics,
+        };
+      }
+    } catch {
+      // Fallback
+    }
+    return {
+      registeredProviders: [],
+      supportedChannels: [],
+      health: "unhealthy",
+      statistics: { sent: 0, failed: 0 }
+    };
+  }
+
+  public async getEmailDiagnostics() {
+    try {
+      if (container.has(CORE_SERVICES.EMAIL)) {
+        const es = container.resolve<any>(CORE_SERVICES.EMAIL);
+        const health = await es.getHealth();
+        const diagnostics = es.getDiagnostics();
+        return {
+          registeredProviders: diagnostics.registeredProviders,
+          activeProvider: diagnostics.activeProvider,
+          health: health.status,
+          statistics: diagnostics.statistics,
+        };
+      }
+    } catch {
+      // Fallback
+    }
+    return {
+      registeredProviders: [],
+      activeProvider: null,
+      health: "unhealthy",
+      statistics: { sent: 0, failed: 0 }
+    };
+  }
+
+  public async getAIDiagnostics() {
+    try {
+      if (container.has(CORE_SERVICES.AI)) {
+        const ai = container.resolve<any>(CORE_SERVICES.AI);
+        const health = await ai.health();
+        const diagnostics = ai.getDiagnostics();
+        return {
+          registeredProviders: diagnostics.registeredProviders,
+          activeProvider: diagnostics.activeProvider,
+          health: health.status,
+          statistics: diagnostics.statistics,
+        };
+      }
+    } catch {
+      // Fallback
+    }
+    return {
+      registeredProviders: [],
+      activeProvider: null,
+      health: "unhealthy",
+      statistics: { completionsCount: 0, embeddingsCount: 0, failedCount: 0 }
+    };
+  }
+
+  public async getWorkflowDiagnostics() {
+    try {
+      if (container.has(CORE_SERVICES.WORKFLOW)) {
+        const ws = container.resolve<any>(CORE_SERVICES.WORKFLOW);
+        const diagnostics = ws.getDiagnostics();
+        return {
+          workflows: {
+            registered: diagnostics.registered,
+            executions: diagnostics.executions,
+            completed: diagnostics.completed,
+            failed: diagnostics.failed,
+          }
+        };
+      }
+    } catch {
+      // Fallback
+    }
+    return {
+      workflows: {
+        registered: 0,
+        executions: 0,
+        completed: 0,
+        failed: 0,
+      }
+    };
+  }
+
   /**
    * Returns a compact summary of what the framework has discovered.
    */
@@ -463,6 +562,10 @@ export class DiscoveryService implements IDiscoveryService {
     const cacheDiags = await this.getCacheDiagnostics();
     const queueDiags = await this.getQueueDiagnostics();
     const storageDiags = await this.getStorageDiagnostics();
+    const notificationDiags = await this.getNotificationDiagnostics();
+    const emailDiags = await this.getEmailDiagnostics();
+    const aiDiags = await this.getAIDiagnostics();
+    const workflowDiags = await this.getWorkflowDiagnostics();
     
     const totalComponents = modules.length + plugins.length + services.length + routes.length;
     return {
@@ -481,6 +584,10 @@ export class DiscoveryService implements IDiscoveryService {
       cache: cacheDiags,
       queue: queueDiags,
       storageDiagnostics: storageDiags,
+      notification: notificationDiags,
+      email: emailDiags,
+      ai: aiDiags,
+      workflow: workflowDiags,
       summary: {
         totalComponents,
         totalModules: modules.length,

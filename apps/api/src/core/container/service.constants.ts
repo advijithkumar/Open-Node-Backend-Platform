@@ -19,4 +19,7 @@ export const CORE_SERVICES = {
 	AI: "ai",
 	PROVIDER: "provider",
   AUTHORIZATION: "authorizationService",
+  NOTIFICATION: "notification",
+  EMAIL: "email",
+  WORKFLOW: "workflow",
 } as const;

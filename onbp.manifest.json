@@ -1,0 +1,13 @@
+{
+  "name": "Open Node Backend Platform",
+  "version": "0.1.0",
+  "type": "ONBP_WORKSPACE",
+  "description": "An enterprise-ready backend framework and guidance layer.",
+  "guides": {
+    "onboarding": "docs/ai/01-ai-agent-onboarding.md",
+    "capabilities": "docs/ai/02-onbp-capability-map.md",
+    "versions": "docs/ai/03-technology-version-matrix.md",
+    "selection": "docs/ai/04-component-selection.md",
+    "workflow": "docs/ai/05-implementation-workflow.md"
+  }
+}

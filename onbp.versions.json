@@ -1,0 +1,139 @@
+{
+  "technologies": [
+    {
+      "technology": "Node.js",
+      "version": ">=22.0.0",
+      "purpose": "Runtime engine",
+      "package": "node",
+      "source": "system",
+      "status": "official",
+      "notes": "LTS version 22 required for module compilation and async context."
+    },
+    {
+      "technology": "TypeScript",
+      "version": "^5.9.3",
+      "purpose": "Language compiler",
+      "package": "typescript",
+      "source": "npm",
+      "status": "official",
+      "notes": "Compiles ES2022 modules."
+    },
+    {
+      "technology": "Express",
+      "version": "^5.2.1",
+      "purpose": "HTTP Server Framework",
+      "package": "express",
+      "source": "npm",
+      "status": "official",
+      "notes": "Handles API request-response pipelines."
+    },
+    {
+      "technology": "PostgreSQL",
+      "version": "^3.4.9",
+      "purpose": "Primary Database persistence",
+      "package": "postgres",
+      "source": "npm",
+      "status": "official",
+      "notes": "Relational data store driver."
+    },
+    {
+      "technology": "Redis",
+      "version": "^5.11.1",
+      "purpose": "In-memory caching and streams",
+      "package": "ioredis",
+      "source": "npm",
+      "status": "official",
+      "notes": "Powers cache service and queue framework."
+    },
+    {
+      "technology": "MinIO",
+      "version": "^8.0.7",
+      "purpose": "Object Storage provider",
+      "package": "minio",
+      "source": "npm",
+      "status": "supported",
+      "notes": "Compatible with standard S3 protocols."
+    },
+    {
+      "technology": "Better Auth",
+      "version": "^1.6.23",
+      "purpose": "Authentication and RBAC sessions",
+      "package": "better-auth",
+      "source": "npm",
+      "status": "official",
+      "notes": "Standard authentication framework."
+    },
+    {
+      "technology": "Zod",
+      "version": "^4.4.3",
+      "purpose": "Schema validation",
+      "package": "zod",
+      "source": "npm",
+      "status": "official",
+      "notes": "Validates request payloads and configurations."
+    },
+    {
+      "technology": "Pino",
+      "version": "^10.3.1",
+      "purpose": "Structured logger",
+      "package": "pino",
+      "source": "npm",
+      "status": "official",
+      "notes": "Default high-performance logger."
+    },
+    {
+      "technology": "Drizzle ORM",
+      "version": "^0.45.2",
+      "purpose": "Database schema mapping and query builder",
+      "package": "drizzle-orm",
+      "source": "npm",
+      "status": "official",
+      "notes": "Primary database ORM layer."
+    },
+    {
+      "technology": "Vitest",
+      "version": "^4.1.10",
+      "purpose": "Testing framework",
+      "package": "vitest",
+      "source": "npm",
+      "status": "official",
+      "notes": "Used for all unit/integration tests."
+    },
+    {
+      "technology": "Turbo",
+      "version": "^2.10.5",
+      "purpose": "Monorepo task pipelines orchestrator",
+      "package": "turbo",
+      "source": "npm",
+      "status": "official",
+      "notes": "Orchestrates builds, testing, and linting."
+    },
+    {
+      "technology": "pnpm",
+      "version": "10.13.0",
+      "purpose": "Workspace packages manager",
+      "package": "pnpm",
+      "source": "system",
+      "status": "official",
+      "notes": "Workspace manager mapping local packages."
+    },
+    {
+      "technology": "Sequelize",
+      "version": "N/A",
+      "purpose": "Competing ORM",
+      "package": "sequelize",
+      "source": "npm",
+      "status": "forbidden",
+      "notes": "Do NOT use. Use Drizzle ORM instead."
+    },
+    {
+      "technology": "Nodemailer",
+      "version": "N/A",
+      "purpose": "Direct mail transporter",
+      "package": "nodemailer",
+      "source": "npm",
+      "status": "forbidden",
+      "notes": "Do NOT use directly. Use the EmailService wrapper instead."
+    }
+  ]
+}

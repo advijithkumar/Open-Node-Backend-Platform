@@ -1,0 +1,40 @@
+{
+  "platform": "ONBP",
+  "guidanceVersion": "1.0.0",
+  "entrypoint": "AGENTS.md",
+  "manifest": "onbp.manifest.json",
+  "capabilities": "onbp.capabilities.json",
+  "versions": "onbp.versions.json",
+  "rules": [
+    "Always run verification checks (pnpm build, pnpm test, pnpm lint) before concluding a task.",
+    "Do NOT modify files in core/ kernel/ or container/ directories.",
+    "Do NOT bypass intermediate service layers to import directly from vendor libraries.",
+    "Register newly created services in register-core.ts and map their health checks.",
+    "Do NOT expose credentials, tokens, or private secrets in discovery, logs, or doctor output.",
+    "If the requirement is a multi-step business process, use the Workflow Framework.",
+    "Do NOT confuse Workflow with Queue (durable background execution), EventBus (decoupled event propagation), or Scheduler (periodic execution)."
+  ],
+  "components": {
+    "modules": "apps/api/src/modules",
+    "core": "apps/api/src/core",
+    "plugins": "apps/api/src/plugins",
+    "providers": "apps/api/src/providers"
+  },
+  "implementationWorkflow": [
+    "Identify capability requirement",
+    "Cross-reference against onbp.capabilities.json",
+    "Locate core package entry points",
+    "Configure settings using ConfigManager via register-core.ts",
+    "Implement business modules under src/modules/",
+    "Create unit tests under tests/unit/",
+    "Run verification pipelines (build, test, lint)",
+    "Audit system using 'onbp doctor'"
+  ],
+  "verification": {
+    "build": "pnpm build",
+    "test": "pnpm test",
+    "lint": "pnpm lint",
+    "doctor": "pnpm -F @onbp/api onbp doctor",
+    "discovery": "pnpm -F @onbp/api onbp discovery"
+  }
+}

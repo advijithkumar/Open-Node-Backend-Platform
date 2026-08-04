@@ -11,6 +11,7 @@ import { ModuleGenerator } from "./generators/module.generator.js";
 import { PluginGenerator } from "./generators/plugin.generator.js";
 import { ProviderGenerator } from "./generators/provider.generator.js";
 import { AppGenerator } from "./generators/app.generator.js";
+import { DoctorService } from "../core/doctor/doctor.js";
 
 /* ------------------------------------------------------------------ */
 /* Helper – fully bootstrap the framework before any command runs       */
@@ -170,6 +171,54 @@ program
   
       console.log("Summary:");
       console.log(await discovery.getSummary());
+    });
+
+  // ────── Doctor command ──────
+  program
+    .command("doctor")
+    .description("Inspect the health and configuration of the ONBP runtime")
+    .option("--json", "Output diagnostic report in machine-readable JSON format")
+    .action(async (options: { json?: boolean }) => {
+      await bootstrapFramework();
+      const doctor = new DoctorService();
+      const report = await doctor.runDiagnostics();
+
+      if (options.json) {
+        console.log(JSON.stringify(report, null, 2));
+      } else {
+        console.log("=========================================");
+        console.log("    ONBP Framework Doctor & Diagnostics   ");
+        console.log("=========================================");
+        console.log(`Overall Status: ${report.overallStatus.toUpperCase()}`);
+        console.log(`Timestamp:      ${report.timestamp}`);
+        console.log("-----------------------------------------");
+        console.log("System Information:");
+        console.log(`  OS Platform:  ${report.systemInfo.platform}`);
+        console.log(`  OS Arch:      ${report.systemInfo.arch}`);
+        console.log(`  Node Version: ${report.systemInfo.nodeVersion}`);
+        console.log(`  Uptime:       ${report.systemInfo.uptime}s`);
+        console.log(`  Memory Usage: ${report.systemInfo.memory.usagePercentage}%`);
+        console.log("=========================================");
+        console.log("Diagnostic Check Results:");
+        console.log("-----------------------------------------");
+
+        for (const res of report.results) {
+          const statusIcon = res.status === "healthy" ? "✅" : res.status === "warning" ? "⚠️" : "❌";
+          console.log(`${statusIcon} [${res.component}] Status: ${res.status.toUpperCase()} (Severity: ${res.severity.toUpperCase()})`);
+          console.log(`   Message: ${res.message}`);
+          if (res.recommendation) {
+            console.log(`   Recommendation: ${res.recommendation}`);
+          }
+          if (res.details && Object.keys(res.details).length > 0) {
+            console.log(`   Details:`, JSON.stringify(res.details));
+          }
+          console.log("-----------------------------------------");
+        }
+      }
+      
+      if (report.overallStatus === "critical") {
+        process.exit(1);
+      }
     });
 
 program.parseAsync(process.argv);

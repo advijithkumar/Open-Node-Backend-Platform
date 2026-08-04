@@ -237,6 +237,7 @@ export class LocalStorageProvider implements IStorageProvider {
 
   async health(): Promise<{ status: "healthy" | "unhealthy"; error?: string }> {
     try {
+      await fs.mkdir(this.basePath, { recursive: true });
       await fs.access(this.basePath);
       return { status: "healthy" };
     } catch (err: any) {

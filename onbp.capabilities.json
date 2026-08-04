@@ -1,0 +1,279 @@
+{
+  "capabilities": [
+    {
+      "name": "kernel",
+      "type": "core",
+      "status": "stable",
+      "entryPoint": "Kernel",
+      "providers": [],
+      "useWhen": [
+        "bootstrapping application",
+        "starting server",
+        "managing framework modules/plugins lifecycle"
+      ],
+      "doNot": [
+        "instantiate multiple kernel instances",
+        "manually trigger private boot methods outside of bootstrap entrypoints"
+      ],
+      "documentation": "docs/02-architecture.md"
+    },
+    {
+      "name": "di_container",
+      "type": "core",
+      "status": "stable",
+      "entryPoint": "container",
+      "providers": [],
+      "useWhen": [
+        "resolving service instances",
+        "registering singletons",
+        "inverting dependencies"
+      ],
+      "doNot": [
+        "instantiate a new container class instance",
+        "bypass container to instantiate core services manually"
+      ],
+      "documentation": "docs/02-architecture.md"
+    },
+    {
+      "name": "config",
+      "type": "core",
+      "status": "stable",
+      "entryPoint": "ConfigManager",
+      "providers": [],
+      "useWhen": [
+        "retrieving environment settings",
+        "accessing configuration keys"
+      ],
+      "doNot": [
+        "read process.env or dotenv directly inside services",
+        "modify configurations after ConfigManager is frozen"
+      ],
+      "documentation": "docs/03-tech-stack.md"
+    },
+    {
+      "name": "discovery",
+      "type": "core",
+      "status": "stable",
+      "entryPoint": "DiscoveryService",
+      "providers": [],
+      "useWhen": [
+        "inspecting registered modules",
+        "retrieving telemetry information",
+        "diagnosing core framework capabilities"
+      ],
+      "doNot": [
+        "expose configuration secrets or tokens through discovery statistics"
+      ],
+      "documentation": "docs/02-architecture.md"
+    },
+    {
+      "name": "events",
+      "type": "core",
+      "status": "stable",
+      "entryPoint": "EventBus",
+      "providers": [],
+      "useWhen": [
+        "broadcasting module events",
+        "decoupling cross-module actions",
+        "listening to platform lifecycle state shifts"
+      ],
+      "doNot": [
+        "bypass EventBus using custom node event emitters for core services",
+        "create separate EventBus class instances"
+      ],
+      "documentation": "docs/02-architecture.md"
+    },
+    {
+      "name": "doctor",
+      "type": "core",
+      "status": "stable",
+      "entryPoint": "DoctorService",
+      "providers": [],
+      "useWhen": [
+        "checking platform boot configurations",
+        "running automated container diagnostics",
+        "inspecting provider health status"
+      ],
+      "doNot": [
+        "expose API keys or raw connection passwords in diagnostic results"
+      ],
+      "documentation": "docs/02-architecture.md"
+    },
+    {
+      "name": "auth",
+      "type": "security",
+      "status": "stable",
+      "entryPoint": "AuthorizationService",
+      "providers": [
+        "better-auth"
+      ],
+      "useWhen": [
+        "authenticating users",
+        "verifying sessions",
+        "managing RBAC roles and permissions"
+      ],
+      "doNot": [
+        "implement custom password hashing",
+        "write raw session cookie parser middleware"
+      ],
+      "documentation": "docs/08-security.md"
+    },
+    {
+      "name": "database",
+      "type": "infrastructure",
+      "status": "stable",
+      "entryPoint": "db",
+      "providers": [
+        "postgresql"
+      ],
+      "useWhen": [
+        "persisting relational data",
+        "running migrations",
+        "executing SQL queries via Drizzle"
+      ],
+      "doNot": [
+        "import pg client directly to bypass Drizzle schemas",
+        "write manual postgres client connections in controllers"
+      ],
+      "documentation": "docs/07-database-standards.md"
+    },
+    {
+      "name": "storage",
+      "type": "service",
+      "status": "stable",
+      "entryPoint": "StorageService",
+      "providers": [
+        "local",
+        "minio"
+      ],
+      "useWhen": [
+        "uploading files",
+        "downloading blobs",
+        "generating S3 signed URLs"
+      ],
+      "doNot": [
+        "write direct node fs files to local directories",
+        "import minio SDK directly into business controllers"
+      ],
+      "documentation": "docs/workflows/04-workflow-actions.md"
+    },
+    {
+      "name": "cache",
+      "type": "service",
+      "status": "stable",
+      "entryPoint": "CacheService",
+      "providers": [
+        "memory",
+        "redis"
+      ],
+      "useWhen": [
+        "caching short-lived values",
+        "saving heavy query payloads"
+      ],
+      "doNot": [
+        "connect direct ioredis instances outside the Cache Manager"
+      ],
+      "documentation": "docs/workflows/04-workflow-actions.md"
+    },
+    {
+      "name": "queue",
+      "type": "service",
+      "status": "stable",
+      "entryPoint": "QueueManager",
+      "providers": [
+        "memory",
+        "redis-streams"
+      ],
+      "useWhen": [
+        "dispatching deferred background jobs",
+        "running asynchronous tasks"
+      ],
+      "doNot": [
+        "create manual task queues using custom intervals"
+      ],
+      "documentation": "docs/workflows/04-workflow-actions.md"
+    },
+    {
+      "name": "scheduler",
+      "type": "service",
+      "status": "stable",
+      "entryPoint": "SchedulerService",
+      "providers": [],
+      "useWhen": [
+        "scheduling periodic tasks",
+        "running intervals and cron jobs"
+      ],
+      "doNot": [
+        "import npm cron modules directly in modules"
+      ],
+      "documentation": "docs/workflows/04-workflow-actions.md"
+    },
+    {
+      "name": "notification",
+      "type": "service",
+      "status": "stable",
+      "entryPoint": "NotificationService",
+      "providers": [
+        "email-notification-provider"
+      ],
+      "useWhen": [
+        "sending in-app alerts",
+        "dispatching multi-channel notifications"
+      ],
+      "doNot": [
+        "code direct alerts dispatch APIs in business logic"
+      ],
+      "documentation": "docs/workflows/04-workflow-actions.md"
+    },
+    {
+      "name": "email",
+      "type": "service",
+      "status": "stable",
+      "entryPoint": "EmailService",
+      "providers": [
+        "smtp"
+      ],
+      "useWhen": [
+        "sending transactional email messages",
+        "rendering welcome and onboarding mail templates"
+      ],
+      "doNot": [
+        "import nodemailer directly into business controllers"
+      ],
+      "documentation": "docs/workflows/04-workflow-actions.md"
+    },
+    {
+      "name": "ai",
+      "type": "service",
+      "status": "stable",
+      "entryPoint": "AIService",
+      "providers": [
+        "mock"
+      ],
+      "useWhen": [
+        "generating text completion",
+        "generating content embeddings"
+      ],
+      "doNot": [
+        "import external AI SDKs like google-genai or openai directly"
+      ],
+      "documentation": "docs/workflows/04-workflow-actions.md"
+    },
+    {
+      "name": "workflow",
+      "type": "service",
+      "status": "stable",
+      "entryPoint": "WorkflowService",
+      "providers": [],
+      "useWhen": [
+        "orchestrating multi-step business flows",
+        "chaining platform services sequentially"
+      ],
+      "doNot": [
+        "bypass registry to run unverified definitions",
+        "implement complex distributed sagas directly inside controllers"
+      ],
+      "documentation": "docs/workflows/08-workflow-framework.md"
+    }
+  ]
+}
