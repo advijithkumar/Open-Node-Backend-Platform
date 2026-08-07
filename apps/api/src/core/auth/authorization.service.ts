@@ -42,7 +42,7 @@ export class AuthorizationService {
     this.protectedRouteCount++;
   }
 
-  async getEffectivePermissions(userId: string, userRole: string): Promise<string[]> {
+  async getEffectivePermissions(userId: string, userRole: string): Promise<Set<string>> {
     const cache = this.getCache();
     const cacheKey = `user:${userId}:permissions`;
 
@@ -51,7 +51,7 @@ export class AuthorizationService {
         const cached = await cache.get<string[]>(cacheKey);
         if (cached) {
           this.cacheHits++;
-          return cached;
+          return new Set<string>(cached);
         }
       } catch {
         // Fallback
@@ -61,7 +61,7 @@ export class AuthorizationService {
     this.cacheMisses++;
     const roleService = this.getRoleService();
     if (!roleService) {
-      return [];
+      return new Set<string>();
     }
 
     const permissionsSet = new Set<string>();
@@ -78,17 +78,15 @@ export class AuthorizationService {
       // Fallback
     }
 
-    const permissionsList = Array.from(permissionsSet);
-
     if (cache) {
       try {
-        await cache.set(cacheKey, permissionsList, 300); // 5 min TTL
+        await cache.set(cacheKey, Array.from(permissionsSet), 300); // 5 min TTL
       } catch {
         // Fallback
       }
     }
 
-    return permissionsList;
+    return permissionsSet;
   }
 
   async hasPermission(userId: string, userRole: string, requiredPermission: string): Promise<boolean> {
@@ -96,7 +94,7 @@ export class AuthorizationService {
       return true;
     }
     const userPermissions = await this.getEffectivePermissions(userId, userRole);
-    return userPermissions.includes(requiredPermission);
+    return userPermissions.has(requiredPermission);
   }
 
   async hasRole(userRole: string, requiredRole: string): Promise<boolean> {
