@@ -6,12 +6,14 @@ import { noContentResponse } from "../../core/responses/no-content-response.js";
 import { validate } from "../../core/validation/validate.js";
 import { asyncHandler } from "../../core/utils/async-handler.js";
 import { createUserSchema, updateUserSchema } from "./users.validation.js";
+import { requireAuth } from "../../core/auth/auth.middleware.js";
 
 export function createUsersRouter(userService: UserService): Router {
   const router = Router();
 
   router.get(
     "/",
+    requireAuth(),
     asyncHandler(async (req: Request, res: Response) => {
       const limit = Number(req.query.limit) || 20;
       const offset = Number(req.query.offset) || 0;
@@ -22,6 +24,7 @@ export function createUsersRouter(userService: UserService): Router {
 
   router.get(
     "/:id",
+    requireAuth(),
     asyncHandler(async (req: Request, res: Response) => {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
       const user = await userService.getUserById(id);
@@ -31,6 +34,7 @@ export function createUsersRouter(userService: UserService): Router {
 
   router.post(
     "/",
+    requireAuth(),
     validate(createUserSchema),
     asyncHandler(async (req: Request, res: Response) => {
       const user = await userService.createUser(req.body);
@@ -40,6 +44,7 @@ export function createUsersRouter(userService: UserService): Router {
 
   router.put(
     "/:id",
+    requireAuth(),
     validate(updateUserSchema),
     asyncHandler(async (req: Request, res: Response) => {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -50,6 +55,7 @@ export function createUsersRouter(userService: UserService): Router {
 
   router.delete(
     "/:id",
+    requireAuth(),
     asyncHandler(async (req: Request, res: Response) => {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
       await userService.deleteUser(id);
@@ -59,6 +65,7 @@ export function createUsersRouter(userService: UserService): Router {
 
   router.patch(
     "/:id/restore",
+    requireAuth(),
     asyncHandler(async (req: Request, res: Response) => {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
       const restored = await userService.restoreUser(id);
