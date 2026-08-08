@@ -26,8 +26,8 @@ export class CacheManager implements ICacheProvider {
       if (container.has(CORE_SERVICES.EVENT_BUS)) {
         return container.resolve<IEventBus>(CORE_SERVICES.EVENT_BUS);
       }
-    } catch (err) {
-      logger.warn(err, "Failed to resolve EventBus");
+    } catch {
+      // Fallback
     }
     return undefined;
   }
@@ -55,12 +55,12 @@ export class CacheManager implements ICacheProvider {
       this.hitCount++;
       if (eventBus) {
         // Run in background
-        Promise.resolve(eventBus.emit("cache.hit", { key })).catch((err) => logger.error(err, "Failed to emit cache.hit event"));
+        Promise.resolve(eventBus.emit("cache.hit", { key })).catch(() => {});
       }
     } else {
       this.missCount++;
       if (eventBus) {
-        Promise.resolve(eventBus.emit("cache.miss", { key })).catch((err) => logger.error(err, "Failed to emit cache.miss event"));
+        Promise.resolve(eventBus.emit("cache.miss", { key })).catch(() => {});
       }
     }
 
@@ -72,7 +72,7 @@ export class CacheManager implements ICacheProvider {
     this.setCount++;
     const eventBus = this.getEventBus();
     if (eventBus) {
-      Promise.resolve(eventBus.emit("cache.set", { key, ttlSeconds })).catch((err) => logger.error(err, "Failed to emit cache.set event"));
+      Promise.resolve(eventBus.emit("cache.set", { key, ttlSeconds })).catch(() => {});
     }
   }
 
@@ -82,7 +82,7 @@ export class CacheManager implements ICacheProvider {
       this.deleteCount++;
       const eventBus = this.getEventBus();
       if (eventBus) {
-        Promise.resolve(eventBus.emit("cache.deleted", { key })).catch((err) => logger.error(err, "Failed to emit cache.deleted event"));
+        Promise.resolve(eventBus.emit("cache.deleted", { key })).catch(() => {});
       }
     }
     return deleted;
@@ -93,7 +93,7 @@ export class CacheManager implements ICacheProvider {
     this.clearCount++;
     const eventBus = this.getEventBus();
     if (eventBus) {
-      Promise.resolve(eventBus.emit("cache.cleared", {})).catch((err) => logger.error(err, "Failed to emit cache.cleared event"));
+      Promise.resolve(eventBus.emit("cache.cleared", {})).catch(() => {});
     }
   }
 
