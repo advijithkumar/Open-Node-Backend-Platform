@@ -9,7 +9,11 @@ const getManager = (): IConfigManager => {
 
 export const config = {
   get secret(): string {
-    return getManager().get<string>("auth.secret") || getManager().get<string>("plugins.better-auth.secret", "default-auth-secret-key-12345");
+    const secret = getManager().get<string>("auth.secret") || getManager().get<string>("plugins.better-auth.secret");
+    if (!secret) {
+      throw new Error("Missing authentication secret. You must provide a secret via 'auth.secret' or 'plugins.better-auth.secret'.");
+    }
+    return secret;
   },
   get baseUrl(): string {
     return getManager().get<string>("auth.baseUrl") || getManager().get<string>("plugins.better-auth.baseUrl", "http://localhost:8080");
