@@ -3,7 +3,8 @@ import { MemoryQueueService } from "./memory-queue.service.js";
 import { container } from "../container/container.js";
 import { CORE_SERVICES } from "../container/service.constants.js";
 import type { IEventBus } from "../events/event.interface.js";
-import { logger } from "../logger/logger.js";
+import type { ILogger } from "../logger/logger.interface.js";
+import { logger } from "../logger/index.js";
 
 export class QueueManager implements IQueueProvider {
   private readonly providers = new Map<string, IQueueProvider>();
@@ -31,6 +32,26 @@ export class QueueManager implements IQueueProvider {
       // Fallback
     }
     return undefined;
+  }
+
+  private getLogger(): ILogger | undefined {
+    try {
+      if (container.has(CORE_SERVICES.LOGGER)) {
+        return container.resolve<ILogger>(CORE_SERVICES.LOGGER);
+      }
+    } catch {
+      // Fallback
+    }
+    return undefined;
+  }
+
+  private emitEventSafe(eventName: string, payload: any): void {
+    const eventBus = this.getEventBus();
+    if (eventBus) {
+      Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => {
+        this.getLogger()?.error(`Failed to emit event ${eventName}`, err);
+      });
+    }
   }
 
   registerProvider(name: string, provider: IQueueProvider): void {
@@ -84,22 +105,15 @@ export class QueueManager implements IQueueProvider {
   }
 
   process<T>(queue: string, handler: JobHandler<T>): void {
-    const eventBus = this.getEventBus();
     const wrappedHandler: JobHandler<T> = async (job) => {
-      if (eventBus) {
-        Promise.resolve(eventBus.emit("job.started", { jobId: job.id, queue: job.name })).catch((err) => logger.error({ err }, "Event emission failed"));
-      }
+      this.emitEventSafe("job.started", { jobId: job.id, queue: job.name });
       try {
         await handler(job);
         this.completedJobs++;
-        if (eventBus) {
-          Promise.resolve(eventBus.emit("job.completed", { jobId: job.id, queue: job.name })).catch((err) => logger.error({ err }, "Event emission failed"));
-        }
+        this.emitEventSafe("job.completed", { jobId: job.id, queue: job.name });
       } catch (err: any) {
         this.failedJobs++;
-        if (eventBus) {
-          Promise.resolve(eventBus.emit("job.failed", { jobId: job.id, queue: job.name, error: err.message || String(err) })).catch((emitErr) => logger.error({ err: emitErr }, "Event emission failed"));
-        }
+        this.emitEventSafe("job.failed", { jobId: job.id, queue: job.name, error: err.message || String(err) });
         throw err;
       }
     };
