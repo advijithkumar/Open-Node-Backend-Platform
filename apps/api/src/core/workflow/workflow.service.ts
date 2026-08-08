@@ -229,7 +229,10 @@ export class WorkflowService {
   private triggerEvent(eventName: string, payload: any): void {
     const eventBus = this.getEventBus();
     if (eventBus) {
-      Promise.resolve(eventBus.emit(eventName, payload)).catch(() => {});
+      Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => {
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        logger.error(`Failed to trigger workflow event ${eventName}: ${errorMessage}`, err);
+      });
     }
   }
 
