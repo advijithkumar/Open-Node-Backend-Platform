@@ -10,6 +10,7 @@ import type {
 import { LocalStorageProvider } from "./local-storage.provider.js";
 import { container } from "../container/container.js";
 import { CORE_SERVICES } from "../container/service.constants.js";
+import { logger } from "../logger/logger.js";
 
 /**
  * Storage Service – provider-agnostic abstraction for file storage operations.
@@ -47,7 +48,9 @@ export class StorageService implements IStorageService {
   private async publishEvent(eventName: string, payload: any): Promise<void> {
     const eventBus = this.getEventBus();
     if (eventBus) {
-      Promise.resolve(eventBus.emit(eventName, payload)).catch(() => {});
+      Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => {
+        logger.error({ err, eventName }, "Failed to publish storage event");
+      });
     }
   }
 
