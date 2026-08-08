@@ -164,6 +164,102 @@ describe("DiscoveryService", () => {
     });
   });
 
+<<<<<<< HEAD
+
+  describe("getAuthorizationDiagnostics", () => {
+    it("should return diagnostics from authorizationService if available", () => {
+      const mockDiagnostics = {
+        service: "AuthorizationService",
+        status: "active",
+        registeredGuards: ["jwt", "role"],
+        protectedRouteCount: 5,
+        cacheStatus: { hits: 10, misses: 2, ratio: "0.83" }
+      };
+
+      const mockAuthService = {
+        getDiagnostics: () => mockDiagnostics
+      };
+
+      container.register("authorizationService", mockAuthService);
+
+      const result = discovery.getAuthorizationDiagnostics();
+      expect(result).toEqual(mockDiagnostics);
+    });
+
+    it("should return fallback diagnostics if authorizationService is not available", () => {
+      const result = discovery.getAuthorizationDiagnostics();
+      expect(result).toEqual({
+        service: "AuthorizationService",
+        status: "inactive",
+        registeredGuards: [],
+        protectedRouteCount: 0,
+        cacheStatus: { hits: 0, misses: 0, ratio: "0.00" }
+      });
+    });
+
+    it("should return fallback diagnostics if getDiagnostics throws an error", () => {
+      const mockAuthService = {
+        getDiagnostics: () => { throw new Error("Test error"); }
+      };
+
+      container.register("authorizationService", mockAuthService);
+
+      const result = discovery.getAuthorizationDiagnostics();
+      expect(result).toEqual({
+        service: "AuthorizationService",
+        status: "inactive",
+        registeredGuards: [],
+        protectedRouteCount: 0,
+        cacheStatus: { hits: 0, misses: 0, ratio: "0.00" }
+=======
+  describe("getEventDiagnostics", () => {
+    it("should return default diagnostics when EVENT_BUS is not registered", () => {
+      const result = discovery.getEventDiagnostics();
+      expect(result).toEqual({
+        totalEventsRegistered: 0,
+        totalSubscribers: 0,
+        publishedCount: 0,
+        asyncPublishedCount: 0,
+        failureCount: 0,
+      });
+    });
+
+    it("should return event diagnostics when EVENT_BUS is registered", () => {
+      const mockDiagnostics = {
+        totalEventsRegistered: 5,
+        totalSubscribers: 10,
+        publishedCount: 100,
+        asyncPublishedCount: 50,
+        failureCount: 2,
+      };
+
+      container.registerInstance(CORE_SERVICES.EVENT_BUS, {
+        getDiagnostics: () => mockDiagnostics,
+      });
+
+      const result = discovery.getEventDiagnostics();
+      expect(result).toEqual(mockDiagnostics);
+    });
+
+    it("should return default diagnostics if eventBus.getDiagnostics throws", () => {
+      container.registerInstance(CORE_SERVICES.EVENT_BUS, {
+        getDiagnostics: () => {
+          throw new Error("Simulated error");
+        },
+      });
+
+      const result = discovery.getEventDiagnostics();
+      expect(result).toEqual({
+        totalEventsRegistered: 0,
+        totalSubscribers: 0,
+        publishedCount: 0,
+        asyncPublishedCount: 0,
+        failureCount: 0,
+>>>>>>> master
+      });
+    });
+  });
+
   describe("getSummary", () => {
     it("should return correct counts", async () => {
       // Setup minimal mock services

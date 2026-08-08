@@ -1,1 +1,23 @@
-
+Recommended NPM ecosystem
+Category	Package	Why it helps
+Language	typescript	AI agents work better with explicit types
+Runtime	tsx	Easy TS execution during development
+API	express / fastify	Clear backend structure
+Validation	zod	Agent can understand input/output contracts
+API schema	@asteasolutions/zod-to-openapi	Generate OpenAPI from Zod
+DB	drizzle-orm	Strong typed DB layer, agent-friendly
+PostgreSQL	postgres	Simple PostgreSQL driver
+ORM alternative	prisma	Very AI-friendly schema/client workflow
+Testing	vitest	Excellent developer/agent workflow
+API testing	supertest	Test HTTP endpoints
+E2E	playwright	Automated browser/API workflows
+Lint	eslint	Agent can catch mistakes
+Formatting	prettier	Consistent generated code
+Git hooks	husky	Automatic validation before commits
+Staged checks	lint-staged	Validate changed files
+Logging	pino	Structured logs that agents can reason about
+Error handling	http-errors	Consistent HTTP errors
+Security	helmet	Security middleware
+Rate limiting	express-rate-limit	Protect APIs
+Config	dotenv	Environment configuration
+Process validation	zod	Validate environment variables too

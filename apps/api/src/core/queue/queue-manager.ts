@@ -1,9 +1,9 @@
 import type { IQueueProvider, Job, JobHandler } from "./queue.interface.js";
 import { MemoryQueueService } from "./memory-queue.service.js";
-import { logger } from "../logger/logger.js";
 import { container } from "../container/container.js";
 import { CORE_SERVICES } from "../container/service.constants.js";
 import type { IEventBus } from "../events/event.interface.js";
+import { logger } from "../logger/index.js";
 
 export class QueueManager implements IQueueProvider {
   private readonly providers = new Map<string, IQueueProvider>();
@@ -53,9 +53,7 @@ export class QueueManager implements IQueueProvider {
     this.createdQueues.add(name);
     const eventBus = this.getEventBus();
     if (eventBus) {
-      Promise.resolve(eventBus.emit("queue.created", { queue: name })).catch((err) =>
-        logger.error({ err }, "Failed to emit event")
-      );
+      Promise.resolve(eventBus.emit("queue.created", { queue: name })).catch((err) => logger.error({ err }, "Event emission failed"));
     }
   }
 
@@ -65,9 +63,7 @@ export class QueueManager implements IQueueProvider {
       this.createdQueues.delete(name);
       const eventBus = this.getEventBus();
       if (eventBus) {
-        Promise.resolve(eventBus.emit("queue.deleted", { queue: name })).catch((err) =>
-          logger.error({ err }, "Failed to emit event")
-        );
+        Promise.resolve(eventBus.emit("queue.deleted", { queue: name })).catch((err) => logger.error({ err }, "Event emission failed"));
       }
     }
     return deleted;
@@ -78,9 +74,7 @@ export class QueueManager implements IQueueProvider {
     this.enqueuedJobs++;
     const eventBus = this.getEventBus();
     if (eventBus) {
-      Promise.resolve(eventBus.emit("job.enqueued", { jobId: job.id, queue, data })).catch((err) =>
-        logger.error({ err }, "Failed to emit event")
-      );
+      Promise.resolve(eventBus.emit("job.enqueued", { jobId: job.id, queue, data })).catch((err) => logger.error({ err }, "Event emission failed"));
     }
     return job;
   }
@@ -93,28 +87,18 @@ export class QueueManager implements IQueueProvider {
     const eventBus = this.getEventBus();
     const wrappedHandler: JobHandler<T> = async (job) => {
       if (eventBus) {
-        Promise.resolve(eventBus.emit("job.started", { jobId: job.id, queue: job.name })).catch(
-          (err) => logger.error({ err }, "Failed to emit event")
-        );
+        Promise.resolve(eventBus.emit("job.started", { jobId: job.id, queue: job.name })).catch((err) => logger.error({ err }, "Event emission failed"));
       }
       try {
         await handler(job);
         this.completedJobs++;
         if (eventBus) {
-          Promise.resolve(eventBus.emit("job.completed", { jobId: job.id, queue: job.name })).catch(
-            (err) => logger.error({ err }, "Failed to emit event")
-          );
+          Promise.resolve(eventBus.emit("job.completed", { jobId: job.id, queue: job.name })).catch((err) => logger.error({ err }, "Event emission failed"));
         }
       } catch (err: any) {
         this.failedJobs++;
         if (eventBus) {
-          Promise.resolve(
-            eventBus.emit("job.failed", {
-              jobId: job.id,
-              queue: job.name,
-              error: err.message || String(err),
-            })
-          ).catch((err) => logger.error({ err }, "Failed to emit event"));
+          Promise.resolve(eventBus.emit("job.failed", { jobId: job.id, queue: job.name, error: err.message || String(err) })).catch((emitErr) => logger.error({ err: emitErr }, "Event emission failed"));
         }
         throw err;
       }
@@ -135,9 +119,7 @@ export class QueueManager implements IQueueProvider {
     if (retried) {
       const eventBus = this.getEventBus();
       if (eventBus) {
-        Promise.resolve(eventBus.emit("job.retried", { jobId })).catch((err) =>
-          logger.error({ err }, "Failed to emit event")
-        );
+        Promise.resolve(eventBus.emit("job.retried", { jobId })).catch((err) => logger.error({ err }, "Event emission failed"));
       }
     }
     return retried;

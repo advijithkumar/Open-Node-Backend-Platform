@@ -30,7 +30,7 @@ export class AIService implements IAIService {
       throw new Error(`AI provider '${provider.name}' is already registered.`);
     }
     this.providers.set(provider.name, provider);
-    
+
     if (!this.activeProviderName) {
       this.activeProviderName = provider.name;
     }

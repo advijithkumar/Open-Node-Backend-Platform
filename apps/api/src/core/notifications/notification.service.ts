@@ -32,7 +32,7 @@ export class NotificationService implements INotificationService {
   }
 
   async send(request: NotificationRequest): Promise<NotificationResult> {
-    const provider = Array.from(this.providers.values()).find((p) => 
+    const provider = Array.from(this.providers.values()).find((p) =>
       p.supportedChannels.includes(request.channel)
     );
 
