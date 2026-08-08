@@ -42,7 +42,7 @@ app.use(
 // Enable CORS
 app.use(
   cors({
-    origin: true,
+    origin: env.CORS_ORIGINS,
     credentials: true,
   })
 );
