@@ -4,6 +4,7 @@ import { container } from "../container/container.js";
 import { CORE_SERVICES } from "../container/service.constants.js";
 import type { IEventBus } from "../events/event.interface.js";
 import type { ILogger } from "../logger/logger.interface.js";
+import { logger } from "../logger/index.js";
 
 export class QueueManager implements IQueueProvider {
   private readonly providers = new Map<string, IQueueProvider>();
@@ -71,14 +72,20 @@ export class QueueManager implements IQueueProvider {
   async createQueue(name: string): Promise<void> {
     await this.getActiveProvider().createQueue(name);
     this.createdQueues.add(name);
-    this.emitEventSafe("queue.created", { queue: name });
+    const eventBus = this.getEventBus();
+    if (eventBus) {
+      Promise.resolve(eventBus.emit("queue.created", { queue: name })).catch((err) => logger.error({ err }, "Event emission failed"));
+    }
   }
 
   async deleteQueue(name: string): Promise<boolean> {
     const deleted = await this.getActiveProvider().deleteQueue(name);
     if (deleted) {
       this.createdQueues.delete(name);
-      this.emitEventSafe("queue.deleted", { queue: name });
+      const eventBus = this.getEventBus();
+      if (eventBus) {
+        Promise.resolve(eventBus.emit("queue.deleted", { queue: name })).catch((err) => logger.error({ err }, "Event emission failed"));
+      }
     }
     return deleted;
   }
@@ -86,7 +93,10 @@ export class QueueManager implements IQueueProvider {
   async enqueue<T>(queue: string, data: T, maxRetries?: number): Promise<Job<T>> {
     const job = await this.getActiveProvider().enqueue(queue, data, maxRetries);
     this.enqueuedJobs++;
-    this.emitEventSafe("job.enqueued", { jobId: job.id, queue, data });
+    const eventBus = this.getEventBus();
+    if (eventBus) {
+      Promise.resolve(eventBus.emit("job.enqueued", { jobId: job.id, queue, data })).catch((err) => logger.error({ err }, "Event emission failed"));
+    }
     return job;
   }
 
@@ -121,7 +131,10 @@ export class QueueManager implements IQueueProvider {
   async retry(jobId: string): Promise<boolean> {
     const retried = await this.getActiveProvider().retry(jobId);
     if (retried) {
-      this.emitEventSafe("job.retried", { jobId });
+      const eventBus = this.getEventBus();
+      if (eventBus) {
+        Promise.resolve(eventBus.emit("job.retried", { jobId })).catch((err) => logger.error({ err }, "Event emission failed"));
+      }
     }
     return retried;
   }

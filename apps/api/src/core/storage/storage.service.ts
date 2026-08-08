@@ -1,6 +1,6 @@
-import type { 
-  IStorageService, 
-  IStorageProvider, 
+import type {
+  IStorageService,
+  IStorageProvider,
   StorageFile,
   BucketInfo,
   UploadOptions,
@@ -10,6 +10,7 @@ import type {
 import { LocalStorageProvider } from "./local-storage.provider.js";
 import { container } from "../container/container.js";
 import { CORE_SERVICES } from "../container/service.constants.js";
+import { logger } from "../logger/logger.js";
 
 /**
  * Storage Service – provider-agnostic abstraction for file storage operations.

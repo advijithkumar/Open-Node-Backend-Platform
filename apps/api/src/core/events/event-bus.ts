@@ -15,6 +15,9 @@ export interface EventRecord<T = unknown> {
 }
 
 export class EventBus implements IEventBus {
+  static emit(arg0: string, arg1: { jobId: string; queue: string; }): any {
+    throw new Error("Method not implemented.");
+  }
   private readonly listeners = new Map<string, EventRegistration<unknown>[]>();
   private readonly history: EventRecord[] = [];
   private readonly maxHistorySize = 100;

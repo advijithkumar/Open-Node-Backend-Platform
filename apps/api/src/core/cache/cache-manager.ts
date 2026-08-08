@@ -3,6 +3,7 @@ import { MemoryCacheProvider } from "./memory-cache.provider.js";
 import { container } from "../container/container.js";
 import { CORE_SERVICES } from "../container/service.constants.js";
 import type { IEventBus } from "../events/event.interface.js";
+import { logger } from "../logger/logger.js";
 
 export class CacheManager implements ICacheProvider {
   private readonly providers = new Map<string, ICacheProvider>();

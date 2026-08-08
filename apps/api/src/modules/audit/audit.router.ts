@@ -2,6 +2,7 @@ import { Router, type Request, type Response } from "express";
 import type { AuditService } from "./audit.service.js";
 import { successResponse } from "../../core/responses/success-response.js";
 import { asyncHandler } from "../../core/utils/async-handler.js";
+import { requireAuth, requireRole } from "../../core/auth/auth.middleware.js";
 
 export function createAuditRouter(auditService: AuditService): Router {
   const router = Router();
@@ -12,6 +13,7 @@ export function createAuditRouter(auditService: AuditService): Router {
    */
   router.get(
     "/",
+    requireRole("admin"),
     asyncHandler(async (req: Request, res: Response) => {
       const limit = Number(req.query.limit) || 100;
       const offset = Number(req.query.offset) || 0;
@@ -26,6 +28,7 @@ export function createAuditRouter(auditService: AuditService): Router {
    */
   router.get(
     "/user/:userId",
+    requireAuth(),
     asyncHandler(async (req: Request, res: Response) => {
       const limit = Number(req.query.limit) || 50;
       const offset = Number(req.query.offset) || 0;

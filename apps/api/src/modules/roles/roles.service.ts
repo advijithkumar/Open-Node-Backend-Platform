@@ -276,11 +276,31 @@ export class RoleService {
       throw new AppError("Cannot modify permissions of system protected role", 400, "SYSTEM_ROLE_PROTECTED");
     }
 
-    const permRepo = this.getPermissionRepository();
-    for (const permissionId of permissionIds) {
-      const perm = await permRepo.findPermissionById(permissionId);
-      if (!perm) {
-        throw new AppError(`Permission with ID ${permissionId} not found`, 404, "PERMISSION_NOT_FOUND");
+    if (permissionIds.length > 0) {
+      const permRepo = this.getPermissionRepository();
+
+      // Use findPermissionsByIds if available (optimized path), fallback to loop (legacy path)
+      if (typeof permRepo.findPermissionsByIds === 'function') {
+        // Optimize N+1 query: fetch all permissions in one go
+        const perms = await permRepo.findPermissionsByIds(permissionIds);
+
+        // Create a Set of found IDs for fast lookup
+        const foundIds = new Set(perms.map((p: any) => p.id));
+
+        // Check if any requested ID was not found
+        for (const id of permissionIds) {
+          if (!foundIds.has(id)) {
+            throw new AppError(`Permission with ID ${id} not found`, 404, "PERMISSION_NOT_FOUND");
+          }
+        }
+      } else {
+        // Fallback for when the optimized method is not available on the repository
+        for (const permissionId of permissionIds) {
+          const perm = await permRepo.findPermissionById(permissionId);
+          if (!perm) {
+            throw new AppError(`Permission with ID ${permissionId} not found`, 404, "PERMISSION_NOT_FOUND");
+          }
+        }
       }
     }
 

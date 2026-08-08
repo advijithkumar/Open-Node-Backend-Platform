@@ -27,6 +27,11 @@ const envSchema = z.object({
     .string()
     .min(32, "BETTER_AUTH_SECRET must be at least 32 characters")
     .default("20ec5e10ba116563368ab18bb3190e8716d61de23bbae103efa35cb4cdf05393"),
+
+  CORS_ORIGINS: z
+    .string()
+    .default("http://localhost:3000, http://localhost:5173")
+    .transform((val) => val.split(",").map((v) => v.trim())),
 });
 
 const parsed = envSchema.safeParse(process.env);
