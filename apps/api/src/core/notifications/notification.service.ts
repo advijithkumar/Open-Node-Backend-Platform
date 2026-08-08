@@ -32,7 +32,7 @@ export class NotificationService implements INotificationService {
   }
 
   async send(request: NotificationRequest): Promise<NotificationResult> {
-    const provider = Array.from(this.providers.values()).find((p) => 
+    const provider = Array.from(this.providers.values()).find((p) =>
       p.supportedChannels.includes(request.channel)
     );
 
@@ -64,13 +64,7 @@ export class NotificationService implements INotificationService {
   private triggerEvent(eventName: string, payload: any): void {
     const eventBus = this.getEventBus();
     if (eventBus) {
-<<<<<<< HEAD
-      Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => logger.error(err, "Failed to emit background event"));
-=======
-      Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => {
-        logger.error(`Failed to emit event ${eventName}`, { error: err });
-      });
->>>>>>> master
+      Promise.resolve(eventBus.emit(eventName, payload)).catch(() => {});
     }
   }
 

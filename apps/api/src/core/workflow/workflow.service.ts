@@ -13,7 +13,7 @@ import { logger } from "../logger/logger.js";
 export class WorkflowService {
   public readonly registry = new WorkflowRegistry();
   private readonly stepActions = new Map<string, IWorkflowStep>();
-  
+
   // Diagnostics statistics
   private registeredCount = 0;
   private executionsCount = 0;
@@ -49,7 +49,7 @@ export class WorkflowService {
     const executionId = uuidv4();
     const context = new WorkflowContext(executionId, input);
     const startWorkflowTime = Date.now();
-    
+
     this.executionsCount++;
     this.triggerEvent(WORKFLOW_EVENTS.STARTED, { workflowName, executionId, input });
 
@@ -106,10 +106,10 @@ export class WorkflowService {
           stepDef.timeout,
           stepDef.retry
         );
-        
+
         context.set(stepDef.name, stepOutput);
         const stepDuration = Date.now() - stepStartTime;
-        
+
         stepResults.push({
           stepName: stepDef.name,
           status: "completed",
@@ -122,7 +122,7 @@ export class WorkflowService {
         workflowStatus = "failed";
         workflowError = err.message;
         const stepDuration = Date.now() - stepStartTime;
-        
+
         stepResults.push({
           stepName: stepDef.name,
           status: "failed",
@@ -180,7 +180,7 @@ export class WorkflowService {
     // Topological Sort (Kahn's Algorithm)
     const inDegree = new Map<string, number>();
     const adjList = new Map<string, string[]>();
-    
+
     for (const step of steps) {
       inDegree.set(step.name, 0);
       adjList.set(step.name, []);
@@ -229,14 +229,7 @@ export class WorkflowService {
   private triggerEvent(eventName: string, payload: any): void {
     const eventBus = this.getEventBus();
     if (eventBus) {
-<<<<<<< HEAD
-      Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => logger.error(err, "Failed to emit background event"));
-=======
-      Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => {
-        const errorMessage = err instanceof Error ? err.message : String(err);
-        logger.error(`Failed to trigger workflow event ${eventName}: ${errorMessage}`, err);
-      });
->>>>>>> master
+      Promise.resolve(eventBus.emit(eventName, payload)).catch(() => {});
     }
   }
 
