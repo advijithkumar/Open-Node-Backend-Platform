@@ -6,12 +6,14 @@ import { noContentResponse } from "../../core/responses/no-content-response.js";
 import { validate } from "../../core/validation/validate.js";
 import { asyncHandler } from "../../core/utils/async-handler.js";
 import { createSettingSchema, updateSettingSchema } from "./settings.validation.js";
+import { requireAuth, requireRole } from "../../core/auth/auth.middleware.js";
 
 export function createSettingsRouter(service: SettingsService): Router {
   const router = Router();
 
   router.get(
     "/",
+    requireAuth(),
     asyncHandler(async (req: Request, res: Response) => {
       const limit = req.query.limit ? Number(req.query.limit) : 50;
       const offset = req.query.offset ? Number(req.query.offset) : 0;
@@ -22,6 +24,7 @@ export function createSettingsRouter(service: SettingsService): Router {
 
   router.get(
     "/:key",
+    requireAuth(),
     asyncHandler(async (req: Request, res: Response) => {
       const rawKey = req.params.key;
       const key = Array.isArray(rawKey) ? rawKey[0] : rawKey;
@@ -36,6 +39,8 @@ export function createSettingsRouter(service: SettingsService): Router {
 
   router.post(
     "/",
+    requireAuth(),
+    requireRole("admin"),
     validate(createSettingSchema),
     asyncHandler(async (req: Request, res: Response) => {
       const item = await service.create(req.body);
@@ -45,6 +50,8 @@ export function createSettingsRouter(service: SettingsService): Router {
 
   router.put(
     "/:key",
+    requireAuth(),
+    requireRole("admin"),
     validate(updateSettingSchema),
     asyncHandler(async (req: Request, res: Response) => {
       const rawKey = req.params.key;
@@ -56,6 +63,8 @@ export function createSettingsRouter(service: SettingsService): Router {
 
   router.delete(
     "/:key",
+    requireAuth(),
+    requireRole("admin"),
     asyncHandler(async (req: Request, res: Response) => {
       const rawKey = req.params.key;
       const key = Array.isArray(rawKey) ? rawKey[0] : rawKey;

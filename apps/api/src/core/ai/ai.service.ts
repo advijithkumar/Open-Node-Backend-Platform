@@ -132,7 +132,13 @@ export class AIService implements IAIService {
   private triggerEvent(eventName: string, payload: any): void {
     const eventBus = this.getEventBus();
     if (eventBus) {
+<<<<<<< HEAD
       Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => logger.error(err, "Failed to emit background event"));
+=======
+      Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => {
+        logger.error(`Failed to emit event ${eventName}:`, err);
+      });
+>>>>>>> master
     }
   }
 

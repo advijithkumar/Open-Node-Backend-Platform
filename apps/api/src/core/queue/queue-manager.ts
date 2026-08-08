@@ -53,7 +53,13 @@ export class QueueManager implements IQueueProvider {
     this.createdQueues.add(name);
     const eventBus = this.getEventBus();
     if (eventBus) {
+<<<<<<< HEAD
       Promise.resolve(eventBus.emit("queue.created", { queue: name })).catch((err) => logger.error(err, "Failed to emit background event"));
+=======
+      Promise.resolve(eventBus.emit("queue.created", { queue: name })).catch((err) => {
+        logger.error({ err, queue: name }, "Failed to emit queue.created event");
+      });
+>>>>>>> master
     }
   }
 
@@ -63,7 +69,13 @@ export class QueueManager implements IQueueProvider {
       this.createdQueues.delete(name);
       const eventBus = this.getEventBus();
       if (eventBus) {
+<<<<<<< HEAD
         Promise.resolve(eventBus.emit("queue.deleted", { queue: name })).catch((err) => logger.error(err, "Failed to emit background event"));
+=======
+        Promise.resolve(eventBus.emit("queue.deleted", { queue: name })).catch((err) => {
+          logger.error({ err, queue: name }, "Failed to emit queue.deleted event");
+        });
+>>>>>>> master
       }
     }
     return deleted;
@@ -74,7 +86,13 @@ export class QueueManager implements IQueueProvider {
     this.enqueuedJobs++;
     const eventBus = this.getEventBus();
     if (eventBus) {
+<<<<<<< HEAD
       Promise.resolve(eventBus.emit("job.enqueued", { jobId: job.id, queue, data })).catch((err) => logger.error(err, "Failed to emit background event"));
+=======
+      Promise.resolve(eventBus.emit("job.enqueued", { jobId: job.id, queue, data })).catch((err) => {
+        logger.error({ err, jobId: job.id, queue }, "Failed to emit job.enqueued event");
+      });
+>>>>>>> master
     }
     return job;
   }
@@ -87,18 +105,36 @@ export class QueueManager implements IQueueProvider {
     const eventBus = this.getEventBus();
     const wrappedHandler: JobHandler<T> = async (job) => {
       if (eventBus) {
+<<<<<<< HEAD
         Promise.resolve(eventBus.emit("job.started", { jobId: job.id, queue: job.name })).catch((err) => logger.error(err, "Failed to emit background event"));
+=======
+        Promise.resolve(eventBus.emit("job.started", { jobId: job.id, queue: job.name })).catch((err) => {
+          logger.error({ err, jobId: job.id, queue: job.name }, "Failed to emit job.started event");
+        });
+>>>>>>> master
       }
       try {
         await handler(job);
         this.completedJobs++;
         if (eventBus) {
+<<<<<<< HEAD
           Promise.resolve(eventBus.emit("job.completed", { jobId: job.id, queue: job.name })).catch((err) => logger.error(err, "Failed to emit background event"));
+=======
+          Promise.resolve(eventBus.emit("job.completed", { jobId: job.id, queue: job.name })).catch((err) => {
+            logger.error({ err, jobId: job.id, queue: job.name }, "Failed to emit job.completed event");
+          });
+>>>>>>> master
         }
       } catch (err: any) {
         this.failedJobs++;
         if (eventBus) {
+<<<<<<< HEAD
           Promise.resolve(eventBus.emit("job.failed", { jobId: job.id, queue: job.name, error: err.message || String(err) })).catch((err) => logger.error(err, "Failed to emit background event"));
+=======
+          Promise.resolve(eventBus.emit("job.failed", { jobId: job.id, queue: job.name, error: err.message || String(err) })).catch((eventErr) => {
+            logger.error({ err: eventErr, jobId: job.id, queue: job.name }, "Failed to emit job.failed event");
+          });
+>>>>>>> master
         }
         throw err;
       }
@@ -119,7 +155,13 @@ export class QueueManager implements IQueueProvider {
     if (retried) {
       const eventBus = this.getEventBus();
       if (eventBus) {
+<<<<<<< HEAD
         Promise.resolve(eventBus.emit("job.retried", { jobId })).catch((err) => logger.error(err, "Failed to emit background event"));
+=======
+        Promise.resolve(eventBus.emit("job.retried", { jobId })).catch((err) => {
+          logger.error({ err, jobId }, "Failed to emit job.retried event");
+        });
+>>>>>>> master
       }
     }
     return retried;

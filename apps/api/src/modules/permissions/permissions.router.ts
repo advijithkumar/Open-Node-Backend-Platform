@@ -7,12 +7,14 @@ import { validate } from "../../core/validation/validate.js";
 import { asyncHandler } from "../../core/utils/async-handler.js";
 import { createPermissionSchema, updatePermissionSchema } from "./permissions.validation.js";
 import { container } from "../../core/container/container.js";
+import { requireAuth } from "../../core/auth/auth.middleware.js";
 
 export function createPermissionsRouter(permissionService: PermissionService): Router {
   const router = Router();
 
   router.get(
     "/",
+    requireAuth(),
     asyncHandler(async (req: Request, res: Response) => {
       const limit = Number(req.query.limit) || 100;
       const offset = Number(req.query.offset) || 0;
@@ -23,6 +25,7 @@ export function createPermissionsRouter(permissionService: PermissionService): R
 
   router.get(
     "/:id",
+    requireAuth(),
     asyncHandler(async (req: Request, res: Response) => {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
       const permission = await permissionService.getPermissionById(id);
@@ -32,6 +35,7 @@ export function createPermissionsRouter(permissionService: PermissionService): R
 
   router.post(
     "/",
+    requireAuth(),
     validate(createPermissionSchema),
     asyncHandler(async (req: Request, res: Response) => {
       const permission = await permissionService.createPermission(req.body);
@@ -41,6 +45,7 @@ export function createPermissionsRouter(permissionService: PermissionService): R
 
   router.put(
     "/:id",
+    requireAuth(),
     validate(updatePermissionSchema),
     asyncHandler(async (req: Request, res: Response) => {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -51,6 +56,7 @@ export function createPermissionsRouter(permissionService: PermissionService): R
 
   router.delete(
     "/:id",
+    requireAuth(),
     asyncHandler(async (req: Request, res: Response) => {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
       await permissionService.deletePermission(id);
@@ -60,6 +66,7 @@ export function createPermissionsRouter(permissionService: PermissionService): R
 
   router.patch(
     "/:id/restore",
+    requireAuth(),
     asyncHandler(async (req: Request, res: Response) => {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
       const restored = await permissionService.restorePermission(id);
@@ -70,6 +77,7 @@ export function createPermissionsRouter(permissionService: PermissionService): R
   // Junction relationship REST endpoint
   router.get(
     "/:permissionId/roles",
+    requireAuth(),
     asyncHandler(async (req: Request, res: Response) => {
       const permissionId = Array.isArray(req.params.permissionId) ? req.params.permissionId[0] : req.params.permissionId;
       const roleService = container.resolve<any>("roleService");

@@ -229,7 +229,14 @@ export class WorkflowService {
   private triggerEvent(eventName: string, payload: any): void {
     const eventBus = this.getEventBus();
     if (eventBus) {
+<<<<<<< HEAD
       Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => logger.error(err, "Failed to emit background event"));
+=======
+      Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => {
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        logger.error(`Failed to trigger workflow event ${eventName}: ${errorMessage}`, err);
+      });
+>>>>>>> master
     }
   }
 

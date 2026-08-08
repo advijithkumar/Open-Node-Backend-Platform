@@ -48,7 +48,13 @@ export class StorageService implements IStorageService {
   private async publishEvent(eventName: string, payload: any): Promise<void> {
     const eventBus = this.getEventBus();
     if (eventBus) {
+<<<<<<< HEAD
       Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => logger.error(err, "Failed to emit background event"));
+=======
+      Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => {
+        logger.error({ err, eventName }, "Failed to publish storage event");
+      });
+>>>>>>> master
     }
   }
 
