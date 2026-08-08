@@ -30,7 +30,7 @@ export class AIService implements IAIService {
       throw new Error(`AI provider '${provider.name}' is already registered.`);
     }
     this.providers.set(provider.name, provider);
-    
+
     if (!this.activeProviderName) {
       this.activeProviderName = provider.name;
     }
@@ -132,9 +132,7 @@ export class AIService implements IAIService {
   private triggerEvent(eventName: string, payload: any): void {
     const eventBus = this.getEventBus();
     if (eventBus) {
-      Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => {
-        logger.error(`Failed to emit event ${eventName}:`, err);
-      });
+      Promise.resolve(eventBus.emit(eventName, payload)).catch(() => {});
     }
   }
 

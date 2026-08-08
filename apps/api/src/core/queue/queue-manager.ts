@@ -53,9 +53,7 @@ export class QueueManager implements IQueueProvider {
     this.createdQueues.add(name);
     const eventBus = this.getEventBus();
     if (eventBus) {
-      Promise.resolve(eventBus.emit("queue.created", { queue: name })).catch((err) => {
-        logger.error({ err, queue: name }, "Failed to emit queue.created event");
-      });
+      Promise.resolve(eventBus.emit("queue.created", { queue: name })).catch(() => {});
     }
   }
 
@@ -65,9 +63,7 @@ export class QueueManager implements IQueueProvider {
       this.createdQueues.delete(name);
       const eventBus = this.getEventBus();
       if (eventBus) {
-        Promise.resolve(eventBus.emit("queue.deleted", { queue: name })).catch((err) => {
-          logger.error({ err, queue: name }, "Failed to emit queue.deleted event");
-        });
+        Promise.resolve(eventBus.emit("queue.deleted", { queue: name })).catch(() => {});
       }
     }
     return deleted;
@@ -78,9 +74,7 @@ export class QueueManager implements IQueueProvider {
     this.enqueuedJobs++;
     const eventBus = this.getEventBus();
     if (eventBus) {
-      Promise.resolve(eventBus.emit("job.enqueued", { jobId: job.id, queue, data })).catch((err) => {
-        logger.error({ err, jobId: job.id, queue }, "Failed to emit job.enqueued event");
-      });
+      Promise.resolve(eventBus.emit("job.enqueued", { jobId: job.id, queue, data })).catch(() => {});
     }
     return job;
   }
@@ -93,24 +87,18 @@ export class QueueManager implements IQueueProvider {
     const eventBus = this.getEventBus();
     const wrappedHandler: JobHandler<T> = async (job) => {
       if (eventBus) {
-        Promise.resolve(eventBus.emit("job.started", { jobId: job.id, queue: job.name })).catch((err) => {
-          logger.error({ err, jobId: job.id, queue: job.name }, "Failed to emit job.started event");
-        });
+        Promise.resolve(eventBus.emit("job.started", { jobId: job.id, queue: job.name })).catch(() => {});
       }
       try {
         await handler(job);
         this.completedJobs++;
         if (eventBus) {
-          Promise.resolve(eventBus.emit("job.completed", { jobId: job.id, queue: job.name })).catch((err) => {
-            logger.error({ err, jobId: job.id, queue: job.name }, "Failed to emit job.completed event");
-          });
+          Promise.resolve(eventBus.emit("job.completed", { jobId: job.id, queue: job.name })).catch(() => {});
         }
       } catch (err: any) {
         this.failedJobs++;
         if (eventBus) {
-          Promise.resolve(eventBus.emit("job.failed", { jobId: job.id, queue: job.name, error: err.message || String(err) })).catch((eventErr) => {
-            logger.error({ err: eventErr, jobId: job.id, queue: job.name }, "Failed to emit job.failed event");
-          });
+          Promise.resolve(eventBus.emit("job.failed", { jobId: job.id, queue: job.name, error: err.message || String(err) })).catch(() => {});
         }
         throw err;
       }
@@ -131,9 +119,7 @@ export class QueueManager implements IQueueProvider {
     if (retried) {
       const eventBus = this.getEventBus();
       if (eventBus) {
-        Promise.resolve(eventBus.emit("job.retried", { jobId })).catch((err) => {
-          logger.error({ err, jobId }, "Failed to emit job.retried event");
-        });
+        Promise.resolve(eventBus.emit("job.retried", { jobId })).catch(() => {});
       }
     }
     return retried;

@@ -1,6 +1,6 @@
-import type { 
-  IStorageService, 
-  IStorageProvider, 
+import type {
+  IStorageService,
+  IStorageProvider,
   StorageFile,
   BucketInfo,
   UploadOptions,
@@ -48,9 +48,7 @@ export class StorageService implements IStorageService {
   private async publishEvent(eventName: string, payload: any): Promise<void> {
     const eventBus = this.getEventBus();
     if (eventBus) {
-      Promise.resolve(eventBus.emit(eventName, payload)).catch((err) => {
-        logger.error({ err, eventName }, "Failed to publish storage event");
-      });
+      Promise.resolve(eventBus.emit(eventName, payload)).catch(() => {});
     }
   }
 
