@@ -6,9 +6,12 @@ import { noContentResponse } from "../../core/responses/no-content-response.js";
 import { validate } from "../../core/validation/validate.js";
 import { asyncHandler } from "../../core/utils/async-handler.js";
 import { createRoleSchema, updateRoleSchema, assignPermissionSchema, replacePermissionsSchema } from "./roles.validation.js";
+import { requireAuth } from "../../core/auth/auth.middleware.js";
 
 export function createRolesRouter(roleService: RoleService): Router {
   const router = Router();
+
+  router.use(requireAuth());
 
   router.get(
     "/",
