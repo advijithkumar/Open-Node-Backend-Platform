@@ -164,6 +164,53 @@ describe("DiscoveryService", () => {
     });
   });
 
+  describe("getEventDiagnostics", () => {
+    it("should return default diagnostics when EVENT_BUS is not registered", () => {
+      const result = discovery.getEventDiagnostics();
+      expect(result).toEqual({
+        totalEventsRegistered: 0,
+        totalSubscribers: 0,
+        publishedCount: 0,
+        asyncPublishedCount: 0,
+        failureCount: 0,
+      });
+    });
+
+    it("should return event diagnostics when EVENT_BUS is registered", () => {
+      const mockDiagnostics = {
+        totalEventsRegistered: 5,
+        totalSubscribers: 10,
+        publishedCount: 100,
+        asyncPublishedCount: 50,
+        failureCount: 2,
+      };
+
+      container.registerInstance(CORE_SERVICES.EVENT_BUS, {
+        getDiagnostics: () => mockDiagnostics,
+      });
+
+      const result = discovery.getEventDiagnostics();
+      expect(result).toEqual(mockDiagnostics);
+    });
+
+    it("should return default diagnostics if eventBus.getDiagnostics throws", () => {
+      container.registerInstance(CORE_SERVICES.EVENT_BUS, {
+        getDiagnostics: () => {
+          throw new Error("Simulated error");
+        },
+      });
+
+      const result = discovery.getEventDiagnostics();
+      expect(result).toEqual({
+        totalEventsRegistered: 0,
+        totalSubscribers: 0,
+        publishedCount: 0,
+        asyncPublishedCount: 0,
+        failureCount: 0,
+      });
+    });
+  });
+
   describe("getSummary", () => {
     it("should return correct counts", async () => {
       // Setup minimal mock services
