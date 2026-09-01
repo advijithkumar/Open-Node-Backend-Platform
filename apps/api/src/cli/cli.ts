@@ -12,9 +12,15 @@ import { PluginGenerator } from "./generators/plugin.generator.js";
 import { ProviderGenerator } from "./generators/provider.generator.js";
 import { AppGenerator } from "./generators/app.generator.js";
 import { DoctorService } from "../core/doctor/doctor.js";
+import { AIBuilderService } from "../core/ai/ai-builder.service.js";
 
 /* ------------------------------------------------------------------ */
 /* Helper – fully bootstrap the framework before any command runs       */
+// Force silent logger during CLI commands so internal boot logs do not clutter CLI outputs
+process.env.LOG_LEVEL = "error";
+import { logger } from "../core/logger/logger.js";
+logger.level = "error";
+
 async function bootstrapFramework() {
   await registerCore();
   await registerModules();
@@ -76,6 +82,92 @@ program
       process.exit(1);
     }
   });
+
+  /* ------------------------------------------------------------------ */
+  /* ai:build <prompt> – prompt-driven AI server builder                  */
+  program
+    .command("ai:build <prompt>")
+    .description("Build an ONBP backend server module dynamically using AI prompt")
+    .option("-n, --name <name>", "Override generated module name")
+    .option("-p, --provider <provider>", "Override active AI provider (e.g. nvidia, openai, gemini)")
+    .option("-y, --yes", "Automatically confirm and scaffold without interactive prompt")
+    .option("--dry-run", "Output generated architecture plan without scaffolding files")
+    .action(async (promptText: string, options: { name?: string; provider?: string; yes?: boolean; dryRun?: boolean }) => {
+      try {
+        await bootstrapFramework();
+        const aiService = container.resolve<any>(CORE_SERVICES.AI);
+        const builder = new AIBuilderService(aiService);
+
+        console.log(`🤖 ONBP AI Server Builder analyzing prompt: "${promptText}"...`);
+        console.log(`   Connecting to AI Provider: ${options.provider || process.env.AI_PROVIDER || "nvidia"}...`);
+
+        // Phase 1: Architecture Planning & Review
+        const startTime = Date.now();
+        const plan = await builder.buildServerFromPrompt(promptText, { ...options, dryRun: true });
+        const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+
+        console.log("\n=========================================");
+        console.log(`    ONBP AI Server Architecture Plan (${duration}s)`);
+        console.log("=========================================");
+        console.log(`🚀 Proposed Server Module: ${plan.moduleName}`);
+        console.log(`   Target Tech Stack:      Node.js / Express / TypeScript`);
+        console.log(`   AI Provider / Model:    ${plan.activeProvider || options.provider || "nvidia"} / ${plan.activeModel || process.env.NVIDIA_MODEL || "meta/llama-3.2-11b-vision-instruct"}`);
+        console.log(`   Description:           ${plan.description}`);
+        console.log("-----------------------------------------");
+        console.log("ONBP Platform Capability Recommendations:");
+        if (plan.recommendations) {
+          console.log(`   ${plan.recommendations.auth?.enabled ? "🔒 [ENABLED] " : "⚪ [SKIPPED] "} Authentication (Better Auth): ${plan.recommendations.auth?.reason}`);
+          console.log(`   ${plan.recommendations.rbac?.enabled ? "🛡️ [ENABLED] " : "⚪ [SKIPPED] "} RBAC & Privacy Protection:    ${plan.recommendations.rbac?.reason}`);
+          console.log(`   ${plan.recommendations.storage?.enabled ? "🗄️ [ENABLED] " : "⚪ [SKIPPED] "} Object Storage (MinIO/S3):    ${plan.recommendations.storage?.reason}`);
+          console.log(`   ${plan.recommendations.database?.enabled ? "🗃️ [ENABLED] " : "⚪ [SKIPPED] "} PostgreSQL (Drizzle ORM):     ${plan.recommendations.database?.reason}`);
+          console.log(`   ${plan.recommendations.ai?.enabled ? "🤖 [ENABLED] " : "⚪ [SKIPPED] "} AI Processing (NVIDIA/OpenAI):${plan.recommendations.ai?.reason}`);
+          console.log(`   ${plan.recommendations.email?.enabled ? "📧 [ENABLED] " : "⚪ [SKIPPED] "} Transactional Emails:         ${plan.recommendations.email?.reason}`);
+          console.log(`   ${plan.recommendations.workflow?.enabled ? "⚙️ [ENABLED] " : "⚪ [SKIPPED] "} Orchestration Workflow:      ${plan.recommendations.workflow?.reason}`);
+        }
+        console.log("-----------------------------------------");
+        console.log("Proposed API Endpoints:");
+        plan.routes.forEach((r) => console.log(`   ${r.method.padEnd(6)} /api/v1/${plan.moduleName}${r.path} -> ${r.description}`));
+        console.log("-----------------------------------------");
+        console.log(`Reused Platform Services: ${plan.services.join(", ")}`);
+        if (plan.workflowName) {
+          console.log(`Orchestration Workflow:    ${plan.workflowName}`);
+        }
+        console.log("=========================================");
+
+        if (options.dryRun) {
+          console.log("ℹ️ Dry-run mode: Architecture plan displayed. No filesystem changes written.");
+          return;
+        }
+
+        // Phase 2: Confirmation & Execution
+        let shouldBuild = options.yes || false;
+        if (!shouldBuild && process.stdin.isTTY) {
+          const readline = await import("readline");
+          const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+          const answer = await new Promise<string>((resolve) => {
+            rl.question("Do you want to proceed and generate this ONBP module? (y/N): ", (ans) => {
+              rl.close();
+              resolve(ans);
+            });
+          });
+          shouldBuild = answer.trim().toLowerCase() === "y" || answer.trim().toLowerCase() === "yes";
+        } else if (!options.yes) {
+          // Default to building in non-interactive CI environments if not specified
+          shouldBuild = true;
+        }
+
+        if (shouldBuild) {
+          const { ModuleGenerator } = await import("./generators/module.generator.js");
+          await ModuleGenerator.generate(plan.moduleName);
+          console.log(`✅ Server Module '${plan.moduleName}' scaffolded successfully under apps/api/src/modules/${plan.moduleName}/`);
+        } else {
+          console.log("🛑 Server scaffolding cancelled by developer.");
+        }
+      } catch (err: any) {
+        console.error(`❌ AI Build failed: ${err.message}`);
+        process.exit(1);
+      }
+    });
 
   /* ------------------------------------------------------------------ */
   /* routes – list all routes that RouterManager has registered          */

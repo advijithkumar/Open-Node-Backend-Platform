@@ -57,19 +57,36 @@ export class AIService implements IAIService {
       throw new AIValidationError("Prompt must be a non-empty string.");
     }
 
-    const provider = this.resolveActiveProvider();
+    const primaryProvider = this.resolveActiveProvider();
+    const candidateProviders = [
+      primaryProvider,
+      ...Array.from(this.providers.values()).filter((p) => p.name !== primaryProvider.name),
+    ];
 
-    try {
-      const result = await provider.complete(prompt, options);
-      this.completionsCount++;
-      this.triggerEvent(AI_EVENTS.COMPLETED, { prompt, result });
-      return result;
-    } catch (err: any) {
-      this.failedCount++;
-      const deliveryErr = new AIDeliveryError(provider.name, err.message, err);
-      this.triggerEvent(AI_EVENTS.FAILED, { prompt, error: deliveryErr.message });
-      throw deliveryErr;
+    let lastError: Error | null = null;
+    for (const provider of candidateProviders) {
+      try {
+        const result = await provider.complete(prompt, options);
+        this.completionsCount++;
+        this.triggerEvent(AI_EVENTS.COMPLETED, { prompt, result, provider: provider.name });
+        return result;
+      } catch (err: any) {
+        lastError = err;
+        logger.warn(`AI Provider '${provider.name}' completion failed (${err.message}). Attempting fallback...`);
+        if (process.env.NODE_ENV !== "test") {
+          console.warn(`⚠️ AI Provider '${provider.name}' failed: ${err.message}. Attempting fallback...`);
+        }
+      }
     }
+
+    this.failedCount++;
+    const deliveryErr = new AIDeliveryError(
+      primaryProvider.name,
+      `All AI providers failed. Primary error: ${lastError?.message}`,
+      lastError
+    );
+    this.triggerEvent(AI_EVENTS.FAILED, { prompt, error: deliveryErr.message });
+    throw deliveryErr;
   }
 
   async embed(text: string): Promise<AIEmbeddingResult> {
@@ -77,19 +94,33 @@ export class AIService implements IAIService {
       throw new AIValidationError("Text to embed must be a non-empty string.");
     }
 
-    const provider = this.resolveActiveProvider();
+    const primaryProvider = this.resolveActiveProvider();
+    const candidateProviders = [
+      primaryProvider,
+      ...Array.from(this.providers.values()).filter((p) => p.name !== primaryProvider.name),
+    ];
 
-    try {
-      const result = await provider.embed(text);
-      this.embeddingsCount++;
-      this.triggerEvent(AI_EVENTS.EMBEDDED, { text, result });
-      return result;
-    } catch (err: any) {
-      this.failedCount++;
-      const deliveryErr = new AIDeliveryError(provider.name, err.message, err);
-      this.triggerEvent(AI_EVENTS.FAILED, { text, error: deliveryErr.message });
-      throw deliveryErr;
+    let lastError: Error | null = null;
+    for (const provider of candidateProviders) {
+      try {
+        const result = await provider.embed(text);
+        this.embeddingsCount++;
+        this.triggerEvent(AI_EVENTS.EMBEDDED, { text, result, provider: provider.name });
+        return result;
+      } catch (err: any) {
+        lastError = err;
+        logger.warn(`AI Provider '${provider.name}' embedding failed (${err.message}). Attempting fallback...`);
+      }
     }
+
+    this.failedCount++;
+    const deliveryErr = new AIDeliveryError(
+      primaryProvider.name,
+      `All AI providers failed embedding. Primary error: ${lastError?.message}`,
+      lastError
+    );
+    this.triggerEvent(AI_EVENTS.FAILED, { text, error: deliveryErr.message });
+    throw deliveryErr;
   }
 
   async embedMany(texts: string[]): Promise<AIEmbeddingResult[]> {

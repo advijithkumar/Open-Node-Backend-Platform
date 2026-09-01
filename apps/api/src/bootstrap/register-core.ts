@@ -20,6 +20,9 @@ import { EmailService, SmtpEmailProvider } from "../core/email/index.js";
 import { QueueManager } from "../core/queue/index.js";
 import { SchedulerService } from "../core/scheduler/index.js";
 import { AIService, MockAIProvider } from "../core/ai/index.js";
+import { OpenAIProvider } from "../providers/openai.provider.js";
+import { GeminiProvider } from "../providers/gemini.provider.js";
+import { NvidiaProvider } from "../providers/nvidia.provider.js";
 import { WorkflowService } from "../core/workflow/index.js";
 import { RouterManager } from "../core/router/index.js";
 import { HealthManager } from "../core/health/index.js";
@@ -60,6 +63,33 @@ export async function registerCore(): Promise<void> {
       apiKey: config.get("ai.apiKey"),
     });
     aiService.registerProvider(mockProvider);
+
+    const openaiProvider = new OpenAIProvider({
+      apiKey: config.get("ai.openai.apiKey") || process.env.OPENAI_API_KEY,
+      model: config.get("ai.openai.model") || process.env.OPENAI_MODEL,
+    });
+    aiService.registerProvider(openaiProvider);
+
+    const geminiProvider = new GeminiProvider({
+      apiKey: config.get("ai.gemini.apiKey") || process.env.GEMINI_API_KEY,
+      model: config.get("ai.gemini.model") || process.env.GEMINI_MODEL,
+    });
+    aiService.registerProvider(geminiProvider);
+
+    const nvidiaProvider = new NvidiaProvider({
+      apiKey: config.get("ai.nvidia.apiKey") || process.env.NVIDIA_API_KEY,
+      model: config.get("ai.nvidia.model") || process.env.NVIDIA_MODEL,
+    });
+    aiService.registerProvider(nvidiaProvider);
+
+    const activeProvider = config.get("ai.provider");
+    if (activeProvider && activeProvider !== "mock") {
+      try {
+        aiService.setActiveProvider(activeProvider);
+      } catch {
+        // Fall back to mock if desired active provider isn't ready
+      }
+    }
     return aiService;
   });
   container.registerSingleton(CORE_SERVICES.HEALTH, () => new HealthManager());
@@ -107,6 +137,9 @@ export async function registerCore(): Promise<void> {
   configManager.set("ai.model", process.env.AI_MODEL || "mock-model");
   configManager.set("ai.apiKey", process.env.AI_API_KEY || "");
   configManager.set("ai.baseUrl", process.env.AI_BASE_URL || "");
+  configManager.set("ai.nvidia.apiKey", process.env.NVIDIA_API_KEY || "");
+  configManager.set("ai.nvidia.model", process.env.NVIDIA_MODEL || "meta/llama-3.1-8b-instruct");
+  configManager.set("ai.nvidia.baseUrl", process.env.NVIDIA_BASE_URL || "https://integrate.api.nvidia.com/v1");
   configManager.set("ai.timeout", parseInt(process.env.AI_TIMEOUT || "10000", 10));
   configManager.set("ai.maxTokens", parseInt(process.env.AI_MAX_TOKENS || "1000", 10));
   configManager.set("ai.temperature", parseFloat(process.env.AI_TEMPERATURE || "0.7"));

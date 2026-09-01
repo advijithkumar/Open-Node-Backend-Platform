@@ -118,6 +118,33 @@
       "notes": "Workspace manager mapping local packages."
     },
     {
+      "technology": "OpenAI",
+      "version": "v1 REST API / gpt-4o-mini",
+      "purpose": "AI Provider for text completion and embeddings",
+      "package": "openai-provider",
+      "source": "native/rest",
+      "status": "official",
+      "notes": "Integrated via OpenAIProvider driver."
+    },
+    {
+      "technology": "Google Gemini",
+      "version": "v1beta REST API / gemini-1.5-flash",
+      "purpose": "AI Provider for text completion and embeddings",
+      "package": "gemini-provider",
+      "source": "native/rest",
+      "status": "official",
+      "notes": "Integrated via GeminiProvider driver."
+    },
+    {
+      "technology": "NVIDIA AI Foundation",
+      "version": "v1 REST API / meta/llama-3.1-8b-instruct",
+      "purpose": "AI Provider for text completion and embeddings",
+      "package": "nvidia-provider",
+      "source": "native/rest",
+      "status": "official",
+      "notes": "Integrated via NvidiaProvider driver."
+    },
+    {
       "technology": "Sequelize",
       "version": "N/A",
       "purpose": "Competing ORM",

@@ -248,7 +248,10 @@
       "status": "stable",
       "entryPoint": "AIService",
       "providers": [
-        "mock"
+        "mock",
+        "openai",
+        "gemini",
+        "nvidia"
       ],
       "useWhen": [
         "generating text completion",
