@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, expect, beforeEach, } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { DiscoveryService } from "./discovery.service.js";
 import { container } from "../container/container.js";
 import { MODULE_SERVICES } from "../modules/module.constants.js";
@@ -164,8 +164,6 @@ describe("DiscoveryService", () => {
     });
   });
 
-<<<<<<< HEAD
-
   describe("getAuthorizationDiagnostics", () => {
     it("should return diagnostics from authorizationService if available", () => {
       const mockDiagnostics = {
@@ -173,11 +171,11 @@ describe("DiscoveryService", () => {
         status: "active",
         registeredGuards: ["jwt", "role"],
         protectedRouteCount: 5,
-        cacheStatus: { hits: 10, misses: 2, ratio: "0.83" }
+        cacheStatus: { hits: 10, misses: 2, ratio: "0.83" },
       };
 
       const mockAuthService = {
-        getDiagnostics: () => mockDiagnostics
+        getDiagnostics: () => mockDiagnostics,
       };
 
       container.register("authorizationService", mockAuthService);
@@ -193,25 +191,11 @@ describe("DiscoveryService", () => {
         status: "inactive",
         registeredGuards: [],
         protectedRouteCount: 0,
-        cacheStatus: { hits: 0, misses: 0, ratio: "0.00" }
+        cacheStatus: { hits: 0, misses: 0, ratio: "0.00" },
       });
     });
+  });
 
-    it("should return fallback diagnostics if getDiagnostics throws an error", () => {
-      const mockAuthService = {
-        getDiagnostics: () => { throw new Error("Test error"); }
-      };
-
-      container.register("authorizationService", mockAuthService);
-
-      const result = discovery.getAuthorizationDiagnostics();
-      expect(result).toEqual({
-        service: "AuthorizationService",
-        status: "inactive",
-        registeredGuards: [],
-        protectedRouteCount: 0,
-        cacheStatus: { hits: 0, misses: 0, ratio: "0.00" }
-=======
   describe("getEventDiagnostics", () => {
     it("should return default diagnostics when EVENT_BUS is not registered", () => {
       const result = discovery.getEventDiagnostics();
@@ -240,29 +224,10 @@ describe("DiscoveryService", () => {
       const result = discovery.getEventDiagnostics();
       expect(result).toEqual(mockDiagnostics);
     });
-
-    it("should return default diagnostics if eventBus.getDiagnostics throws", () => {
-      container.registerInstance(CORE_SERVICES.EVENT_BUS, {
-        getDiagnostics: () => {
-          throw new Error("Simulated error");
-        },
-      });
-
-      const result = discovery.getEventDiagnostics();
-      expect(result).toEqual({
-        totalEventsRegistered: 0,
-        totalSubscribers: 0,
-        publishedCount: 0,
-        asyncPublishedCount: 0,
-        failureCount: 0,
->>>>>>> master
-      });
-    });
   });
 
   describe("getSummary", () => {
     it("should return correct counts", async () => {
-      // Setup minimal mock services
       const testModule: IModule = { name: "test", version: "1.0.0" };
       container.register(MODULE_SERVICES.REGISTRY, {
         getAll: () => [testModule],

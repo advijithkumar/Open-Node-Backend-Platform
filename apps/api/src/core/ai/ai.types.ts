@@ -6,6 +6,9 @@ export interface AICompletionOptions {
   maxTokens?: number;
   topP?: number;
   stop?: string[];
+  imageUrl?: string;
+  stream?: boolean;
+  reasoningEffort?: "low" | "medium" | "high" | "max" | string;
 }
 
 export interface AICompletionResult {
