@@ -3,6 +3,7 @@ import { MemoryQueueService } from "./memory-queue.service.js";
 import { container } from "../container/container.js";
 import { CORE_SERVICES } from "../container/service.constants.js";
 import type { IEventBus } from "../events/event.interface.js";
+import type { ILogger } from "../logger/logger.interface.js";
 import { logger } from "../logger/index.js";
 
 export class QueueManager implements IQueueProvider {
@@ -146,9 +147,7 @@ export class QueueManager implements IQueueProvider {
     return this.getActiveProvider().getJob(jobId);
   }
 
-  async getQueueStats(
-    queue: string
-  ): Promise<{ pending: number; processing: number; completed: number; failed: number }> {
+  async getQueueStats(queue: string): Promise<{ pending: number; processing: number; completed: number; failed: number }> {
     return this.getActiveProvider().getQueueStats(queue);
   }
 

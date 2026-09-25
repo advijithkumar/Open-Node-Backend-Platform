@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { IAIService } from "./ai.interface.js";
-import { ModuleGenerator } from "../../cli/generators/module.generator.js";
+import { AIModuleGenerator } from "../../cli/generators/ai-module.generator.js";
 import { AISessionMemoryManager } from "./ai-session-memory.js";
 
 export interface AIBuilderOptions {
@@ -23,6 +23,8 @@ export interface GeneratedServerPlan {
   routes: Array<{ method: string; path: string; description: string }>;
   services: string[];
   workflowName?: string;
+  /** True when the LLM timed out or returned unparseable text — fallback CRUD plan was used */
+  isFallback?: boolean;
   recommendations: {
     auth: CapabilityRecommendation;
     rbac: CapabilityRecommendation;
@@ -127,10 +129,20 @@ JSON Schema:
       const jsonString = raw.slice(firstBrace, lastBrace + 1);
       plan = JSON.parse(jsonString);
 
-      // Sanitize module name: override if explicitly passed, or clean up LLM placeholder
+      // Sanitize module name: override if explicitly passed, or clean up LLM placeholder.
+      // Also catch when LLM copies the schema example text verbatim.
+      const PLACEHOLDER_PATTERNS = [
+        "string", "kebab-case-domain-name", "domain-specific-workflow-name",
+        "module-name", "your-module", "domain-path",
+      ];
+      const isPlaceholder = !plan.moduleName
+        || PLACEHOLDER_PATTERNS.includes(plan.moduleName)
+        || plan.moduleName.includes("(")
+        || plan.moduleName.includes(" ");
+
       if (options.name) {
         plan.moduleName = options.name.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
-      } else if (!plan.moduleName || plan.moduleName === "string" || plan.moduleName.includes("(")) {
+      } else if (isPlaceholder) {
         plan.moduleName = prompt.toLowerCase()
           .replace(/\b(build|a|an|server|for|the|in|of|at|by|and|or|with|to)\b/g, "")
           .trim()
@@ -168,12 +180,13 @@ JSON Schema:
         description: `ONBP server module for: "${prompt}"`,
         activeProvider: options.provider || process.env.AI_PROVIDER || "nvidia",
         activeModel: completion.model || process.env.NVIDIA_MODEL || "meta/llama-3.2-11b-vision-instruct",
+        isFallback: true,
         routes: [
-          { method: "GET", path: "/", description: `List ${sanitizedName} records` },
-          { method: "POST", path: "/", description: `Create a new ${sanitizedName} record` },
-          { method: "GET", path: "/:id", description: `Get ${sanitizedName} by ID` },
-          { method: "PUT", path: "/:id", description: `Update ${sanitizedName} by ID` },
-          { method: "DELETE", path: "/:id", description: `Delete ${sanitizedName} by ID` },
+          { method: "GET", path: "/items", description: `List ${sanitizedName} items` },
+          { method: "POST", path: "/items", description: `Create a new ${sanitizedName} item` },
+          { method: "GET", path: "/items/:id", description: `Get ${sanitizedName} item by ID` },
+          { method: "PUT", path: "/items/:id", description: `Update ${sanitizedName} item by ID` },
+          { method: "DELETE", path: "/items/:id", description: `Delete ${sanitizedName} item by ID` },
         ],
         services: ["Database", "AuthorizationService", "EmailService"],
         workflowName: `${sanitizedName}-workflow`,
@@ -189,8 +202,17 @@ JSON Schema:
       };
     }
 
+    // Never write fallback generic CRUD plans to disk — require the user to retry
+    if (!options.dryRun && plan.isFallback) {
+      throw new Error(
+        `AI provider timed out or returned an unparseable response.\n` +
+        `The fallback generic plan cannot be written to disk — please retry:\n` +
+        `  pnpm onbp ai:build "${prompt}" --provider nvidia --yes`
+      );
+    }
+
     if (!options.dryRun) {
-      await ModuleGenerator.generate(plan.moduleName);
+      await AIModuleGenerator.generateFromPlan(plan);
     }
 
     return plan;

@@ -11,6 +11,7 @@ import { ModuleGenerator } from "./generators/module.generator.js";
 import { PluginGenerator } from "./generators/plugin.generator.js";
 import { ProviderGenerator } from "./generators/provider.generator.js";
 import { AppGenerator } from "./generators/app.generator.js";
+import { AIModuleGenerator } from "./generators/ai-module.generator.js";
 import { DoctorService } from "../core/doctor/doctor.js";
 import { AIBuilderService } from "../core/ai/ai-builder.service.js";
 
@@ -109,6 +110,12 @@ program
         console.log("\n=========================================");
         console.log(`    ONBP AI Server Architecture Plan (${duration}s)`);
         console.log("=========================================");
+        if (plan.isFallback) {
+          console.log("⚠️  FALLBACK PLAN — AI provider timed out or failed.");
+          console.log("   The plan below is a generic CRUD template derived from your prompt.");
+          console.log("   To get a domain-specific plan, retry when the AI provider is available.");
+          console.log("-----------------------------------------");
+        }
         console.log(`🚀 Proposed Server Module: ${plan.moduleName}`);
         console.log(`   Target Tech Stack:      Node.js / Express / TypeScript`);
         console.log(`   AI Provider / Model:    ${plan.activeProvider || options.provider || "nvidia"} / ${plan.activeModel || process.env.NVIDIA_MODEL || "meta/llama-3.2-11b-vision-instruct"}`);
@@ -135,7 +142,11 @@ program
         console.log("=========================================");
 
         if (options.dryRun) {
-          console.log("ℹ️ Dry-run mode: Architecture plan displayed. No filesystem changes written.");
+          if (plan.isFallback) {
+            console.log("⚠️  Dry-run (fallback): Generic plan shown. Retry once the AI provider is available.");
+          } else {
+            console.log("ℹ️ Dry-run mode: Architecture plan displayed. No filesystem changes written.");
+          }
           return;
         }
 
@@ -157,9 +168,9 @@ program
         }
 
         if (shouldBuild) {
-          const { ModuleGenerator } = await import("./generators/module.generator.js");
-          await ModuleGenerator.generate(plan.moduleName);
-          console.log(`✅ Server Module '${plan.moduleName}' scaffolded successfully under apps/api/src/modules/${plan.moduleName}/`);
+          await AIModuleGenerator.generateFromPlan(plan);
+          console.log(`\n✅ Server Module '${plan.moduleName}' scaffolded to apps/api/src/modules/${plan.moduleName}/`);
+          console.log(`   Next step: register it in apps/api/src/bootstrap/register-modules.ts`);
         } else {
           console.log("🛑 Server scaffolding cancelled by developer.");
         }
